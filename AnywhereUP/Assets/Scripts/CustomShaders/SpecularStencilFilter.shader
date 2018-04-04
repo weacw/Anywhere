@@ -132,7 +132,7 @@ Shader "Custom/Specular Stencil Filter"
             #pragma vertex vertAdd
             #pragma fragment fragAdd
             #include "UnityStandardCoreForward.cginc"
-
+            
             ENDCG
         }
         // ------------------------------------------------------------------
