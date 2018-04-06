@@ -14,6 +14,7 @@ using System;
 
 public class UnityARBuildPostprocessor 
 {
+	#if UNITY_IOS
 	static List<ARReferenceImagesSet> imageSets = new List<ARReferenceImagesSet>();
 	// Build postprocessor. Currently only needed on:
 	// - iOS: no dynamic libraries, so plugin source files have to be copied into Xcode project
@@ -224,4 +225,5 @@ public class UnityARBuildPostprocessor
 		File.WriteAllText(projPath, proj.WriteToString());
 		#endif // #if UNITY_IOS
 	}
+	#endif
 }
