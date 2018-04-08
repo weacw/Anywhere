@@ -11,8 +11,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: Unity
-  productName: AR Remote 1.5
+  companyName: WEACW
+  productName: Anywhere
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -161,7 +161,7 @@ PlayerSettings:
     Android: com.Company.ProductName
     Standalone: unity.Unity Technologies.Native Rendering Plugin Example
     Tizen: com.Company.ProductName
-    iOS: com.unity.ARRemote
+    iOS: com.weacw.anywhere
     tvOS: com.Company.ProductName
   buildNumber:
     iOS: 0
@@ -266,7 +266,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: d75a501eabf204447b794c73d2f4409a, type: 3}
+      m_Icon: {fileID: 0}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
@@ -383,7 +383,7 @@ PlayerSettings:
   enableInternalProfiler: 0
   logObjCUncaughtExceptions: 1
   enableCrashReportAPI: 0
-  cameraUsageDescription: AR Remote
+  cameraUsageDescription: Used to watch the new world.
   locationUsageDescription: 
   microphoneUsageDescription: 
   switchNetLibKey: 
@@ -654,7 +654,7 @@ PlayerSettings:
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 0
   apiCompatibilityLevelPerPlatform:
-    iOS: 1
+    iOS: 2
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: UnityProject
@@ -760,13 +760,13 @@ PlayerSettings:
     Game_Performance: 0
     Hub: 0
     Purchasing: 0
-    UNet: 0
+    UNet: 1
     Unity_Ads: 0
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: 
-  projectName: 
-  organizationId: 
+  cloudProjectId: 0ec5fb7a-27a8-40b3-8b6f-79ad803a4f18
+  projectName: Anywhere
+  organizationId: nswell
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
