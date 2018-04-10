@@ -18,7 +18,7 @@ static SocialShare* gjc_sharedInstance;
     return gjc_sharedInstance;
 }
 
--(void) nativeShare:(NSString*)text scriptTarget(NSString*):scriptTarget  media:(NSString*)media url:(NSString*)url{
+-(void) nativeShare:(NSString*)text scriptTarget:(NSString*)scriptTarget  media:(NSString*)media url:(NSString*)url{
     UIActivityViewController *controller;
     
     if(url.length!=0 && media.length!=0){
@@ -54,13 +54,13 @@ static SocialShare* gjc_sharedInstance;
     controller.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
         //NSLog(@"activityType :%@", activityType);
         if (completed){
-            UnitySendMessage(scriptTarget, "OnNativeShareSuccess", [DataConvertor NSStringToChar:activityType]);
+            UnitySendMessage([DataConvertor NSStringToChar:scriptTarget], "OnNativeShareSuccess", [DataConvertor NSStringToChar:activityType]);
             //NSLog(@"completed!");
         }else{
             if (activityType != nil){
-                UnitySendMessage(scriptTarget, "OnNativeShareCancel", [DataConvertor NSStringToChar:activityType]);
+                UnitySendMessage([DataConvertor NSStringToChar:scriptTarget], "OnNativeShareCancel", [DataConvertor NSStringToChar:activityType]);
             }else{
-                UnitySendMessage(scriptTarget, "OnNativeShareCancel", [DataConvertor NSStringToChar:@""]);
+                UnitySendMessage([DataConvertor NSStringToChar:scriptTarget], "OnNativeShareCancel", [DataConvertor NSStringToChar:@""]);
             }
             //            NSLog(@"cancel!");
         }
@@ -167,7 +167,7 @@ extern "C" {
         NSString* status = [DataConvertor charToNSString:text];
         NSString* media = [DataConvertor charToNSString:encodedMedia];
         NSString* shareurl = [DataConvertor charToNSString:url];
-        NSString* target = [DataConvertor charToNSString:scriptTarget]
+        NSString* target = [DataConvertor charToNSString:scriptTarget];
         [[SocialShare sharedInstance] nativeShare:status scriptTarget:target media:media url:shareurl];
     }
 }
