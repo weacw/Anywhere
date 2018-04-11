@@ -1,0 +1,16 @@
+API Docs
+---
+上传信息数据接口（文字数据）
+https://weacw.com/uploadinfo.php;
+以Get形式上传;
+?place="PLACE"&descript="DESCRIPT"&version="VERSION"&assetName="ASSETNAME"&thumbnailName="THUMBNAILNAME"
+---
+分页加载信息数据接口（文字数据）
+https://weacw.com/getinfo.php;
+以Get形式上传;
+?page=PAGE
+---
+查询信息数据接口（文字数据）
+https://weacw.com/searchinfo.php;
+以Get形式上传;
+?search=PLACE
