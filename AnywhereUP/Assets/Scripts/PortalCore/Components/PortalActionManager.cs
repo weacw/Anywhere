@@ -31,6 +31,8 @@ namespace Anywhere
                 m_ActionBuilder.m_TickList[i].Execute(this);
             }
         }
+
+        //进入传送门
         private void OnTriggerEnter(Collider other)
         {
             if (!other.CompareTag("MainCamera"))
@@ -39,23 +41,31 @@ namespace Anywhere
             m_WasInFront = GetIsInFront();
             m_IsColliding = true;
         }
+
+        //退出传送门
         private void OnTriggerExit(Collider other)
         {
             if (!other.CompareTag("MainCamera"))
                 return;
             m_IsColliding = false;
         }
+
         private void OnDestroy()
         {
             m_Fullrenderer = true;
             Trigger("ShaderAction");
         }
 
+        //触发ARKit相机与传送们的操作
+        //_methodKey：要执行的方法名称
         internal void Trigger(string _methodKey)
         {
             m_ActionBuilder.m_TriggerList.Find((action) => action.name == _methodKey).Execute(this);
         }
 
+        //判断当前ARKit相机是否处于传送门的前方
+        //True:处于前方
+        //False:处于后方
         internal bool GetIsInFront()
         {
             return m_CameraPos.z >= 0 ? true : false;

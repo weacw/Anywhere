@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 namespace Anywhere
 {
+    //#每一帧检测相机是否通过传送门，通过传送门开启次世界渲染，未通过则局部渲染
     [CreateAssetMenu(menuName = "Anywhere/Actions/Portal Action")]
     public class PortalAction : BaseAction
     {

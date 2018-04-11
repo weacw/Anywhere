@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-
-public class EveryplayLocalSaveHelper : MonoBehaviour 
+namespace Anywhere
 {
+    public class EveryplayLocalSaveHelper : MonoBehaviour
+    {
 #if !UNITY_EDITOR && UNITY_IOS
 	public System.Action<bool> VideoProcessed = null;
 	
@@ -16,4 +17,5 @@ public class EveryplayLocalSaveHelper : MonoBehaviour
 			VideoProcessed( true );
     }
 #endif
+    }
 }

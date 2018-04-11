@@ -4,7 +4,8 @@ using UnityEngine;
 using System.Runtime.InteropServices;
 namespace Anywhere
 {
-    public class NativeShareBridge : Singleton<NativeShareBridge>
+    //# 桥接器，用于联通Unity与IOS原生
+    public class NativeBridge : Singleton<NativeBridge>
     {
 #if UNITY_IPHONE
         [DllImport("__Internal")]
@@ -18,7 +19,7 @@ namespace Anywhere
         public OnShareCancel onShareCancel = null;
         private void Start()
         {
-            this.gameObject.name = "NativeShareBridge";
+            this.gameObject.name = "NativeBridge";
         }
         /// <summary>
         /// 调用系统分享

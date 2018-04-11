@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.IO;
 using UnityEngine;
-
-public static class EveryplayLocalSave
+namespace Anywhere
 {
+    public static class EveryplayLocalSave
+    {
 #if !UNITY_EDITOR && UNITY_IOS
     [System.Runtime.InteropServices.DllImport( "__Internal" )]
     private static extern void _FlipVideoSynchronous( string path, string outputPath );
@@ -13,80 +14,80 @@ public static class EveryplayLocalSave
 
 	private static EveryplayLocalSaveHelper asyncHelper = null;
 #endif
-	
-	private static string m_savePath = null;
 
-	public static bool IsBusy { get; private set; }
-	public static string SavedPath { get; private set; }
+        private static string m_savePath = null;
 
-	public static bool SaveTo( string path )
-	{
-		if( SaveToInternal( path, false ) )
-		{
-			Debug.Log( "Video saved: " + SavedPath );
-			return true;
-		}
+        public static bool IsBusy { get; private set; }
+        public static string SavedPath { get; private set; }
 
-		return false;
-	}
+        public static bool SaveTo(string path)
+        {
+            if (SaveToInternal(path, false))
+            {
+                Debug.Log("Video saved: " + SavedPath);
+                return true;
+            }
 
-	public static IEnumerator SaveToAsync( string path )
-	{
-		if( SaveToInternal( path, true ) )
-		{
-			while( IsBusy )
-				yield return null;
+            return false;
+        }
 
-			if( SavedPath != null )
-				Debug.Log( "Video saved: " + SavedPath );
-		}
-		else
-		{
-			IsBusy = false;
-		}
-		
-		yield break;
-	}
+        public static IEnumerator SaveToAsync(string path)
+        {
+            if (SaveToInternal(path, true))
+            {
+                while (IsBusy)
+                    yield return null;
 
-	private static bool SaveToInternal( string path, bool async )
-	{
-		if( IsBusy )
-		{
-			Debug.LogError( "Another save operation is in progress" );
-			return false;
-		}
+                if (SavedPath != null)
+                    Debug.Log("Video saved: " + SavedPath);
+            }
+            else
+            {
+                IsBusy = false;
+            }
 
-		SavedPath = null;
+            yield break;
+        }
 
-		if( path == null || path.Length == 0 )
-			throw new System.ArgumentException( "Parameter 'path' is null or empty!" );
+        private static bool SaveToInternal(string path, bool async)
+        {
+            if (IsBusy)
+            {
+                Debug.LogError("Another save operation is in progress");
+                return false;
+            }
 
-		string recordedVideoDir = null;
+            SavedPath = null;
+
+            if (path == null || path.Length == 0)
+                throw new System.ArgumentException("Parameter 'path' is null or empty!");
+
+            string recordedVideoDir = null;
 #if UNITY_ANDROID
 		recordedVideoDir = Path.Combine( new DirectoryInfo( Application.temporaryCachePath ).FullName, "sessions" );
 #elif UNITY_IOS
         recordedVideoDir = new DirectoryInfo( Application.persistentDataPath ).Parent.FullName + "/tmp/Everyplay/session";
 #endif
 
-		FileInfo[] files = new DirectoryInfo( recordedVideoDir ).GetFiles( "*.mp4", SearchOption.AllDirectories );
-		if( files.Length > 0 )
-			recordedVideoDir = files[0].FullName;
-		else
-		{
-			Debug.LogError( "Couldn't find a recorded Everyplay session!" );
-			return false;
-		}
+            FileInfo[] files = new DirectoryInfo(recordedVideoDir).GetFiles("*.mp4", SearchOption.AllDirectories);
+            if (files.Length > 0)
+                recordedVideoDir = files[0].FullName;
+            else
+            {
+                Debug.LogError("Couldn't find a recorded Everyplay session!");
+                return false;
+            }
 
-		if( !File.Exists( path ) )
-		{ 
-			string directory = Path.GetDirectoryName( path );
-			if( directory != null && directory.Length > 0 )
-				Directory.CreateDirectory( directory );
-		}
+            if (!File.Exists(path))
+            {
+                string directory = Path.GetDirectoryName(path);
+                if (directory != null && directory.Length > 0)
+                    Directory.CreateDirectory(directory);
+            }
 
 #if UNITY_EDITOR || UNITY_ANDROID
-		File.Copy( recordedVideoDir, path, true );
-		SavedPath = path;
+            File.Copy(recordedVideoDir, path, true);
+            SavedPath = path;
 #elif UNITY_IOS
 		if( SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Metal )
 		{
@@ -121,16 +122,17 @@ public static class EveryplayLocalSave
 		}
 #endif
 
-		return true;
-	}
+            return true;
+        }
 
-	private static void OnVideoProcessed( bool success )
-	{
-		IsBusy = false;
-		
-		if( success && File.Exists( m_savePath ) )
-			SavedPath = m_savePath;
+        private static void OnVideoProcessed(bool success)
+        {
+            IsBusy = false;
 
-		m_savePath = null;
+            if (success && File.Exists(m_savePath))
+                SavedPath = m_savePath;
+
+            m_savePath = null;
+        }
     }
 }

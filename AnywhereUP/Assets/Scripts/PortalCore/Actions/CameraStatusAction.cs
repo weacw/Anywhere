@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Anywhere
 {
+    //#ARKit相机位置计算
     [CreateAssetMenu(menuName = "Anywhere/Actions/CameraStatus Action")]
     public class CameraStatusAction : BaseAction
     {
