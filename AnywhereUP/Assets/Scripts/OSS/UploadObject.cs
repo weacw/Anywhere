@@ -9,14 +9,14 @@ namespace Anywhere
     public class UploadObject
     {
 
-        IEnumerator UploadFile(string localPath, string buckName, string key)
+		public static void UploadFile(string localPath, string buckName, string key)
         {
             bool waitForResult = true;
 
             if (!File.Exists(localPath))
             {
                 Debug.LogError("File path not exist: " + localPath);
-                yield break;
+               
             }
 
             using (var fs = File.Open(localPath, FileMode.Open))
@@ -41,6 +41,8 @@ namespace Anywhere
                         finally
                         {
                             waitForResult = false;
+								Debug.Log ("shanghcuangwanb");
+
                         }
                     }, null);
                 }
@@ -58,8 +60,8 @@ namespace Anywhere
 
                 while (waitForResult)
                 {
-                    // Debug.LogError(met);
-                    yield return null;
+					Debug.Log ("shanghcuang");
+                   
                 }
             }
         }
