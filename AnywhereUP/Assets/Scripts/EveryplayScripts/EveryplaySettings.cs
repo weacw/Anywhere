@@ -49,7 +49,7 @@ public class EveryplaySettings : ScriptableObject
 #if !UNITY_3_5
                 EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneOSXIntel64 ||
 #endif
-                EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneOSX)
+			EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneOSXUniversal)
             {
                 return standaloneSupportEnabled;
             }
