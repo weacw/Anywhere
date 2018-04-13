@@ -105,7 +105,7 @@ public class AssetsCreaterEditor : EditorWindow
     //Check mouse click on the item and show grenice menu
     public void OnMouseEventCheck(Rect rect, int index)
     {
-        if (Event.current.type == EventType.used)
+        if (Event.current.type == EventType.Used)
         {
             if (rect.Contains(Event.current.mousePosition) && Event.current.button == 0)
             {

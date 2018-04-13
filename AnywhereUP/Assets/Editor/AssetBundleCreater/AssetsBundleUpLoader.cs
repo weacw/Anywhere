@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using Aliyun.OSS;
+using Anywhere;
 using System.Threading;
 using System.Net;
 public class MyThread
@@ -118,7 +118,7 @@ public class AssetsBundleUpLoader : EditorWindow
     //Check mouse click on the item and show grenice menu
     public void OnMouseEventCheck(Rect rect, int index)
     {
-        if (Event.current.type == EventType.used)
+        if (Event.current.type == EventType.Used)
         {
             if (rect.Contains(Event.current.mousePosition) && Event.current.button == 0)
             {
