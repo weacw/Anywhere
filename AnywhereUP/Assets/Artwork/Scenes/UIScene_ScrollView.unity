@@ -454,7 +454,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27320350b5b4cad4397dc24e8c176bab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mLoopListView: {fileID: 1774568294}
+  m_Looplistview: {fileID: 1774568294}
 --- !u!4 &584500414
 Transform:
   m_ObjectHideFlags: 0

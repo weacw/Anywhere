@@ -223,7 +223,7 @@ GameObject:
   - component: {fileID: 224327751574655102}
   - component: {fileID: 222929117603255476}
   m_Layer: 5
-  m_Name: Button
+  m_Name: DownloadButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -658,12 +658,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcb5e1ce60347b8439560a9f98a7fc3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mContentRootObj: {fileID: 1558663478543836}
-  mIndexText: {fileID: 114516556923835106}
-  mDesText: {fileID: 114864260635493340}
-  mLoactionText: {fileID: 114197511694949338}
-  mIcon: {fileID: 114066961031688140}
-  mDownloadBtn: {fileID: 114006275890849920}
+  m_Contentrootobj: {fileID: 1558663478543836}
+  m_Indextext: {fileID: 114516556923835106}
+  m_Destext: {fileID: 114864260635493340}
+  m_Loactiontext: {fileID: 114197511694949338}
+  m_Icon: {fileID: 114066961031688140}
+  m_Downloadbtn: {fileID: 114006275890849920}
 --- !u!114 &114516556923835106
 MonoBehaviour:
   m_ObjectHideFlags: 1

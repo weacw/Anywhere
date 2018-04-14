@@ -1,18 +1,10 @@
-﻿/*
-*	Function:
-*		
-*		
-*	Author:
-*		Jeno
-*		
-*/
-
+﻿
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Anywhere.UI
+namespace SuperScrollView
 {
     public class ClickEventListener : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
     {

@@ -1,12 +1,4 @@
-﻿/*
-*	Function:
-*		
-*		
-*	Author:
-*		Jeno
-*		
-*/
-
+﻿
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +7,7 @@ using UnityEditor;
 using UnityEditorInternal;
 
 
-namespace Anywhere.UI
+namespace SuperScrollView
 {
 
     [CustomEditor(typeof(LoopListView))]

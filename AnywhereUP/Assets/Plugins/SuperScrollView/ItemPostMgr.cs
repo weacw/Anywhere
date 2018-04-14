@@ -1,19 +1,11 @@
-﻿/*
-*	Function:
-*		
-*		
-*	Author:
-*		Jeno
-*		
-*/
-
+﻿
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace Anywhere.UI
+namespace SuperScrollView
 {
 
     public class ItemSizeGroup

@@ -1,17 +1,10 @@
-﻿/*
-*	Function:
-*		
-*		
-*	Author:
-*		Jeno
-*		
-*/
-
+﻿
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Anywhere.UI
+namespace SuperScrollView
+
 {
     public class LoopListViewItem : MonoBehaviour
     {
