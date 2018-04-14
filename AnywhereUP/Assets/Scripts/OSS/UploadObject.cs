@@ -4,19 +4,19 @@ using System;
 using System.Collections;
 using System.IO;
 using UnityEngine;
-namespace Aliyun.OSS
+namespace Anywhere
 {
     public class UploadObject
     {
 
-        IEnumerator UploadFile(string localPath, string buckName, string key)
+		public static void UploadFile(string localPath, string buckName, string key)
         {
             bool waitForResult = true;
 
             if (!File.Exists(localPath))
             {
                 Debug.LogError("File path not exist: " + localPath);
-                yield break;
+               
             }
 
             using (var fs = File.Open(localPath, FileMode.Open))
@@ -41,6 +41,8 @@ namespace Aliyun.OSS
                         finally
                         {
                             waitForResult = false;
+								Debug.Log ("shanghcuangwanb");
+
                         }
                     }, null);
                 }
@@ -58,8 +60,8 @@ namespace Aliyun.OSS
 
                 while (waitForResult)
                 {
-                    // Debug.LogError(met);
-                    yield return null;
+					Debug.Log ("shanghcuang");
+                   
                 }
             }
         }

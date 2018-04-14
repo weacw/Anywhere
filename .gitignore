@@ -33,3 +33,4 @@ sysinfo.txt
 *.apk
 *.unitypackage
 AnywhereUP/.vscode/
+AnywhereUP/ProjectSettings/ProjectVersion.txt
