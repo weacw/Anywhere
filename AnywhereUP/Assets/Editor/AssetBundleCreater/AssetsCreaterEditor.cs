@@ -45,17 +45,21 @@ public class AssetsCreaterEditor : EditorWindow
         if (GUILayout.Button("Save", GUILayout.Width(window.minSize.x * 0.5f)))
         {
             savePath = EditorUtility.SaveFilePanelInProject("Save path", "Assets", "assetbundle", "");
-            if (String.IsNullOrEmpty(savePath))
-                savePath = "Empty";
 
-            if (System.IO.File.Exists(savePath))
-                window.ShowNotification(new GUIContent("File is defined !!"));
         }
         GUILayout.TextField(savePath);
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Build Abs", "minibuttonleft"))
         {
+			if (String.IsNullOrEmpty (savePath) || savePath == "选择保存在Asset下的路径") {
+				window.ShowNotification (new GUIContent ("选择你的文件夹 !!"));
+				return;
+			}
+			if (System.IO.File.Exists (savePath)) {
+				window.ShowNotification (new GUIContent ("文件已经存在!!"));
+				return;
+			}
             List<string> assetsPath = new List<string>();
             for (int i = 0; i < sourcesObjects.Count; i++)
             {

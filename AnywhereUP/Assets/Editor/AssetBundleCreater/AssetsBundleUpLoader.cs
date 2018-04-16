@@ -72,8 +72,11 @@ public class AssetsBundleUpLoader : EditorWindow
             {
 				UploadObject.UploadFile(AssetDatabase.GetAssetPath(sourcesObjects[i]),buckname,sourcesObjects[i].name+".assetbundle");
             }
-			string.Format ("=&",place,Introduce,Version,Dirname,thumbnailname);
-			MyThread mythrea=new MyThread("https://weacw.com/uploadinfo.php?"+place+"=&"+Introduce+"=&"+Version+"=&"+Dirname+"=&"+thumbnailname);
+
+			string myurl= string.Format("https://weacw.com/uploadinfo.php?place={0}&descript={1}&version={2}&assetName={3}&thumbnailname={4}",place,Introduce,Version,Dirname,thumbnailname);
+			//这种格式才是正确的
+			Debug.Log(myurl);
+			MyThread mythrea=new MyThread(myurl);
 			mythrea.CreateGetHttpResponse ();
         }
         

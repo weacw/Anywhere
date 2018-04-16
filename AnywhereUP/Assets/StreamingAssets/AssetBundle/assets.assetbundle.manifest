@@ -1,0 +1,30 @@
+ManifestFileVersion: 0
+CRC: 1884836272
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 75f83afcad5581a34544d745048b3468
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 68dd8a3c45cdb43ef055887ce75b16bb
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+Assets:
+- Assets/Artwork/Prefabs/UIElements/SettingButton.prefab
+Dependencies: []
