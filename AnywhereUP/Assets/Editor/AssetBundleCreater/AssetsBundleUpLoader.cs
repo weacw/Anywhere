@@ -31,6 +31,7 @@ public class AssetsBundleUpLoader : EditorWindow
     private static List<Object> sourcesObjects = new List<Object>();
     private static float OBJECTSLOTSIZE;
 	private  string Dirname = "Dirname";
+	private  string type = "type";
 	private  string Version = "Version";
 	private  Object thumbnailname;
 	private  string place = "place";
@@ -55,13 +56,10 @@ public class AssetsBundleUpLoader : EditorWindow
 		}
 	
         OBJECTSLOTSIZE = (EditorGUIUtility.currentViewWidth / 4) * 0.98f;
-
-
         Rect hRect = EditorGUILayout.BeginHorizontal();
 		place=GUILayout.TextField(place);
 		Introduce=GUILayout.TextField(Introduce);
 		Version=GUILayout.TextField(Version);
-		Dirname=GUILayout.TextField(Dirname);
 		thumbnailname=EditorGUILayout.ObjectField (thumbnailname,typeof(Texture));
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
@@ -70,14 +68,31 @@ public class AssetsBundleUpLoader : EditorWindow
             List<string> assetsPath = new List<string>();
             for (int i = 0; i < sourcesObjects.Count; i++)
             {
+				
 				UploadObject.UploadFile(AssetDatabase.GetAssetPath(sourcesObjects[i]),buckname,sourcesObjects[i].name+".assetbundle");
+				if (AssetDatabase.GetAssetPath(sourcesObjects[i]).EndsWith (".assetbundle")) {
+					type = "ab";
+				} 
+				else {
+					string[] temp={"jpg","png","PNG","JPG"};
+					foreach (string t in temp) {
+						if (AssetDatabase.GetAssetPath(sourcesObjects[i]).EndsWith (t))
+							type = "texture";
+						else
+						{
+							type = "video";
+						}
+					}
+
+				}
+				Dirname = sourcesObjects [i].name;
+				string myurl= string.Format("http://weacw.com/anywhere/uploadinfo.php?place={0}&type={1}&descript={2}&" +
+					"version={3}&assetName={4}&thumbnailName={5}",place,type,Introduce,Version,Dirname,thumbnailname.name);
+				Debug.Log(myurl);
+				MyThread mythrea=new MyThread(myurl);
+				mythrea.CreateGetHttpResponse ();
             }
 
-			string myurl= string.Format("https://weacw.com/uploadinfo.php?place={0}&descript={1}&version={2}&assetName={3}&thumbnailname={4}",place,Introduce,Version,Dirname,thumbnailname);
-			//这种格式才是正确的
-			Debug.Log(myurl);
-			MyThread mythrea=new MyThread(myurl);
-			mythrea.CreateGetHttpResponse ();
         }
         
         EditorGUILayout.EndHorizontal();
@@ -160,10 +175,7 @@ public class AssetsBundleUpLoader : EditorWindow
                 foreach (Object o in DragAndDrop.objectReferences)
                 {
 				
-				if (!AssetDatabase.GetAssetPath(o).EndsWith(".assetbundle")) {
-					window.ShowNotification(new GUIContent(string.Format("isnot AssetBundle {0}.", o.name)));
-					continue;
-				}
+			
                     if (sourcesObjects.Contains(o))
                     {
                         window.ShowNotification(new GUIContent(string.Format("Repeat to add {0}.", o.name)));
