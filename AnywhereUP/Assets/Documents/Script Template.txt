@@ -1,0 +1,63 @@
+Script Template
+
+*Class
+**模板示范
+public class ShareToFriends
+{
+	
+}
+注解：
+类名称：以英文字母开头且英文单词字母为大写字母，不允许带下划线、数字、无意义字母、拼音
+
+*Function/Method
+**模板规范
+public void RecordingStart();
+public bool IsDownloaded();
+public void ShareToFriends(string _base64byvideo);
+注解：
+函数/方法命名：以单词头字母大写书写
+
+
+*Parameters
+**全局变量模板示范(无static)
+***Public int m_Myint;
+***Private float m_Myfloat;
+***internal double m_Mydouble;
+注解：
+变量命名：以"m_"开头被衔接的英文单词首字母大写其余为小写字母
+
+**全局变量模板示范(有static)
+***Public static int m_MYINT;
+***Private static float m_MYFLOAT;
+***internal static double m_MYDOUBLE;
+注解：
+变量命名：以"m_"开头其余单词字母为大写书写
+
+
+**形参模板示范
+**public void ShareToFriends(texture2d _t2d);
+注解：
+形参命名：以"_"开头，以小写字母书写
+
+**临时变量模板示范
+**public void ShareToFriends(texture2d _t2d)
+{
+	float tmp_Myfloat = 10.0f;
+}
+注解：
+形参命名：以"tmp_"开头衔接单词首字母大写其余为小写
+
+*Enum
+**模板示范
+public enum MYENUM
+{
+	MYENUM1,
+	MYENUM2,
+	MYENUM3
+};
+注解：
+枚举名称：以大写字母书写
+枚举选项：以大写字母书写
+
+
+

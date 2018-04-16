@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.IO;
 using UnityEngine;
-namespace Aliyun.OSS
+namespace Anywhere
 {
     public class UploadObject
     {

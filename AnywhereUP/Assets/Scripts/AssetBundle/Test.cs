@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Aliyun.OSS;
+using Anywhere;
 public class Test : MonoBehaviour {
 	public static Test instance;
 	// Use this for initialization
@@ -13,8 +13,8 @@ public class Test : MonoBehaviour {
 	}
 	void Update()
 	{
-		if(Input.GetKeyDown(KeyCode.A))
-			GetObject.AsyncGetObject ("anywhere-v-1","assets.assetbundle");
+		// if(Input.GetKeyDown(KeyCode.A))
+			// GetObject.AsyncGetObject ("anywhere-v-1","assets.assetbundle");
 	}
 	IEnumerator myw()
 	{
