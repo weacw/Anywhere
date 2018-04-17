@@ -9,16 +9,15 @@ using System.Text;
 
 public class GetInfo : MonoBehaviour
 {
-	public static GetInfo instance;
+	
 	// Use this for initialization
 	void Start ()
 	{
-		instance = this;
+
 //		GameObject.	Instantiate(AssetBundleLoad.LoadAB("test").LoadAsset<GameObject>("Assets/Artwork/Effects/01.prefab"));
 		//GetObject.AsyncGetObject ("anywhere-v-1","hs.mp4");
 		//UploadObject.UploadFile (Application.streamingAssetsPath+"/AssetBundle/assets.assetbundle","anywhere-v-1","assets.assetbundle");
 
-		HttpGet ("");
 	}
 
 	void Update ()
@@ -27,9 +26,9 @@ public class GetInfo : MonoBehaviour
 		// GetObject.AsyncGetObject ("anywhere-v-1","assets.assetbundle");
 	}
 
-	public string HttpGet (string search)
+	public static string HttpGet (string _search)
 	{
-		HttpWebRequest request = WebRequest.Create ("https://weacw.com/anywhere/searchinfo.php?search=" + search) as HttpWebRequest;  
+		HttpWebRequest request = WebRequest.Create ("https://weacw.com/anywhere/searchinfo.php?search=" + _search) as HttpWebRequest;  
 		request.Method = "GET";  
 		HttpWebResponse response = (HttpWebResponse)request.GetResponse ();
 		Stream myResponseStream = response.GetResponseStream ();
@@ -40,10 +39,10 @@ public class GetInfo : MonoBehaviour
 		return retString;
 	}
 
-	public string HttpGet (int page)
+	public static string HttpGet (int _page)
 	{
 
-		HttpWebRequest request = WebRequest.Create ("https://weacw.com/anywhere/getinfo.php?page=" + page) as HttpWebRequest;
+		HttpWebRequest request = WebRequest.Create ("https://weacw.com/anywhere/getinfo.php?page=" + _page) as HttpWebRequest;
 		request.Method = "GET";  
 		HttpWebResponse response = (HttpWebResponse)request.GetResponse ();
 		Stream myResponseStream = response.GetResponseStream ();
