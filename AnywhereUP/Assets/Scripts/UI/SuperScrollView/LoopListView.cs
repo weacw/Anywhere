@@ -36,6 +36,7 @@ namespace SuperScrollView
             List<LoopListViewItem> mPooledItemList = new List<LoopListViewItem>();
             static int mCurItemIdCount = 0;
             RectTransform mItemParent = null;
+
             public ItemPool()
             {
 
@@ -357,6 +358,7 @@ namespace SuperScrollView
                 System.Func<LoopListView, int, LoopListViewItem> onGetItemByIndex,
                 LoopListViewInitParam initParam = null)
             {
+                
                 if (initParam != null)
                 {
                     mDistanceForRecycle0 = initParam.mDistanceForRecycle0;
