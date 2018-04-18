@@ -8,15 +8,17 @@ namespace Anywhere
 {
     public class UploadObject
     {
+        public static Action OnUploaded;
+        public static Action OnUploading;
 
-		public static void UploadFile(string localPath, string buckName, string key)
+        public static void UploadFile(string localPath, string buckName, string key)
         {
             bool waitForResult = true;
 
             if (!File.Exists(localPath))
             {
                 Debug.LogError("File path not exist: " + localPath);
-               
+
             }
 
             using (var fs = File.Open(localPath, FileMode.Open))
@@ -29,22 +31,21 @@ namespace Anywhere
                     metadata.CacheControl = "public";
 
                     ossClient.BeginPutObject(buckName, key, fs, metadata, (asyncResult) =>
-                    {
-                        try
-                        {
-                            ossClient.EndPutObject(asyncResult);
-                        }
-                        catch (Exception ex)
-                        {
-                            Debug.LogError(ex);
-                        }
-                        finally
-                        {
-                            waitForResult = false;
-								Debug.Log ("shanghcuangwanb");
-
-                        }
-                    }, null);
+                     {
+                         try
+                         {
+                             var r = ossClient.EndPutObject(asyncResult);
+                         }
+                         catch (Exception ex)
+                         {
+                             Debug.LogError(ex);
+                         }
+                         finally
+                         {
+                             if (OnUploaded != null) OnUploaded.Invoke();
+                             waitForResult = false;
+                         }
+                     }, null);
                 }
                 catch (OssException ex)
                 {
@@ -60,8 +61,7 @@ namespace Anywhere
 
                 while (waitForResult)
                 {
-					Debug.Log ("shanghcuang");
-                   
+                    if (OnUploading != null) OnUploading.Invoke();
                 }
             }
         }

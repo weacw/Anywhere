@@ -10,200 +10,124 @@ using System.Threading;
 using System.Net;
 public class MyThread
 {
-	private string m_Myurl;
-	public MyThread (string a)
-	{
-		m_Myurl = a;
-	}
-	public  void CreateGetHttpResponse()  
-	{  
-		
-		HttpWebRequest request = WebRequest.Create(m_Myurl) as HttpWebRequest;  
-		request.Method = "GET";  
+    private string m_Myurl;
+    public MyThread(string a)
+    {
+        m_Myurl = a;
+    }
+    public void CreateGetHttpResponse()
+    {
 
-	}
+        HttpWebRequest request = WebRequest.Create(m_Myurl) as HttpWebRequest;
+        request.Method = "GET";
+
+    }
 }
-public class AssetsBundleUpLoader : EditorWindow
+public class AssetbundleUploader : EditorWindow
 {
 
-	private static AssetsBundleUpLoader m_WINDOW;
-	private string m_Buckname = "anywhere-v-1";
-    private static List<Object> sourcesObjects = new List<Object>();
-    private static float OBJECTSLOTSIZE;
-	private  string m_Dirname = "Dirname";
-	private  string m_Type = "type";
-	private  string m_Version = "Version";
-	private  Object m_Thumbnailname;
-	private  string m_Place = "place";
-	private  string m_Introduce = "Introduce";
+    private static AssetbundleUploader m_WINDOW;
+    private string m_Buckname = "anywhere-v-1";
+    private float m_Version = 1.0f;
+    private string m_Place = null;
+    private string m_Descript = null;
 
+    private Object m_AssetbundleFile = null;
+    private Texture m_ThumbnailFile;
+    private const string m_Gateway = "http://weacw.com/anywhere/uploadinfo.php";
+    private FILETYPE m_FileType;
+
+    private bool m_ShowInfo;
+    public enum FILETYPE
+    {
+        VIDEO360,
+        IMAGE360,
+        ASSETBUNDLE
+    }
     [MenuItem("ABTools/ABUpload")]
     private static void Init()
     {
-        sourcesObjects.Clear();
-		m_WINDOW = GetWindow<AssetsBundleUpLoader>();
-		m_WINDOW.titleContent = new GUIContent("Anywhere资源上传器","test");
-	
-		m_WINDOW.Show();
+        m_WINDOW = GetWindow<AssetbundleUploader>();
+        m_WINDOW.titleContent = new GUIContent("Anywhere uploader", "");
+        m_WINDOW.Show();
+        UploadObject.OnUploaded = m_WINDOW.Uploaded;
+        UploadObject.OnUploading = m_WINDOW.Uploading;
 
     }
-	GUISkin t;
+    private void OnDisable()
+    {
+        UploadObject.OnUploaded = null;
+        UploadObject.OnUploaded = null;
+    }
+
     private void OnGUI()
     {
-		
-		if (!m_WINDOW) {
 
-			Init ();
-		}
-	
-        OBJECTSLOTSIZE = (EditorGUIUtility.currentViewWidth / 4) * 0.98f;
-        Rect hRect = EditorGUILayout.BeginHorizontal();
-		GUILayout.Label ("AB名称",EditorStyles.miniBoldLabel);
-		GUILayout.Label ("缩略图名称","label");
+        if (!m_WINDOW)
+        {
+            Init();
+        }
 
-		EditorGUILayout.EndVertical();
-		EditorGUILayout.BeginHorizontal();
-		GUILayout.Label ("类型","label");
-		m_Version=GUILayout.TextField(m_Version,EditorStyles.textField);
-		EditorGUILayout.EndVertical();
-		EditorGUILayout.BeginHorizontal();
-		m_Thumbnailname=EditorGUILayout.ObjectField(m_Thumbnailname,typeof(Texture));
-		EditorGUILayout.EndVertical();
-		EditorGUILayout.BeginHorizontal();
-		m_Place=GUILayout.TextField(m_Place,EditorStyles.textField);
-		EditorGUILayout.EndVertical();
-		EditorGUILayout.BeginHorizontal();
-		m_Introduce=GUILayout.TextArea(m_Introduce,EditorStyles.textArea);
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.BeginVertical();
+        m_Place = EditorGUILayout.TextField("Place", m_Place);
+        m_Version = EditorGUILayout.FloatField("Asset Version", m_Version, GUILayout.Width(EditorGUIUtility.currentViewWidth * 0.8f));
+        m_AssetbundleFile = EditorGUILayout.ObjectField("Upload File", m_AssetbundleFile, typeof(object), false, GUILayout.Width(EditorGUIUtility.currentViewWidth * 0.8f));
+        m_FileType = (FILETYPE)EditorGUILayout.EnumPopup("File Type", m_FileType, GUILayout.Width(EditorGUIUtility.currentViewWidth * 0.8f));
+
+        m_Descript = EditorGUILayout.TextField("Descript", m_Descript, EditorStyles.textArea, GUILayout.Height(30));
+
+        EditorGUILayout.EndVertical();
+
+        EditorGUILayout.BeginVertical();
+        EditorGUILayout.LabelField("Thumbnail", GUILayout.Width(EditorGUIUtility.currentViewWidth * 0.25f));
+        m_ThumbnailFile = EditorGUILayout.ObjectField("", m_ThumbnailFile, typeof(Texture), false, GUILayout.Width(EditorGUIUtility.currentViewWidth * 0.15f)) as Texture;
+        EditorGUILayout.EndVertical();
         EditorGUILayout.EndHorizontal();
-     
-        //Draw drag&drap rect
-		Rect curRect = EditorGUILayout.BeginHorizontal("Box", GUILayout.Width(hRect.width), GUILayout.Height(m_WINDOW.position.height - 200));
-        if (curRect.Contains(Event.current.mousePosition)) CheckDragNDrop();
-        if (sourcesObjects.Count <= 0)
+        EditorGUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("Upload"))
         {
-			GUI.Label(new Rect(curRect.width / 2 - 90, m_WINDOW.position.height / 2 - 15f, 256, 25), "Empty!! Drap your AssetBundle to here.", EditorStyles.boldLabel);
-        }
-	
-        EditorGUILayout.Space();
-		CreateItemGrid(curRect);
-		EditorGUILayout.EndHorizontal();
-		EditorGUILayout.BeginHorizontal();
-		if (GUILayout.Button("确认上传",EditorStyles.miniButtonMid))
-		{
-			if (m_Thumbnailname != null) {
-				string tmp_Thumbnailpath = AssetDatabase.GetAssetPath (m_Thumbnailname);
-				tmp_Thumbnailpath = tmp_Thumbnailpath.Remove (0, tmp_Thumbnailpath.LastIndexOf ("/") + 1);
-				UploadObject.UploadFile (AssetDatabase.GetAssetPath (m_Thumbnailname), m_Buckname, tmp_Thumbnailpath);
-			}
-			for (int i = 0; i < sourcesObjects.Count; i++)
-			{
-				
-				UploadObject.UploadFile(AssetDatabase.GetAssetPath(sourcesObjects[i]),m_Buckname,sourcesObjects[i].name+".assetbundle");
-				if (AssetDatabase.GetAssetPath(sourcesObjects[i]).EndsWith (".assetbundle")) {
-					m_Type = "ab";
-				} 
-				else {
-					string[] tmp_Filetype={"jpg","png","PNG","JPG"};
-					foreach (string t in tmp_Filetype) {
-						if (AssetDatabase.GetAssetPath(sourcesObjects[i]).EndsWith (t))
-							m_Type = "texture";
-						else
-						{
-							m_Type = "video";
-						}
-					}
-
-				}
-				m_Dirname = sourcesObjects [i].name;
-				string tmp_Myurl= string.Format("http://weacw.com/anywhere/uploadinfo.php?place={0}&type={1}&descript={2}&" +
-					"version={3}&assetName={4}&thumbnailName={5}",m_Place,m_Type,m_Introduce,m_Version,m_Dirname,m_Thumbnailname.name);
-				Debug.Log(tmp_Myurl);
-				MyThread tmp_Mythrea=new MyThread(tmp_Myurl);
-				tmp_Mythrea.CreateGetHttpResponse ();
-			}
-
-		}
-
-		EditorGUILayout.EndHorizontal();
-
-		EditorGUILayout.Space();
-		GUI.Label(new Rect(curRect.width / 2 - 90, m_WINDOW.position.height - 15f, 180, 25), "Powerd by WEACW Well Tsai", EditorStyles.miniBoldLabel);
-		m_WINDOW.Repaint();
-    }
-    //Create the item in a grid style
-    private void CreateItemGrid(Rect curRect)
-    {
-        int vertical = 0, horizatonal = 0;
-        for (int i = 0; i < sourcesObjects.Count; i++)
-        {
-            if (i%4 == 0 && i != 0)
+            if (m_ThumbnailFile == null || m_AssetbundleFile == null || m_Place == null)
             {
-                vertical++;
-                horizatonal = 0;
+                Debug.LogError("File is empty");
+                return;
             }
-
-            Rect boxRect = new Rect(curRect.x + 5 + (OBJECTSLOTSIZE*horizatonal),
-                curRect.y + 5 + OBJECTSLOTSIZE*vertical,
-                OBJECTSLOTSIZE - 10, OBJECTSLOTSIZE - 10);
-            horizatonal++;
-            if (GUI.Button(boxRect, sourcesObjects[i].name, "WindowBackground"))
-                OnMouseEventCheck(boxRect, i);
+            UploadObject.UploadFile(AssetDatabase.GetAssetPath(m_AssetbundleFile), m_Buckname, m_AssetbundleFile.name + ".assetbundle");
+            UploadObject.UploadFile(AssetDatabase.GetAssetPath(m_ThumbnailFile), m_Buckname, m_ThumbnailFile.name);
+            string tmp_Myurl = string.Format(m_Gateway + "?place={0}&type={1}&descript={2}&version={3}&assetName={4}&thumbnailName={5}",
+                m_Place, m_FileType.ToString(), m_Descript, m_Version, m_AssetbundleFile.name, m_ThumbnailFile.name);
+            MyThread tmp_Mythrea = new MyThread(tmp_Myurl);
+            tmp_Mythrea.CreateGetHttpResponse();
         }
-    }
 
-    //Check mouse click on the item and show grenice menu
-    public void OnMouseEventCheck(Rect rect, int index)
-    {
-        if (Event.current.type == EventType.Used)
+        if (GUILayout.Button("Clean"))
         {
-            if (rect.Contains(Event.current.mousePosition) && Event.current.button == 0)
-            {
-                EditorGUIUtility.PingObject(sourcesObjects[index]);
-            }
-            else
-            {
-                if (Event.current.button == 1)
-                {
-                    GenericMenu menu = new GenericMenu();
-                    menu.AddSeparator("");
-                    menu.AddItem(new GUIContent("Remove"), false, RemoveCurItem, sourcesObjects[index]);
-                    menu.ShowAsContext();
-                    Event.current.Use();
-                }
-            }
+            m_Descript = null;
+            m_ThumbnailFile = null;
+            m_AssetbundleFile = null;
+            m_Version = 1;
+            m_Place = null;
         }
-    }
-    //GenericMenu function
-    public void RemoveCurItem(object obj)
-    {
-		sourcesObjects.Remove((Object)obj);m_Thumbnailname = null;
+        EditorGUILayout.EndHorizontal();
 
-    }
-    //Check drag or drop
-    public void CheckDragNDrop()
-    {
-        if (null == DragAndDrop.objectReferences) return;
-        switch (Event.current.type)
-        {
-            case EventType.DragUpdated:
-                DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
-                break;
-            case EventType.DragPerform:
-                DragAndDrop.AcceptDrag();
-                foreach (Object o in DragAndDrop.objectReferences)
-                {
-				
-			
-                    if (sourcesObjects.Contains(o))
-                    {
-                        m_WINDOW.ShowNotification(new GUIContent(string.Format("Repeat to add {0}.", o.name)));
-                        continue;
-                    }
-
-                    sourcesObjects.Add(o);
-                }
-                Event.current.Use();
-                break;
+        EditorGUILayout.BeginVertical("WindowBackground");
+        m_ShowInfo = EditorGUILayout.Foldout(m_ShowInfo, "Upload info");
+        if (m_ShowInfo)
+        {            
+            GUILayout.Label(string.Format("AB Name:{0}", m_AssetbundleFile == null ? "Empty" : m_AssetbundleFile.name));
+            GUILayout.Label(string.Format("Thumbnail Name:{0}", m_ThumbnailFile == null ? "Empty" : m_ThumbnailFile.name));
         }
+        EditorGUILayout.EndVertical();
+        m_WINDOW.Repaint();
+    }
+
+    private void Uploaded()
+    {
+        Debug.Log("Uploaded");
+    }
+    private void Uploading()
+    {
+        Debug.Log("Uploading");
     }
 }
