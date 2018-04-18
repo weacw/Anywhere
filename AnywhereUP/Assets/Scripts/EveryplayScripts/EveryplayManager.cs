@@ -16,19 +16,23 @@ namespace Anywhere
             m_isRecordingFinished = false;
             Everyplay.RecordingStarted += RecordingStarted;
             Everyplay.RecordingStopped += RecordingStopped;
+            NotifCenter.GetNotice.AddEventListener(NotifEventKey.EVERYPLAY_RECORDING_START, OnRecordingStart);
+            NotifCenter.GetNotice.AddEventListener(NotifEventKey.EVERYPLAY_RECORDING_STOP,OnRecordingStop);
         }
 
         void OnDestroy()
         {
             Everyplay.RecordingStarted -= RecordingStarted;
             Everyplay.RecordingStopped -= RecordingStopped;
+            NotifCenter.GetNotice.RemoveEventListener(NotifEventKey.EVERYPLAY_RECORDING_START, OnRecordingStart);
+            NotifCenter.GetNotice.RemoveEventListener(NotifEventKey.EVERYPLAY_RECORDING_STOP, OnRecordingStop);
         }
 
-        public void OnRecordingStart()
+        // start recording
+        private void OnRecordingStart()
         {
             if (m_isRecording)
             {
-                Debug.Log("正在录制视频中");
                 return;
             }
             Everyplay.StartRecording();
@@ -36,11 +40,11 @@ namespace Anywhere
             m_isRecordingFinished = false;
         }
 
-        public void OnRecordingStop()
+        //stop recording
+        private void OnRecordingStop()
         {
             if (!m_isRecording)
             {
-                Debug.Log("没有在录制视频");
                 return;
             }
             Everyplay.StopRecording();
