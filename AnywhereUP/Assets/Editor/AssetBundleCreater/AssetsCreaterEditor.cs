@@ -17,9 +17,9 @@ public class AssetsCreaterEditor : EditorWindow
 {
 
     private static AssetsCreaterEditor window;
-    private string savePath = "选择保存在Asset下的路径";
+    private string m_SavePath = "选择保存在Asset下的路径";
     private static List<Object> sourcesObjects = new List<Object>();    
-    private BuildTarget buidTarget=BuildTarget.iOS;
+    private BuildTarget m_BuidTarget=BuildTarget.iOS;
     private static float OBJECTSLOTSIZE;
 
     [MenuItem("ABTools/ABCreater")]
@@ -44,19 +44,19 @@ public class AssetsCreaterEditor : EditorWindow
         Rect hRect = EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Save", GUILayout.Width(window.minSize.x * 0.5f)))
         {
-            savePath = EditorUtility.SaveFilePanelInProject("Save path", "Assets", "assetbundle", "");
+			m_SavePath = EditorUtility.SaveFilePanelInProject("Save path", "Assets", "assetbundle", "");
 
         }
-        GUILayout.TextField(savePath);
+		GUILayout.TextField(m_SavePath);
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Build Abs", "minibuttonleft"))
         {
-			if (String.IsNullOrEmpty (savePath) || savePath == "选择保存在Asset下的路径") {
+			if (String.IsNullOrEmpty (m_SavePath) || m_SavePath == "选择保存在Asset下的路径") {
 				window.ShowNotification (new GUIContent ("选择你的文件夹 !!"));
 				return;
 			}
-			if (System.IO.File.Exists (savePath)) {
+			if (System.IO.File.Exists (m_SavePath)) {
 				window.ShowNotification (new GUIContent ("文件已经存在!!"));
 				return;
 			}
@@ -65,7 +65,7 @@ public class AssetsCreaterEditor : EditorWindow
             {
                 assetsPath.Add(AssetDatabase.GetAssetPath(sourcesObjects[i]));
             }
-            AssetsCreaterCore.BuildAbs(assetsPath, savePath, buidTarget);
+			AssetsCreaterCore.BuildAbs(assetsPath, m_SavePath, m_BuidTarget);
         }
        
         EditorGUILayout.EndHorizontal();

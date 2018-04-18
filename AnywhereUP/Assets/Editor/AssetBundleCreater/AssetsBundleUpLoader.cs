@@ -10,15 +10,15 @@ using System.Threading;
 using System.Net;
 public class MyThread
 {
-	public string myurl;
+	private string m_Myurl;
 	public MyThread (string a)
 	{
-		myurl = a;
+		m_Myurl = a;
 	}
 	public  void CreateGetHttpResponse()  
 	{  
 		
-		HttpWebRequest request = WebRequest.Create(myurl) as HttpWebRequest;  
+		HttpWebRequest request = WebRequest.Create(m_Myurl) as HttpWebRequest;  
 		request.Method = "GET";  
 
 	}
@@ -26,91 +26,109 @@ public class MyThread
 public class AssetsBundleUpLoader : EditorWindow
 {
 
-	private static AssetsBundleUpLoader window;
-    private string buckname = "anywhere-v-1";
+	private static AssetsBundleUpLoader m_WINDOW;
+	private string m_Buckname = "anywhere-v-1";
     private static List<Object> sourcesObjects = new List<Object>();
     private static float OBJECTSLOTSIZE;
-	private  string Dirname = "Dirname";
-	private  string type = "type";
-	private  string Version = "Version";
-	private  Object thumbnailname;
-	private  string place = "place";
-	private  string Introduce = "Introduce";
+	private  string m_Dirname = "Dirname";
+	private  string m_Type = "type";
+	private  string m_Version = "Version";
+	private  Object m_Thumbnailname;
+	private  string m_Place = "place";
+	private  string m_Introduce = "Introduce";
 
     [MenuItem("ABTools/ABUpload")]
     private static void Init()
     {
         sourcesObjects.Clear();
-		window = GetWindow<AssetsBundleUpLoader>();
-        window.titleContent = new GUIContent("ABUpload");
-        window.Show();
+		m_WINDOW = GetWindow<AssetsBundleUpLoader>();
+		m_WINDOW.titleContent = new GUIContent("Anywhere资源上传器","test");
+	
+		m_WINDOW.Show();
 
     }
-
+	GUISkin t;
     private void OnGUI()
     {
+		
+		if (!m_WINDOW) {
 
-		if (!window) {
-			
 			Init ();
 		}
 	
         OBJECTSLOTSIZE = (EditorGUIUtility.currentViewWidth / 4) * 0.98f;
         Rect hRect = EditorGUILayout.BeginHorizontal();
-		place=GUILayout.TextField(place);
-		Introduce=GUILayout.TextField(Introduce);
-		Version=GUILayout.TextField(Version);
-		thumbnailname=EditorGUILayout.ObjectField (thumbnailname,typeof(Texture));
+		GUILayout.Label ("AB名称",EditorStyles.miniBoldLabel);
+		GUILayout.Label ("缩略图名称","label");
+
+		EditorGUILayout.EndVertical();
+		EditorGUILayout.BeginHorizontal();
+		GUILayout.Label ("类型","label");
+		m_Version=GUILayout.TextField(m_Version,EditorStyles.textField);
+		EditorGUILayout.EndVertical();
+		EditorGUILayout.BeginHorizontal();
+		m_Thumbnailname=EditorGUILayout.ObjectField(m_Thumbnailname,typeof(Texture));
+		EditorGUILayout.EndVertical();
+		EditorGUILayout.BeginHorizontal();
+		m_Place=GUILayout.TextField(m_Place,EditorStyles.textField);
+		EditorGUILayout.EndVertical();
+		EditorGUILayout.BeginHorizontal();
+		m_Introduce=GUILayout.TextArea(m_Introduce,EditorStyles.textArea);
         EditorGUILayout.EndHorizontal();
-        EditorGUILayout.BeginHorizontal();
-		if (GUILayout.Button("UpLoad", "minibuttonleft"))
+     
+        //Draw drag&drap rect
+		Rect curRect = EditorGUILayout.BeginHorizontal("Box", GUILayout.Width(hRect.width), GUILayout.Height(m_WINDOW.position.height - 200));
+        if (curRect.Contains(Event.current.mousePosition)) CheckDragNDrop();
+        if (sourcesObjects.Count <= 0)
         {
-            List<string> assetsPath = new List<string>();
-            for (int i = 0; i < sourcesObjects.Count; i++)
-            {
+			GUI.Label(new Rect(curRect.width / 2 - 90, m_WINDOW.position.height / 2 - 15f, 256, 25), "Empty!! Drap your AssetBundle to here.", EditorStyles.boldLabel);
+        }
+	
+        EditorGUILayout.Space();
+		CreateItemGrid(curRect);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.BeginHorizontal();
+		if (GUILayout.Button("确认上传",EditorStyles.miniButtonMid))
+		{
+			if (m_Thumbnailname != null) {
+				string tmp_Thumbnailpath = AssetDatabase.GetAssetPath (m_Thumbnailname);
+				tmp_Thumbnailpath = tmp_Thumbnailpath.Remove (0, tmp_Thumbnailpath.LastIndexOf ("/") + 1);
+				UploadObject.UploadFile (AssetDatabase.GetAssetPath (m_Thumbnailname), m_Buckname, tmp_Thumbnailpath);
+			}
+			for (int i = 0; i < sourcesObjects.Count; i++)
+			{
 				
-				UploadObject.UploadFile(AssetDatabase.GetAssetPath(sourcesObjects[i]),buckname,sourcesObjects[i].name+".assetbundle");
+				UploadObject.UploadFile(AssetDatabase.GetAssetPath(sourcesObjects[i]),m_Buckname,sourcesObjects[i].name+".assetbundle");
 				if (AssetDatabase.GetAssetPath(sourcesObjects[i]).EndsWith (".assetbundle")) {
-					type = "ab";
+					m_Type = "ab";
 				} 
 				else {
-					string[] temp={"jpg","png","PNG","JPG"};
-					foreach (string t in temp) {
+					string[] tmp_Filetype={"jpg","png","PNG","JPG"};
+					foreach (string t in tmp_Filetype) {
 						if (AssetDatabase.GetAssetPath(sourcesObjects[i]).EndsWith (t))
-							type = "texture";
+							m_Type = "texture";
 						else
 						{
-							type = "video";
+							m_Type = "video";
 						}
 					}
 
 				}
-				Dirname = sourcesObjects [i].name;
-				string myurl= string.Format("http://weacw.com/anywhere/uploadinfo.php?place={0}&type={1}&descript={2}&" +
-					"version={3}&assetName={4}&thumbnailName={5}",place,type,Introduce,Version,Dirname,thumbnailname.name);
-				Debug.Log(myurl);
-				MyThread mythrea=new MyThread(myurl);
-				mythrea.CreateGetHttpResponse ();
-            }
+				m_Dirname = sourcesObjects [i].name;
+				string tmp_Myurl= string.Format("http://weacw.com/anywhere/uploadinfo.php?place={0}&type={1}&descript={2}&" +
+					"version={3}&assetName={4}&thumbnailName={5}",m_Place,m_Type,m_Introduce,m_Version,m_Dirname,m_Thumbnailname.name);
+				Debug.Log(tmp_Myurl);
+				MyThread tmp_Mythrea=new MyThread(tmp_Myurl);
+				tmp_Mythrea.CreateGetHttpResponse ();
+			}
 
-        }
-        
-        EditorGUILayout.EndHorizontal();
+		}
 
-        //Draw drag&drap rect
-        Rect curRect = EditorGUILayout.BeginHorizontal("Box", GUILayout.Width(hRect.width), GUILayout.Height(window.position.height - 60));
-        if (curRect.Contains(Event.current.mousePosition)) CheckDragNDrop();
-        if (sourcesObjects.Count <= 0)
-        {
-            GUI.Label(new Rect(curRect.width / 2 - 90, window.position.height / 2 - 15f, 256, 25), "Empty!! Drap your AssetBundle to here.", EditorStyles.boldLabel);
-        }
-        EditorGUILayout.Space();
-        //Creating the item
-        CreateItemGrid(curRect);
-        EditorGUILayout.EndHorizontal();
-        //Show the copyright
-        GUI.Label(new Rect(curRect.width / 2 - 90, window.position.height - 15f, 180, 25), "Powerd by WEACW Well Tsai", EditorStyles.miniBoldLabel);
-        window.Repaint();
+		EditorGUILayout.EndHorizontal();
+
+		EditorGUILayout.Space();
+		GUI.Label(new Rect(curRect.width / 2 - 90, m_WINDOW.position.height - 15f, 180, 25), "Powerd by WEACW Well Tsai", EditorStyles.miniBoldLabel);
+		m_WINDOW.Repaint();
     }
     //Create the item in a grid style
     private void CreateItemGrid(Rect curRect)
@@ -126,7 +144,7 @@ public class AssetsBundleUpLoader : EditorWindow
 
             Rect boxRect = new Rect(curRect.x + 5 + (OBJECTSLOTSIZE*horizatonal),
                 curRect.y + 5 + OBJECTSLOTSIZE*vertical,
-                OBJECTSLOTSIZE - 1, OBJECTSLOTSIZE - 1);
+                OBJECTSLOTSIZE - 10, OBJECTSLOTSIZE - 10);
             horizatonal++;
             if (GUI.Button(boxRect, sourcesObjects[i].name, "WindowBackground"))
                 OnMouseEventCheck(boxRect, i);
@@ -158,7 +176,7 @@ public class AssetsBundleUpLoader : EditorWindow
     //GenericMenu function
     public void RemoveCurItem(object obj)
     {
-		sourcesObjects.Remove((Object)obj);thumbnailname = null;
+		sourcesObjects.Remove((Object)obj);m_Thumbnailname = null;
 
     }
     //Check drag or drop
@@ -178,7 +196,7 @@ public class AssetsBundleUpLoader : EditorWindow
 			
                     if (sourcesObjects.Contains(o))
                     {
-                        window.ShowNotification(new GUIContent(string.Format("Repeat to add {0}.", o.name)));
+                        m_WINDOW.ShowNotification(new GUIContent(string.Format("Repeat to add {0}.", o.name)));
                         continue;
                     }
 

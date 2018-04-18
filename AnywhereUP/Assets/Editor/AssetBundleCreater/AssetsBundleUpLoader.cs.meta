@@ -1,11 +1,12 @@
 fileFormatVersion: 2
 guid: a7b8158aa98afd1429d173b5ca4b37e6
-timeCreated: 1523566699
+timeCreated: 1523965619
 licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - myskin: {fileID: 11400000, guid: 1cfda023f5e95b146b6298d50237b9fd, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
