@@ -51,6 +51,11 @@ namespace Anywhere.UI
             DoRefreshDataSource();
         }
 
+        void Update()
+        {
+
+        }
+
         /// <summary>
         /// 根据item索引取item
         /// </summary>
