@@ -20,35 +20,21 @@ namespace Anywhere.UI
     {
         public LoopListView m_Looplistview;
 
+        #region 生命周期
+
+
         void Start()
         {
             m_Looplistview.InitListView(-1, OnGetItemByIndex);
         }
 
-        LoopListViewItem OnGetItemByIndex(LoopListView _listview, int _index)
+        void Update()
         {
-     
-            //get a new item. Every item can use a different prefab, the parameter of the NewListViewItem is the prefab’name. 
-            //And all the prefabs should be listed in ItemPrefabList in LoopListView2 Inspector Setting
-            LoopListViewItem tmp_Item = _listview.NewListViewItem("Element");
-            ListItem tmp_itemscript = tmp_Item.GetComponent<ListItem>();
-            if (tmp_Item.IsInitHandlerCalled == false)
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                tmp_Item.IsInitHandlerCalled = true;
-                tmp_itemscript.Init();
+                //LoopListViewItem tmp_Item = _listview.l("Element");
             }
-
-            _index = _index % DatasourceMgr.Get.m_Totalitemcount;
-            if (_index < 0)
-            {
-                _index = DatasourceMgr.Get.m_Totalitemcount + _index;
-            }
-
-            ItemData tmp_Itemdata = DatasourceMgr.Get.GetItemDataByIndex(_index);
-            tmp_itemscript.SetItemData(tmp_Itemdata, _index);
-            return tmp_Item;
         }
-
 
         void LateUpdate()
         {
@@ -67,6 +53,38 @@ namespace Anywhere.UI
             }
         }
 
+        #endregion
+
+        /// <summary>
+        /// 通过索引获取列表单元
+        /// </summary>
+        /// <param name="_listview"></param>
+        /// <param name="_index"></param>
+        /// <returns></returns>
+        LoopListViewItem OnGetItemByIndex(LoopListView _listview, int _index)
+        {
+            //get a new item. Every item can use a different prefab, the parameter of the NewListViewItem is the prefab’name. 
+            //And all the prefabs should be listed in ItemPrefabList in LoopListView2 Inspector Setting
+            LoopListViewItem tmp_Item = _listview.NewListViewItem("Element");
+            ListItem tmp_itemscript = tmp_Item.GetComponent<ListItem>();
+            if (tmp_Item.IsInitHandlerCalled == false)
+            {
+                tmp_Item.IsInitHandlerCalled = true;
+                tmp_itemscript.Init();
+            }
+
+            _index = _index % DatasourceMgr.INSTANCE.m_Totalitemcount;
+            if (_index < 0)
+            {
+                _index = DatasourceMgr.INSTANCE.m_Totalitemcount + _index;
+            }
+
+            ItemData tmp_Itemdata = DatasourceMgr.INSTANCE.GetItemDataByIndex(_index);
+            tmp_itemscript.SetItemData(tmp_Itemdata, _index);
+            return tmp_Item;
+        }
+
+
         public void OnLoopListViewFinished(LoopListView _listview, LoopListViewItem _item)
         {
             LoopListViewItem tmp_Item0 = m_Looplistview.GetShownItemByIndex(0);
@@ -74,36 +92,21 @@ namespace Anywhere.UI
             m_Looplistview.RefreshAllShownItemWithFirstIndex(0);
         }
 
+        /// <summary>
+        /// 根据地点检索
+        /// </summary>
+        /// <param name="_place"></param>
+        public void JumpByLocation(string _place)
+        {
+            ItemData tmp_Item = DatasourceMgr.INSTANCE.GetItemDataByPlace(_place);
+            if (tmp_Item == null)
+            {
+                Debug.LogError("未找到对应地点的数据");
+                return;
+            }
+            m_Looplistview.MovePanelToItemIndex(tmp_Item.m_Id, 0);
+        }
 
-    //    public void CalculateScale()
-    //    {
-    //        float standard_width = 750f;        //初始宽度  
-    //        float standard_height = 1334f;       //初始高度  
-    //        float device_width = 0f;                //当前设备宽度  
-    //        float device_height = 0f;               //当前设备高度  
-    //        float adjustor = 0f;         //屏幕矫正比例  
-    //        //获取设备宽高  
-    //        device_width = Screen.width;
-    //        device_height = Screen.height;
-    //        //计算宽高比例  
-    //        float standard_aspect = standard_width / standard_height;
-    //        float device_aspect = device_width / device_height;
-    //        //计算矫正比例  
-    //        if (device_aspect < standard_aspect)
-    //        {
-    //            adjustor = standard_aspect / device_aspect;
-    //        }
-
-    //        CanvasScaler canvasScalerTemp = transform.GetComponent<CanvasScaler>();
-    //        if (adjustor == 0)
-    //        {
-    //            canvasScalerTemp.matchWidthOrHeight = 1;
-    //        }
-    //        else
-    //        {
-    //            canvasScalerTemp.matchWidthOrHeight = 0;
-    //        }  
-    //    }
     }
 
 }

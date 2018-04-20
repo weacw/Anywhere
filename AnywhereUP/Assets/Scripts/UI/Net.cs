@@ -18,12 +18,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using Anywhere.UI;
+using System;
 
-
-
-namespace Anywhere.UI
+namespace Anywhere.Net
 {
-     [System.Serializable]
+     [Serializable]
     public class PageItem
     {
        public int id;//索引
@@ -32,8 +32,16 @@ namespace Anywhere.UI
        public string descript;//描述
        public string version;//版本
        public string assetName;//资源名称
-        public string thumbnailName;//缩列图名称
+       public string thumbnailName;//缩列图名称
     }
+
+     [Serializable]
+     public class Test1
+     {
+         public int id;
+     }
+
+
 
     public class Net : MonoBehaviour
     {
@@ -61,9 +69,20 @@ namespace Anywhere.UI
             }
             else
             {
-                PageItem item = JsonUtility.FromJson<PageItem>(www.text);
-                //Debug.Log("<color=green> Page </color> Request:" + www.text);
-                Debug.Log(item.id);
+                Debug.Log("<color=green> Page </color> Request:" + www.text);
+
+                //string tmp_str1 = "{\"id\":\"1\"},{\"id\":\"2\"}";
+                //string newJson = "{ \"Items\": [" + tmp_str1 + "]}";
+                //Test1[] tmp_Itemarray = JsonHelper.FromJson<Test1>(newJson);
+                //Debug.Log(tmp_Itemarray[0].id + "  " + tmp_Itemarray[1].id);
+                
+                //string newJson=www.text.Replace("}","},");
+                PageItem[] tmp_Itemarray = JsonHelper.FromJson<PageItem>(www.text);
+                foreach (PageItem item in tmp_Itemarray)
+                {
+                    Debug.Log(item.id + item.thumbnailName);
+                }
+
             }
         }
 

@@ -29,7 +29,7 @@ namespace Anywhere.UI
         List<ItemData> m_Itemdatalist = new List<ItemData>();
         static DatasourceMgr m_INSTANCE = null;
 
-        public static DatasourceMgr Get
+        public static DatasourceMgr INSTANCE
         {
             get
             {
@@ -89,6 +89,23 @@ namespace Anywhere.UI
             return null;
         }
 
+        /// <summary>
+        /// 根据ItemData的place取item
+        /// </summary>
+        /// <param name="_itemid"></param>
+        /// <returns></returns>
+        public ItemData GetItemDataByPlace(string _place)
+        {
+            int tmp_Count = m_Itemdatalist.Count;
+            for (int i = 0; i < tmp_Count; ++i)
+            {
+                if (m_Itemdatalist[i].m_Location == _place)
+                {
+                    return m_Itemdatalist[i];
+                }
+            }
+            return null;
+        }
         
         public int m_Totalitemcount
         {
@@ -112,7 +129,7 @@ namespace Anywhere.UI
                 ItemData tmp_Itemdata = new ItemData();
                 tmp_Itemdata.m_Id = i;
                 tmp_Itemdata.m_Des = "这是描述：随机数" + Random.Range(0, 20);
-                tmp_Itemdata.m_Location = "位置：" + Random.Range(0, 20);
+                tmp_Itemdata.m_Location = "位置" + Random.Range(0, 20);
                 m_Itemdatalist.Add(tmp_Itemdata);
             }
         }
