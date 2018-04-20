@@ -14,6 +14,7 @@ public class MyThread
     public MyThread(string a)
     {
         m_Myurl = a;
+		Debug.Log ("url:"+a);
     }
     public void CreateGetHttpResponse()
     {
@@ -93,12 +94,25 @@ public class AssetbundleUploader : EditorWindow
                 Debug.LogError("File is empty");
                 return;
             }
-            UploadObject.UploadFile(AssetDatabase.GetAssetPath(m_AssetbundleFile), m_Buckname, m_AssetbundleFile.name + ".assetbundle");
+			string m_Filetypename="";
+			switch (m_FileType) {
+			case FILETYPE.ASSETBUNDLE:
+				m_Filetypename = ".assetbundle";
+				break;
+			case FILETYPE.IMAGE360:
+				m_Filetypename = ".png";
+				break;
+			case FILETYPE.VIDEO360:
+				m_Filetypename = ".mp4";
+				break;
+			}
+			UploadObject.UploadFile (AssetDatabase.GetAssetPath (m_AssetbundleFile), m_Buckname, m_AssetbundleFile.name + m_Filetypename);
             UploadObject.UploadFile(AssetDatabase.GetAssetPath(m_ThumbnailFile), m_Buckname, m_ThumbnailFile.name);
             string tmp_Myurl = string.Format(m_Gateway + "?place={0}&type={1}&descript={2}&version={3}&assetName={4}&thumbnailName={5}",
                 m_Place, m_FileType.ToString(), m_Descript, m_Version, m_AssetbundleFile.name, m_ThumbnailFile.name);
             MyThread tmp_Mythrea = new MyThread(tmp_Myurl);
-            tmp_Mythrea.CreateGetHttpResponse();
+			Thread tmp_thread = new Thread (new ThreadStart (tmp_Mythrea.CreateGetHttpResponse));
+			tmp_thread.Start();
         }
 
         if (GUILayout.Button("Clean"))
