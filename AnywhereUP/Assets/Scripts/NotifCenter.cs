@@ -77,7 +77,7 @@ namespace Anywhere
         /// <returns></returns>
         private bool HasEventListener(NotifEventKey _eventKey)
         {
-            Debug.LogError(string.Format("eventListener do not has eventkey{0}", _eventKey));
+            //Debug.LogError(string.Format("eventListener do not has eventkey{0}", _eventKey));
             return m_EventListener.ContainsKey(_eventKey);
         }
     }
