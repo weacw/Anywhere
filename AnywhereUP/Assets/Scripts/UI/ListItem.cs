@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using SuperScrollView;
+using Anywhere.Net;
 
 namespace Anywhere.UI
 {
@@ -34,21 +35,23 @@ namespace Anywhere.UI
             tmp_Listener.SetClickEventHandler(OnDownloadBtnClick);
         }
 
-        public void SetItemData(ItemData _itemdata, int _itemindex)
+        public void SetItemData(PageItem _itemdata, int _itemindex)
         {
-
+            if (_itemdata == null)
+            {
+                Debug.LogError("itemData is null ! pls check");
+                return;
+            }
             m_Indextext.text = _itemindex.ToString();
-            m_Destext.text = _itemdata== null ? " " : _itemdata.m_Des;
-            //m_Loactiontext.text = _itemdata== null ? " " : _itemdata.m_Location;
-
+            m_Destext.text = _itemdata.descript + "\n" + _itemdata.place;
+            m_Destext.text.Replace("\\n", "\n");
         }
 
         void OnDownloadBtnClick(GameObject _btn)
         {
+            Debug.Log("开始下载");
             //下载中--环形进度条、显示进度百分比数字
             //下载完成--文字改成打开--点击进入AR场景
-
-            Debug.Log("开始下载");
         }
 
     }
