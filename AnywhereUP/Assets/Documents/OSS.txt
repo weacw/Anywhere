@@ -1,0 +1,8 @@
+1.buckName:OSS上储存空间名字，（anywhere-v-1，anywhere-v-1-preview）
+	key：OSS上资源名
+2.上传接口：UploadFile(string localPath, string buckName, string key)
+	localPath：本地上传资源完整路径
+3.同步下载SyncGetObject(string bucketName, string key)，GetObjectByRequest(string bucketName, string key)
+4.异步下载AsyncGetObject(string bucketName, string key)
+
+外网访问资源:@"buckName".oss-cn-beijing.aliyuncs.com/key(资源有权限设置)
