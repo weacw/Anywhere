@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using SuperScrollView;
+using Anywhere.Net;
 
 namespace Anywhere.UI
 {
@@ -34,7 +35,7 @@ namespace Anywhere.UI
             tmp_Listener.SetClickEventHandler(OnDownloadBtnClick);
         }
 
-        public void SetItemData(ItemData _itemdata, int _itemindex)
+        public void SetItemData(PageItem _itemdata, int _itemindex)
         {
             if (_itemdata == null)
             {
@@ -42,7 +43,7 @@ namespace Anywhere.UI
                 return;
             }
             m_Indextext.text = _itemindex.ToString();
-            m_Destext.text = _itemdata.m_Des + "\n" + _itemdata.m_Location;
+            m_Destext.text = _itemdata.descript + "\n" + _itemdata.place;
             m_Destext.text.Replace("\\n", "\n");
         }
 

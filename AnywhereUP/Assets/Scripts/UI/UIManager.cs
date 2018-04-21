@@ -11,6 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Anywhere.Net;
 
 namespace Anywhere.UI
 {
@@ -45,7 +46,9 @@ namespace Anywhere.UI
 
         void Init()
         {
+            Debug.Log("start");
             m_Inputfield.onEndEdit.AddListener(OnInputFiledEndEdit);
+            NetHttp.Instance.GetPageInfo();
         }
 
         #endregion
@@ -53,6 +56,7 @@ namespace Anywhere.UI
 
         private void OnInputFiledEndEdit(string _inputstr)
         {
+            //从本地和服务器检索地名
             Debug.Log(_inputstr);
             m_Horizontalscorll.JumpByLocation(_inputstr);
         }
