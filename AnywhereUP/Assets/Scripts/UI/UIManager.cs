@@ -51,8 +51,8 @@ namespace Anywhere.UI
             m_Horizontalscorll = transform.GetComponent<HorizontalScorll>();
             m_Inputfield = m_Mainuiroot.Find("SearchBar/SearchbarField").GetComponent<InputField>();
             m_ReturnToMainButton = m_Aruiroot.Find("BackButton").gameObject;
-            m_RecordButton = m_Aruiroot.Find("RecordButton").gameObject;
-            m_Tiptoptext = m_Aruiroot.Find("TipTop/Text").GetComponent<Text>();
+            m_RecordButton = m_Aruiroot.Find("Recording/RecordingBtn").gameObject;
+            m_Tiptoptext = m_Aruiroot.Find("Hint/Hintbackground/Hinttext").GetComponent<Text>();
         }
 
         void Update()
