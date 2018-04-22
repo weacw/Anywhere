@@ -90,7 +90,7 @@ namespace Anywhere.Net
             }
             else
             {
-                //Debug.Log("<color=green> Page </color> Request:" + www.text);
+                Debug.Log("<color=green> Page </color> Request:" + www.text);
                 PageItem[] tmp_Itemarray = JsonHelper.FromJson<PageItem>(www.text);
                 DatasourceMgr.Instance.SaveData(tmp_Itemarray);
             }
