@@ -39,7 +39,7 @@ namespace Anywhere.UI
         {
             m_Horizontalscorll = transform.GetComponent<HorizontalScorll>();
             m_Inputfield = m_Mainuiroot.Find("SearchBar/SearchbarField").GetComponent<InputField>();
-            m_ReturnToMainButton = m_Aruiroot.Find("m_ReturnToMainButton").gameObject;
+            m_ReturnToMainButton = m_Aruiroot.Find("BackButton").gameObject;
             m_RecordButton = m_Aruiroot.Find("RecordButton").gameObject;
             m_Tiptoptext = m_Aruiroot.Find("TipTop/Text").GetComponent<Text>();
         }
@@ -70,7 +70,7 @@ namespace Anywhere.UI
         private void OnInputFiledEndEdit(string _inputstr)
         {
             //从本地和服务器检索地名
-            Debug.Log(_inputstr);
+            //Debug.Log(_inputstr);
             m_Horizontalscorll.JumpByLocation(_inputstr);
         }
 

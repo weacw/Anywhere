@@ -72,7 +72,7 @@ namespace Anywhere.UI
         public PageItem GetItemDataById(int _itemid)
         {
             int tmp_Count = m_Itemdatalist.Count;
-            for (int i = 0; i < tmp_Count; ++i)
+            for (int i = 0; i < tmp_Count; i++)
             {
                 if (m_Itemdatalist[i].id == _itemid)
                 {
@@ -87,16 +87,18 @@ namespace Anywhere.UI
         /// </summary>
         /// <param name="_itemid"></param>
         /// <returns></returns>
-        public PageItem GetItemDataByPlace(string _place)
+        public PageItem GetItemDataByPlace(string _place,out int index)
         {
             int tmp_Count = m_Itemdatalist.Count;
-            for (int i = 0; i < tmp_Count; ++i)
+            for (int i = 0; i < tmp_Count; i++)
             {
                 if (m_Itemdatalist[i].place == _place)
                 {
+                    index = i;
                     return m_Itemdatalist[i];
                 }
             }
+            index = 0;
             return null;
         }
         

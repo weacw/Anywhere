@@ -109,23 +109,25 @@ namespace Anywhere.UI
             m_Searchplace = _place;
             PageItem tmp_Item = null;
             //本地检索
-            tmp_Item = DatasourceMgr.Instance.GetItemDataByPlace(_place);
+            int index = 0;
+            tmp_Item = DatasourceMgr.Instance.GetItemDataByPlace(_place,out index);
+            //Debug.Log(index + " id:" + tmp_Item.id);
             if (tmp_Item != null)
             {
-                m_Looplistview.MovePanelToItemIndex(tmp_Item.id, 0);
+                m_Looplistview.MovePanelToItemIndex(index, 0);//单元数据id从1开始 数据存储索引从0开始,这里是用索引跳转
             }
             else //本地没有 网络检索
             {
                 NetHttp.Instance.GetSerchInfo(_place);
             }
-
         }
 
         //从服务器检索到数据
         private void OnSearchNetComplete()
         {
             m_Looplistview.ResetListView(false);
-            PageItem tmp_Item = DatasourceMgr.Instance.GetItemDataByPlace(m_Searchplace);
+            int index = 0;
+            PageItem tmp_Item = DatasourceMgr.Instance.GetItemDataByPlace(m_Searchplace,out index);
             m_Looplistview.MovePanelToItemIndex(tmp_Item.id, 0);
         }
 

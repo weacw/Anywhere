@@ -80,8 +80,8 @@ namespace Anywhere.UI
             {
                 Debug.Log("下载AB包：" + m_Pageitem.assetName + ".assetbundle");
                 UIManager.Instance.StartListItemABDownload(this);
-                GetObject.AsyncGetObject("anywhere-v-1", "assets.assetbundle");
-                //GetObject.AsyncGetObject("anywhere-v-1", m_Pageitem.assetName+ ".assetbundle");
+                //GetObject.AsyncGetObject("anywhere-v-1", "assets.assetbundle");
+                GetObject.AsyncGetObject("anywhere-v-1", m_Pageitem.assetName + ".assetbundle");
             }
         }
 
