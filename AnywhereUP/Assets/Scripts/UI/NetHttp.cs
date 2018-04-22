@@ -61,6 +61,7 @@ namespace Anywhere.Net
             StringBuilder getUrl = new StringBuilder();
             getUrl.Append(UIConst.Host).Append("getinfo.php?page=" + m_PageNum);
             WWW www = new WWW(getUrl.ToString());
+            Debug.Log(getUrl.ToString());
             yield return www;
             if (www.error != null)
             {
@@ -70,6 +71,7 @@ namespace Anywhere.Net
             {
                 //Debug.Log("<color=green> Page </color> Request:" + www.text);
                 if (www.text.Contains("null")) yield return null;
+                Debug.Log("<color=green> Page </color> Request:" + www.text);
                 PageItem[] tmp_Itemarray = JsonHelper.FromJson<PageItem>(www.text);
                 DatasourceMgr.Instance.SaveData(tmp_Itemarray);
                 m_PageNum++;
