@@ -78,7 +78,7 @@ namespace Anywhere.UI
         }
         public void Called()
         {
-            AssetsManager.Instance.m_Content.transform.position = focus.transform.position;
+            //AssetsManager.Instance.m_Content.transform.position = focus.transform.position;
 
             tmp = Instantiate(m_MagicBall);
             tmp.transform.position = Camera.main.transform.position;

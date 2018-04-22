@@ -3,16 +3,18 @@ using UnityEngine.Video;
 using System.Collections.Generic;
 using Aliyun.OSS;
 using System.IO;
+using System.Collections;
+
 namespace Anywhere
 {
     /// <summary>
     ///加载视频,图片，AB资源类; 
     /// </summary>
-    public class AssetsManager :Singleton<AssetsManager>
+    public class AssetsManager : Singleton<AssetsManager>
     {
         public GameObject m_Content;
         private List<GameObject> m_InstaniateObj = new List<GameObject>();
-        private AssetBundleManifest m_MAINFEST = null;
+        private AssetBundleRequest m_MAINFEST = null;
         private string m_OUTPATH = null;
         private string m_FILENAME = "AssetBundle";
 
@@ -23,29 +25,18 @@ namespace Anywhere
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.AB_INSTANCE, InstaniateAB);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_VIDEOPLAY, PlayVideo);
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.AB_INSTANCE, new ABInstaniateHelper() { m_ABName = "testscene" });
+
         }
-
-        private AssetBundle LoadAB(string _ABname)
+        AssetBundle ab;
+        private AssetBundleCreateRequest LoadAB(string _ABname)
         {
-
-            if (m_MAINFEST == null)
+            AssetBundleCreateRequest abcr = null;
+            abcr = AssetBundle.LoadFromFileAsync(m_OUTPATH + _ABname + ".assetbundle");
+            abcr.completed += (x) =>
             {
-                AssetBundle manifestBundle = AssetBundle.LoadFromFile(m_OUTPATH + m_FILENAME);
-                m_MAINFEST = (AssetBundleManifest)manifestBundle.LoadAsset("AssetBundleManifest");
-            }
-            if (m_MAINFEST != null)
-            {
-                string[] cubedepends = m_MAINFEST.GetAllDependencies(_ABname);
-
-                for (int index = 0; index < cubedepends.Length; index++)
-                {
-                    LoadAB(cubedepends[index]);
-                }
-
-                AssetBundle temp = AssetBundle.LoadFromFile(m_OUTPATH + _ABname + ".assetbundle");
-                return temp;
-            }
-            return null;
+                StartCoroutine(SyncABLoad(abcr));
+            };
+            return abcr;
         }
         /// <summary>
         ///_AssetName=null或空时，实例化该AB包所有资源
@@ -55,22 +46,9 @@ namespace Anywhere
         /// <param name="_AssetName">Asset name.</param>
         private void InstaniateAB(Notification _notif)
         {
-            ABInstaniateHelper abHelper = _notif.param as ABInstaniateHelper;
-            AssetBundle m_tempAB = LoadAB(abHelper.m_ABName);
-            if (m_tempAB == null) return;
-            if (string.IsNullOrEmpty(abHelper.m_AssetName))
-            {
+            ABInstaniateHelper abhelper = _notif.param as ABInstaniateHelper;
+            StartCoroutine(SyncLoadABFromFile(abhelper.m_ABName));
 
-                for (int index = 0; index < m_tempAB.LoadAllAssets().Length; index++)
-                {
-                    m_InstaniateObj.Add(Instantiate(m_tempAB.LoadAllAssets()[index]) as GameObject);                    
-                }
-                m_Content = m_InstaniateObj[0];
-            }
-            else
-                m_InstaniateObj.Add(Instantiate(m_tempAB.LoadAsset(abHelper.m_AssetName)) as GameObject);
-            m_tempAB.Unload(false);
-            Debug.Log("生成AB对象并卸载AB资源完毕");
         }
         private Texture LoadTexture(string _texturename, int _t2dwith, int _t2dheight)
         {
@@ -115,6 +93,22 @@ namespace Anywhere
             tmp_videoPlayerHelper.m_Videorender.GetComponent<Renderer>().material.shader = Shader.Find("Custom/Video360");
             m_Vp.Play();
             m_Vp.isLooping = tmp_videoPlayerHelper.m_Isloop;
+        }
+
+        private IEnumerator SyncLoadABFromFile(string _name)
+        {
+            yield return null;
+            LoadAB(_name);
+
+        }
+        private IEnumerator SyncABLoad(AssetBundleCreateRequest _r)
+        {
+            yield return null;
+            ab = _r.assetBundle;
+            AssetBundleRequest r = ab.LoadAllAssetsAsync<GameObject>();           
+            if (r == null) yield return null; ;
+            m_Content = Instantiate(r.asset as GameObject);
+            ab.Unload(false);
         }
     }
 }
