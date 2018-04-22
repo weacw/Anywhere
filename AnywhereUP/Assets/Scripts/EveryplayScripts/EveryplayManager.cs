@@ -29,7 +29,7 @@ namespace Anywhere
         }
 
         // start recording
-        private void OnRecordingStart()
+        private void OnRecordingStart(Notification _notif)
         {
             if (m_isRecording)
             {
@@ -41,7 +41,7 @@ namespace Anywhere
         }
 
         //stop recording
-        private void OnRecordingStop()
+        private void OnRecordingStop(Notification _notif)
         {
             if (!m_isRecording)
             {

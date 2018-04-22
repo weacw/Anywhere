@@ -22,9 +22,8 @@ namespace Anywhere.UI
 
         public GameObject m_Contentrootobj;
 
-        public Text m_Indextext;//索引
         public Text m_Destext;//描述
-        //public Text m_Loactiontext;//位置
+        public Text m_Loactiontext;//位置
         public Image m_Icon;//图片
 
         public Button m_Downloadbtn;//下载按钮
@@ -42,9 +41,8 @@ namespace Anywhere.UI
                 Debug.LogError("itemData is null ! pls check");
                 return;
             }
-            m_Indextext.text = _itemindex.ToString();
-            m_Destext.text = _itemdata.descript + "\n" + _itemdata.place;
-            m_Destext.text.Replace("\\n", "\n");
+            m_Destext.text = _itemdata.descript;
+            m_Loactiontext.text = _itemdata.place;
         }
 
         void OnDownloadBtnClick(GameObject _btn)

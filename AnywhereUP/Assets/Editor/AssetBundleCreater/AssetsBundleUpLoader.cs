@@ -14,13 +14,19 @@ public class MyThread
     public MyThread(string a)
     {
         m_Myurl = a;
-		Debug.Log ("url:"+a);
     }
     public void CreateGetHttpResponse()
     {
 
         HttpWebRequest request = WebRequest.Create(m_Myurl) as HttpWebRequest;
         request.Method = "GET";
+        using (WebResponse wp = request.GetResponse())
+        {
+            using (StreamReader sr = new StreamReader(wp.GetResponseStream(), System.Text.Encoding.UTF8))
+            {
+                Debug.Log(sr.ReadToEnd().ToString());
+            }
+        }
 
     }
 }

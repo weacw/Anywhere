@@ -1,7 +1,7 @@
 ManifestFileVersion: 0
-CRC: 2650658936
+CRC: 3172744610
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: assets.assetbundle
+      Name: testscene.assetbundle
       Dependencies: {}

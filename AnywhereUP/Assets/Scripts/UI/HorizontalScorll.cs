@@ -57,7 +57,7 @@ namespace Anywhere.UI
         /// <summary>
         /// 创建列表
         /// </summary>
-        private void CreatPages()
+        private void CreatPages(Notification _notif)
         {
             m_Looplistview.InitListView(-1, OnGetItemByIndex);
         }
@@ -122,7 +122,7 @@ namespace Anywhere.UI
         }
 
         //从服务器检索到数据
-        private void OnSearchNetComplete()
+        private void OnSearchNetComplete(Notification _notif)
         {
             m_Looplistview.ResetListView(false);
             PageItem tmp_Item = DatasourceMgr.Instance.GetItemDataByPlace(m_Searchplace);

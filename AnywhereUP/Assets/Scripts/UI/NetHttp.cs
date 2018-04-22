@@ -17,56 +17,34 @@ using System;
 
 namespace Anywhere.Net
 {
-     [Serializable]
+    [Serializable]
     public class PageItem
     {
-       public int id;//索引
-       public string place;//位置
-       public string type;//资源种类
-       public string descript;//描述
-       public string version;//版本
-       public string assetName;//资源名称
-       public string thumbnailName;//缩列图名称
-
-       public PageItem()
-       {
-           id = 0;
-           place = "";
-           type = "";
-           descript = "";
-           version = "";
-           assetName = "";
-           thumbnailName = "";
-       }
+        public int id;//索引
+        public string place;//位置
+        public string type;//资源种类
+        public string descript;//描述
+        public string version;//版本
+        public string assetName;//资源名称
+        public string thumbnailName;//缩列图名称
+        public PageItem()
+        {
+            id = 0;
+            place = "";
+            type = "";
+            descript = "";
+            version = "";
+            assetName = "";
+            thumbnailName = "";
+        }
     }
 
-     public class NetHttp : Singleton<NetHttp>
+    public class NetHttp : Singleton<NetHttp>
     {
-
-        void Update()
-        {
-            //if (Input.GetKeyDown(KeyCode.F1))
-            //{
-            //    Debug.Log("Test");
-            //    GetPageInfo();
-            //}
-            //if (Input.GetKeyDown(KeyCode.F2))
-            //{
-            //    Debug.Log("Test");
-            //    //GetPageInfo();
-            //    PageItem[] tmp = new PageItem[1];
-            //    PageItem item = DatasourceMgr.Instance.GetItemDataById(1);
-            //    tmp[0] = new PageItem();
-            //    tmp[0].id = DatasourceMgr.Instance.m_Totalitemcount;
-            //    tmp[0].descript = "这TM是刚加的";
-            //    tmp[0].place = "233";
-            //    DatasourceMgr.Instance.AddDatas(tmp);
-            //    Debug.Log(DatasourceMgr.Instance.m_Totalitemcount);
-            //}
-        }
+        private int m_PageNum = 1;
 
         #region Get
-         //获取分页信息
+        //获取分页信息
         public void GetPageInfo()
         {
             StartCoroutine(Getpageinfo());
@@ -81,7 +59,7 @@ namespace Anywhere.Net
         IEnumerator Getpageinfo()
         {
             StringBuilder getUrl = new StringBuilder();
-            getUrl.Append(UIConst.Host).Append("getinfo.php");
+            getUrl.Append(UIConst.Host).Append("getinfo.php?page=" + m_PageNum);
             WWW www = new WWW(getUrl.ToString());
             yield return www;
             if (www.error != null)
@@ -91,8 +69,10 @@ namespace Anywhere.Net
             else
             {
                 //Debug.Log("<color=green> Page </color> Request:" + www.text);
+                if (www.text.Contains("null")) yield return null;
                 PageItem[] tmp_Itemarray = JsonHelper.FromJson<PageItem>(www.text);
                 DatasourceMgr.Instance.SaveData(tmp_Itemarray);
+                m_PageNum++;
             }
         }
 
