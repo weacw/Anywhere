@@ -20,7 +20,7 @@ public class FocusSquare : MonoBehaviour
     public float maxRayDistance = 30.0f;
     public LayerMask collisionLayerMask;
     public float findingSquareDist = 0.5f;
-
+    private bool m_IsPut;
     private FocusState squareState;
     public FocusState SquareState
     {
@@ -43,6 +43,7 @@ public class FocusSquare : MonoBehaviour
     {
         SquareState = FocusState.Initializing;
         trackingInitialized = true;
+        Anywhere.NotifCenter.GetNotice.AddEventListener(Anywhere.NotifEventKey.OPERATER_SETFOCUSPOSTOCONTENT, SetFocusPosToContent);
     }
 
 
@@ -55,8 +56,6 @@ public class FocusSquare : MonoBehaviour
             {
                 foundSquare.transform.position = UnityARMatrixOps.GetPosition(hitResult.worldTransform);
                 foundSquare.transform.rotation = UnityARMatrixOps.GetRotation(hitResult.worldTransform);
-                Debug.Log(string.Format("x:{0:0.######} y:{1:0.######} z:{2:0.######}", foundSquare.transform.position.x, foundSquare.transform.position.y, foundSquare.transform.position.z));
-                Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_CALLPORTAL);
                 return true;
             }
         }
@@ -85,36 +84,44 @@ public class FocusSquare : MonoBehaviour
             //and the rotation from the transform of the plane collider
             SquareState = FocusState.Found;
             foundSquare.transform.rotation = hit.transform.rotation;
-            Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_CALLPORTAL);
+            Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_SHOWCALLBTN);
             return;
         }
 
 
 #else
-		var screenPosition = Camera.main.ScreenToViewportPoint(center);
-		ARPoint point = new ARPoint {
-			x = screenPosition.x,
-			y = screenPosition.y
-		};
+        var screenPosition = Camera.main.ScreenToViewportPoint(center);
+        ARPoint point = new ARPoint
+        {
+            x = screenPosition.x,
+            y = screenPosition.y
+        };
 
-		// prioritize reults types
-		ARHitTestResultType[] resultTypes = {
-			ARHitTestResultType.ARHitTestResultTypeExistingPlaneUsingExtent, 
+        // prioritize reults types
+        ARHitTestResultType[] resultTypes = {
+            ARHitTestResultType.ARHitTestResultTypeExistingPlaneUsingExtent, 
 			// if you want to use infinite planes use this:
 			//ARHitTestResultType.ARHitTestResultTypeExistingPlane,
 			//ARHitTestResultType.ARHitTestResultTypeHorizontalPlane, 
 			//ARHitTestResultType.ARHitTestResultTypeFeaturePoint
-		}; 
+		};
 
-		foreach (ARHitTestResultType resultType in resultTypes)
-		{
-			if (HitTestWithResultType (point, resultType))
-			{
-				SquareState = FocusState.Found;
-				return;
-			}
-		}
+        if(SquareState == FocusState.Found)
+            Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_CALLPORTAL);
 
+
+        foreach (ARHitTestResultType resultType in resultTypes)
+        {
+            if (HitTestWithResultType(point, resultType))
+            {
+                SquareState = FocusState.Found;
+                return;
+            }
+            else
+            {
+              //  Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_HINT);
+            }
+        }
 #endif
 
         //if you got here, we have not found a plane, so if camera is facing below horizon, display the focus "finding" square
@@ -151,5 +158,11 @@ public class FocusSquare : MonoBehaviour
         }
     }
 
-
+    private void SetFocusPosToContent(Anywhere.Notification _notif)
+    {
+        Vector3 focusPos = foundSquare.transform.position;
+        ContentPlaceHelper cph = new ContentPlaceHelper();
+        cph.m_ContentPos = focusPos;
+        Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.OPERATER_PLACECONTENT, cph);
+    }
 }

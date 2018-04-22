@@ -10,34 +10,31 @@ namespace Anywhere
     /// <summary>
     ///加载视频,图片，AB资源类; 
     /// </summary>
-    public class AssetsManager : Singleton<AssetsManager>
+    public class AssetsManager : MonoBehaviour
     {
-        public GameObject m_Content;
-        private List<GameObject> m_InstaniateObj = new List<GameObject>();
-        private AssetBundleRequest m_MAINFEST = null;
-        private string m_OUTPATH = null;
-        private string m_FILENAME = "AssetBundle";
-
+        public GameObject m_Content { get; private set; }
+        private string m_OutPath = null;
+        private AssetBundle m_AssetBundle = null;
         private void Awake()
         {
-            m_OUTPATH = Application.streamingAssetsPath + "/AssetBundle/";
+            m_OutPath = Application.streamingAssetsPath + "/AssetBundle/";
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_REMOVEALL, RemoveABSource);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.AB_INSTANCE, InstaniateAB);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_VIDEOPLAY, PlayVideo);
-            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.AB_INSTANCE, new ABInstaniateHelper() { m_ABName = "testscene" });
+            NotifCenter.GetNotice.AddEventListener(NotifEventKey.OPERATER_PLACECONTENT, PlaceContent);
 
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.AB_INSTANCE, new ABInstaniateHelper() { m_ABName = "testscene" });
         }
-        AssetBundle ab;
-        private AssetBundleCreateRequest LoadAB(string _ABname)
+
+
+        private void PlaceContent(Notification _notif)
         {
-            AssetBundleCreateRequest abcr = null;
-            abcr = AssetBundle.LoadFromFileAsync(m_OUTPATH + _ABname + ".assetbundle");
-            abcr.completed += (x) =>
-            {
-                StartCoroutine(SyncABLoad(abcr));
-            };
-            return abcr;
+            ContentPlaceHelper cph = _notif.param as ContentPlaceHelper;
+            m_Content.transform.localPosition = cph.m_ContentPos;
+            m_Content.SetActive(true);
         }
+
+
         /// <summary>
         ///_AssetName=null或空时，实例化该AB包所有资源
         /// </summary>
@@ -48,8 +45,8 @@ namespace Anywhere
         {
             ABInstaniateHelper abhelper = _notif.param as ABInstaniateHelper;
             StartCoroutine(SyncLoadABFromFile(abhelper.m_ABName));
-
         }
+
         private Texture LoadTexture(string _texturename, int _t2dwith, int _t2dheight)
         {
 
@@ -59,16 +56,17 @@ namespace Anywhere
             return m_T2d;
 
         }
+
         /// <summary>
         /// 移除当前所有场景内AB资源
         /// </summary>
         private void RemoveABSource(Notification _notif)
         {
-            for (int index = 0; index < m_InstaniateObj.Count; index++)
-            {
-                Destroy(m_InstaniateObj[index]);
-            }
+            if (m_Content == null) return;
+            m_Content.SetActive(false);
+            DestroyImmediate(m_Content);
         }
+
         /// <summary>
         ///播放路径下的视频； 
         /// </summary>
@@ -95,20 +93,29 @@ namespace Anywhere
             m_Vp.isLooping = tmp_videoPlayerHelper.m_Isloop;
         }
 
+
+
+
+
         private IEnumerator SyncLoadABFromFile(string _name)
         {
             yield return null;
-            LoadAB(_name);
-
+            AssetBundleCreateRequest abcr = null;
+            abcr = AssetBundle.LoadFromFileAsync(m_OutPath + _name + ".assetbundle");
+            abcr.completed += (x) =>
+            {
+                StartCoroutine(SyncABLoad(abcr));
+            };
         }
         private IEnumerator SyncABLoad(AssetBundleCreateRequest _r)
         {
             yield return null;
-            ab = _r.assetBundle;
-            AssetBundleRequest r = ab.LoadAllAssetsAsync<GameObject>();           
+            m_AssetBundle = _r.assetBundle;
+            AssetBundleRequest r = m_AssetBundle.LoadAllAssetsAsync<GameObject>();
             if (r == null) yield return null; ;
             m_Content = Instantiate(r.asset as GameObject);
-            ab.Unload(false);
+            m_Content.SetActive(false);
+            m_AssetBundle.Unload(false);
         }
     }
 }
