@@ -107,7 +107,7 @@ public class FocusSquare : MonoBehaviour
 		};
 
         if(SquareState == FocusState.Found)
-            Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_CALLPORTAL);
+            Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_SHOWCALLBTN);
 
 
         foreach (ARHitTestResultType resultType in resultTypes)

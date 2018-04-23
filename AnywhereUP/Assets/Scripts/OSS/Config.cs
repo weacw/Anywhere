@@ -25,7 +25,7 @@ namespace Aliyun.OSS
 #if UNITY_EDITOR
             cachePath = Application.streamingAssetsPath + "/ResCache";
 #elif UNITY_IPHONE
-		cachePath = "file://"+Application.temporaryCachePath+"/ResCache";
+		cachePath = Application.temporaryCachePath+"/ResCache";
 #elif UNITY_ANDROID
         cachePath = "file://"+Application.persistentDataPath+"/ResCache";
 #endif

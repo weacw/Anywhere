@@ -32,7 +32,7 @@ namespace Anywhere.UI
         private PageItem m_Pageitem;//自身属性
         private bool m_Assetisdownloading;
         private bool m_Assetisdownloaded;
-
+        private string m_CurData;
         public void Init()
         {
             ClickEventListener tmp_Listener = ClickEventListener.Get(m_Downloadbtn.gameObject);
@@ -54,7 +54,7 @@ namespace Anywhere.UI
             m_Destext.text = _itemdata.descript;
             m_Progressimg.fillAmount = 0;
             m_Progressimg.gameObject.SetActive(false);
-
+            m_CurData = _itemdata.assetName;
             //TODO  判断是否已下载
             m_Assetisdownloaded = false;
             if (m_Assetisdownloaded)
@@ -72,6 +72,7 @@ namespace Anywhere.UI
             Debug.Log("开始下载");
             if (m_Assetisdownloaded)
             {
+                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.AB_INSTANCE, new ABInstaniateHelper() { m_ABName = m_CurData });
                 //进入场景
                 UIManager.Instance.JumpToARScene();
             }

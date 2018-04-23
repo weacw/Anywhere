@@ -18,12 +18,12 @@ namespace Anywhere
         private AssetBundle m_AssetBundle = null;
         private void Awake()
         {
-            m_OutPath = Application.streamingAssetsPath + "/AssetBundle/";
+            m_OutPath = Config.GetCachePath();
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_REMOVEALL, RemoveABSource);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.AB_INSTANCE, InstaniateAB);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_VIDEOPLAY, PlayVideo);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.OPERATER_PLACECONTENT, PlaceContent);
-           // NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.AB_INSTANCE, new ABInstaniateHelper() { m_ABName = "testscene" });
+            // NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.AB_INSTANCE, new ABInstaniateHelper() { m_ABName = "testscene" });
         }
 
 
@@ -101,7 +101,7 @@ namespace Anywhere
         {
             yield return null;
             AssetBundleCreateRequest abcr = null;
-            abcr = AssetBundle.LoadFromFileAsync(m_OutPath + _name + ".assetbundle");
+            abcr = AssetBundle.LoadFromFileAsync(Path.Combine(m_OutPath, _name + ".assetbundle"));
             abcr.completed += (x) =>
             {
                 StartCoroutine(SyncABLoad(abcr));
