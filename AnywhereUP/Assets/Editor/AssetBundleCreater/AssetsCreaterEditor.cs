@@ -66,8 +66,9 @@ public class AssetsCreaterEditor : EditorWindow
             {
                 assetsPath.Add(AssetDatabase.GetAssetPath(sourcesObjects[i]));
             }
-            AssetsCreaterCore.BuildAbs(assetsPath, m_SavePath, m_BuidTarget);
+            AssetsCreaterCore.BuildAbs(assetsPath, m_SavePath, m_BuidTarget);            
         }
+        
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();

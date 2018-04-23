@@ -4,6 +4,19 @@ using UnityEngine;
 
 namespace Anywhere
 {
+    public class Notification
+    {
+        public EventArgs param;
+        public Notification(EventArgs param)
+        {
+            this.param = param;
+        }
+        public Notification()
+        {
+
+        }
+    }
+    public delegate void NotificationDelegate(Notification notific);
     public class NotifCenter
     {
         /// <summary>
@@ -28,7 +41,7 @@ namespace Anywhere
         /// <summary>
         /// 监听列表
         /// </summary>
-        private Dictionary<NotifEventKey, Action> m_EventListener = new Dictionary<NotifEventKey, Action>();
+        private Dictionary<NotifEventKey, NotificationDelegate> m_EventListener = new Dictionary<NotifEventKey, NotificationDelegate>();
 
 
         /// <summary>
@@ -36,12 +49,14 @@ namespace Anywhere
         /// </summary>
         /// <param name="_eventKey"></param>
         /// <param name="_listener"></param>
-        public void AddEventListener(NotifEventKey _eventKey, Action _listener)
+        public void AddEventListener(NotifEventKey _eventKey, NotificationDelegate listener)
         {
             if (!HasEventListener(_eventKey))
             {
-                m_EventListener.Add(_eventKey, _listener);
+                NotificationDelegate del = null; //定义方法
+                m_EventListener[_eventKey] = del;// 给委托变量赋值
             }
+            m_EventListener[_eventKey] += listener; //注册接收者的监听
         }
 
         /// <summary>
@@ -49,27 +64,44 @@ namespace Anywhere
         /// </summary>
         /// <param name="_eventKey"></param>
         /// <param name="_listener"></param>
-        public void RemoveEventListener(NotifEventKey _eventKey, Action _listener)
+        public void RemoveEventListener(NotifEventKey _eventKey, NotificationDelegate listener)
         {
-            if (!HasEventListener(_eventKey)) return;
-            m_EventListener[_eventKey] -= _listener;
+            if (!HasEventListener(_eventKey))
+                return;
+            m_EventListener[_eventKey] -= listener;
             if (m_EventListener[_eventKey] == null)
             {
-                m_EventListener.Remove(_eventKey);
+                RemoveEventListener(_eventKey);
             }
         }
-
+        public void RemoveEventListener(NotifEventKey _eventKey)
+        {
+            m_EventListener.Remove(_eventKey);
+        }
 
         /// <summary>
         /// 分发事件，须知消息状况
         /// </summary>
         /// <param name="_eventKey"></param>        
-        public void PostDispatchEvent(NotifEventKey _eventKey)
+        public void PostDispatchEvent(NotifEventKey _eventKey, Notification _notif)
         {
-            if (!HasEventListener(_eventKey)) return;
-            m_EventListener[_eventKey].Invoke();
+            if (!HasEventListener(_eventKey))
+                return;
+            m_EventListener[_eventKey](_notif);
         }
 
+        public void PostDispatchEvent(NotifEventKey _eventKey)
+        {
+            if (!HasEventListener(_eventKey))
+                return;
+            m_EventListener[_eventKey](new Notification());
+        }
+        public void PostDispatchEvent(NotifEventKey _eventKey, EventArgs param)
+        {
+            if (!HasEventListener(_eventKey))
+                return;
+            m_EventListener[_eventKey](new Notification(param));
+        }
         /// <summary>
         /// 查询_eventKey 存留与 eventListener列表中
         /// </summary>
@@ -77,7 +109,7 @@ namespace Anywhere
         /// <returns></returns>
         private bool HasEventListener(NotifEventKey _eventKey)
         {
-            Debug.LogError(string.Format("eventListener do not has eventkey{0}", _eventKey));
+            //Debug.LogError(string.Format("eventListener do not has eventkey{0}", _eventKey));
             return m_EventListener.ContainsKey(_eventKey);
         }
     }

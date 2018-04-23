@@ -7,11 +7,23 @@ using System.Security.Cryptography;
 using Aliyun.OSS.Common;
 using UnityEngine;
 using System.Collections;
+using Anywhere;
 
 namespace Aliyun.OSS
 {
+    public enum DownLoadState
+    {
+        STARTDOWNLOAD,
+        DOWNLOADING,
+        DOWNLOADCOMPLETE
+    }
+
     public static class GetObject
     {
+        private static float m_DownLoadProgress;
+        private static DownLoadState m_DownLoadState;
+
+
         static AutoResetEvent _event = new AutoResetEvent(false);
         public static void SyncGetObject(string bucketName, string key)
         {
@@ -118,11 +130,13 @@ namespace Aliyun.OSS
                             fs.Write(buf, 0, length);
                             downloadLen += length;
                             Debug.LogError("download length:" + downloadLen);
+                            m_DownLoadProgress = downloadLen / result.Metadata.ContentLength;
+                            m_DownLoadState = DownLoadState.DOWNLOADING;
                         } while (length != 0);
                     }
 
                 }
-
+                m_DownLoadState = DownLoadState.DOWNLOADCOMPLETE;
                 Debug.LogError("download done!");
             }
             catch (Exception ex)
@@ -134,6 +148,18 @@ namespace Aliyun.OSS
                 _event.Set();
             }
         }
+
+
+        public static float GetDownLoadProgress()
+        {
+            return m_DownLoadProgress;
+        }
+
+        public static DownLoadState GetDownLoadState()
+        {
+            return m_DownLoadState;
+        }
+
     }
 }
 
