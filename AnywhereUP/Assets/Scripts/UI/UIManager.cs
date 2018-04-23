@@ -14,6 +14,7 @@ using UnityEngine.UI;
 using Anywhere.Net;
 using Aliyun.OSS;
 using SuperScrollView;
+using System.IO;
 
 namespace Anywhere.UI
 {
@@ -26,8 +27,6 @@ namespace Anywhere.UI
         private Transform m_Mainuiroot;//主界面UI
         private InputField m_Inputfield;
         private Button m_CallBtn;
-
-
 
 
         //AR Scene
@@ -160,6 +159,9 @@ namespace Anywhere.UI
         {
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.OPERATER_SETFOCUSPOSTOCONTENT);
         }
+
+
+
         #endregion
     }
 

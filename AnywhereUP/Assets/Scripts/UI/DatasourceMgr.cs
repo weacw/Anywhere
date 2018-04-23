@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using SuperScrollView;
 using Anywhere.Net;
+using Aliyun.OSS;
+using System.IO;
 
 namespace Anywhere.UI
 {
@@ -19,19 +21,7 @@ namespace Anywhere.UI
     public class DatasourceMgr : Singleton<DatasourceMgr>
     {
         List<PageItem> m_Itemdatalist;
-        //static DatasourceMgr m_INSTANCE = null;
-
-        //public static DatasourceMgr INSTANCE
-        //{
-        //    get
-        //    {
-        //        if (m_INSTANCE == null)
-        //        {
-        //            m_INSTANCE = Object.FindObjectOfType<DatasourceMgr>();
-        //        }
-        //        return m_INSTANCE;
-        //    }
-        //}
+        Dictionary<int, string> ItemBackgroundDic;//<id , 背景图>
 
         void Start()
         {
@@ -41,6 +31,7 @@ namespace Anywhere.UI
         public void Init()
         {
             m_Itemdatalist = new List<PageItem>();
+            ItemBackgroundDic = new Dictionary<int, string>();
             //DoRefreshDataSource();
         }
 
@@ -120,13 +111,24 @@ namespace Anywhere.UI
         public void SaveData(PageItem[] _itemarray)
         {
             m_Itemdatalist = new List<PageItem>(_itemarray);
+            DownItemBackground();
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.NET_GETALLPAGEINFO);
         }
 
         public void AddDatas(PageItem[] _items)
         {
             m_Itemdatalist.AddRange(_items);
+            DownItemBackground();
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.NET_SEARCHPAGE);
+        }
+
+        private void DownItemBackground()
+        {
+            foreach (PageItem _item in m_Itemdatalist)
+            {
+                GetObject.AsyncGetObject(UIConst.m_BUCKETNAME, _item.thumbnailName + ".png");
+                Debug.Log("下载背景图:" + _item.thumbnailName + ".png");
+            }
         }
 
 

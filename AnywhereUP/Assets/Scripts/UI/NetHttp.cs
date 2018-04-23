@@ -59,7 +59,7 @@ namespace Anywhere.Net
         IEnumerator Getpageinfo()
         {
             StringBuilder getUrl = new StringBuilder();
-            getUrl.Append(UIConst.Host).Append("getinfo.php?page=" + m_PageNum);
+            getUrl.Append(UIConst.m_HOST).Append("getinfo.php?page=" + m_PageNum);
             WWW www = new WWW(getUrl.ToString());
             Debug.Log(getUrl.ToString());
             yield return www;
@@ -87,7 +87,7 @@ namespace Anywhere.Net
         IEnumerator Getsearchinfo(string _place)
         {
             StringBuilder getUrl = new StringBuilder();
-            getUrl.Append(UIConst.Host).Append("searchinfo.php?search=").Append(_place);
+            getUrl.Append(UIConst.m_HOST).Append("searchinfo.php?search=").Append(_place);
             WWW www = new WWW(getUrl.ToString());
             Debug.Log("<color=green> Search Url </color> Request:" + getUrl.ToString());
             yield return www;

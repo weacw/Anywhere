@@ -130,7 +130,7 @@ namespace Aliyun.OSS
                             fs.Write(buf, 0, length);
                             downloadLen += length;
                             Debug.LogError("download length:" + downloadLen);
-                            m_DownLoadProgress = downloadLen / result.Metadata.ContentLength;
+                            m_DownLoadProgress = (float)downloadLen / result.Metadata.ContentLength;
                             m_DownLoadState = DownLoadState.DOWNLOADING;
                         } while (length != 0);
                     }
