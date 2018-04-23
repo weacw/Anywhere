@@ -21,7 +21,7 @@ namespace Anywhere.UI
     public class ListItem : MonoBehaviour
     {
         public GameObject m_Contentrootobj;
-
+        public Transform m_DownloadArea;
         public Text m_Destext;//描述
         public Text m_Loactiontext;//位置
         public Image m_Icon;//图片
@@ -38,7 +38,7 @@ namespace Anywhere.UI
             ClickEventListener tmp_Listener = ClickEventListener.Get(m_Downloadbtn.gameObject);
             tmp_Listener.SetClickEventHandler(OnDownloadBtnClick);
             m_Downloadbtntext = m_Downloadbtn.transform.Find("Text").GetComponent<Text>();
-            m_Progressimg = m_Downloadbtn.transform.parent.Find("Progress").GetComponent<Image>();
+            m_Progressimg = m_DownloadArea.Find("DownloadProgress/ProgressValue").GetComponent<Image>();
         }
 
         public void SetItemData(PageItem _itemdata, int _itemindex)
@@ -51,8 +51,7 @@ namespace Anywhere.UI
             m_Destext.text = _itemdata.descript;
             m_Loactiontext.text = _itemdata.place;
             m_Pageitem = _itemdata;
-            m_Destext.text = _itemdata.descript + "\n" + _itemdata.place;
-            m_Destext.text.Replace("\\n", "\n");
+            m_Destext.text = _itemdata.descript;
             m_Progressimg.fillAmount = 0;
             m_Progressimg.gameObject.SetActive(false);
 

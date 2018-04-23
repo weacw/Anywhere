@@ -13,7 +13,7 @@ namespace Aliyun.OSS
 
         public static string Endpoint = "oss-cn-beijing.aliyuncs.com";
 
-        public static string DirToDownload = Path.Combine(Application.dataPath , "");
+        public static string DirToDownload = Path.Combine(Application.persistentDataPath , "");
 
         public static string FileToUpload = Path.Combine(Application.dataPath, "");
 

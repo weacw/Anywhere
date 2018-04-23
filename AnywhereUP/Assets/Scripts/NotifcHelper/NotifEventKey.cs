@@ -1,0 +1,38 @@
+﻿namespace Anywhere
+{
+    public enum NotifEventKey
+    {
+        //录屏开始
+        EVERYPLAY_RECORDING_START,
+        //录屏结束
+        EVERYPLAY_RECORDING_STOP,     
+        //删除内容
+        ASSETS_REMOVEALL,
+        //加载ab
+        ASSETS_LOAD,
+        //实例化ab
+        AB_INSTANCE,
+        //播放视频
+        ASSETS_VIDEOPLAY,
+        //显示召唤按钮
+        UI_SHOWCALLBTN,
+        //设置提示
+        UI_SETHINT,
+        //放置内容
+        OPERATER_PLACECONTENT,
+        //设置内容的位置与focus位置相同
+        OPERATER_SETFOCUSPOSTOCONTENT,
+        //从服务器获取分页信息
+        NET_GETALLPAGEINFO,   
+        //从服务检索完毕
+        NET_SEARCHPAGE,       
+        //AB下载中
+        NET_ABDOWNLOADING,   
+        //AB下载完成
+        NET_ABDOWNLOADCOMPLETE,   
+        //关闭ARKit   
+        ARKIT_PAUSE,
+        //开启ARKit
+        ARKIT_PLAY
+    }
+}
