@@ -27,14 +27,7 @@ namespace Anywhere.UI
         private InputField m_Inputfield;
         private Button m_CallBtn;
 
-        private void Start()
-        {
-            m_Horizontalscorll = transform.GetComponent<HorizontalScorll>();
-            m_Inputfield = m_Mainuiroot.Find("SearchBar/SearchbarField").GetComponent<InputField>();
-            m_CallBtn = m_Aruiroot.Find("CallPortalBtn").GetComponent<Button>();
-            NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_SHOWCALLBTN, ShowCallBtn);
-            Init();
-        }
+
 
 
         //AR Scene
@@ -46,15 +39,17 @@ namespace Anywhere.UI
 
 
         #region 生命周期
-        void Awake()
+        private void Start()
         {
             m_Horizontalscorll = transform.GetComponent<HorizontalScorll>();
             m_Inputfield = m_Mainuiroot.Find("SearchBar/SearchbarField").GetComponent<InputField>();
             m_ReturnToMainButton = m_Aruiroot.Find("BackButton").gameObject;
             m_RecordButton = m_Aruiroot.Find("Recording/RecordingBtn").gameObject;
             m_Tiptoptext = m_Aruiroot.Find("Hint/Hintbackground/Hinttext").GetComponent<Text>();
+            m_CallBtn = m_Aruiroot.Find("CallPortalBtn").GetComponent<Button>();
+            NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_SHOWCALLBTN, ShowCallBtn);
+            Init();
         }
-
         void Update()
         {
             DownLoadListItemAB();

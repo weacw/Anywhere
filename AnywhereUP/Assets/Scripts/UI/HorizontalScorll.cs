@@ -94,8 +94,8 @@ namespace Anywhere.UI
 
         public void OnLoopListViewFinished(LoopListView _listview, LoopListViewItem _item)
         {
-            LoopListViewItem tmp_Item0 = m_Looplistview.GetShownItemByIndex(0);
-            ListItem itemScript = tmp_Item0.GetComponent<ListItem>();
+            //LoopListViewItem tmp_Item0 = m_Looplistview.GetShownItemByIndex(0);
+            //ListItem itemScript = tmp_Item0.GetComponent<ListItem>();
             m_Looplistview.RefreshAllShownItemWithFirstIndex(0);
         }
 

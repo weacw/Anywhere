@@ -20,7 +20,6 @@ public class AssetsCreaterEditor : EditorWindow
     private string m_SavePath = "Select the path to save under the Assets folder";
     private static List<Object> sourcesObjects = new List<Object>();
     private BuildTarget m_BuidTarget = BuildTarget.iOS;
-    private static float OBJECTSLOTSIZE;
 
     [MenuItem("ABTools/ABCreater")]
     private static void Init()
@@ -37,9 +36,6 @@ public class AssetsCreaterEditor : EditorWindow
 
         if (!window)
             Init();
-
-        OBJECTSLOTSIZE = (EditorGUIUtility.currentViewWidth / 4);
-
 
         Rect hRect = EditorGUILayout.BeginHorizontal();
         GUILayout.Label(string.Format("Path:{0}", m_SavePath), "Box");

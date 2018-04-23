@@ -33,7 +33,7 @@ namespace Anywhere.UI
         //    }
         //}
 
-        void Awake()
+        void Start()
         {
             Init();
         }
