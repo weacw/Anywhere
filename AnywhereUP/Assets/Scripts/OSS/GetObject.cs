@@ -13,6 +13,7 @@ namespace Aliyun.OSS
 {
     public enum DownLoadState
     {
+        NONE,
         STARTDOWNLOAD,
         DOWNLOADING,
         DOWNLOADCOMPLETE
