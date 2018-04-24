@@ -136,6 +136,7 @@ namespace Anywhere.UI
                         return;
                     m_Downloadabitem.OnABDownloading();
                 }
+
                 if (GetObject.GetDownLoadState() == DownLoadState.DOWNLOADCOMPLETE)
                 {
                     if (m_Downloadabitem == null)

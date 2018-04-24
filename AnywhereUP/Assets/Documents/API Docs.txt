@@ -1,7 +1,7 @@
 API Docs
 ---
 上传信息数据接口（文字数据）
-https://weacw.com/uploadinfo.php;
+https://aw.weacw.com/anywhere/uploadinfo.php;
 以Get形式上传;
 ?place="PLACE"&type="TYPE"&descript="DESCRIPT"&version="VERSION"&assetName="ASSETNAME"&thumbnailName="THUMBNAILNAME"
 
@@ -13,13 +13,13 @@ assetName:资源名称[用于从OSS拉取资源]
 thumbnailName:缩略图名称[用于从OSS拉取资源]
 ---
 分页加载信息数据接口（文字数据）
-https://weacw.com/getinfo.php;
+https://aw.weacw.com/anywhere/getinfo.php;
 以Get形式上传;
 ?page=PAGE
 page:查询页数
 ---
 查询信息数据接口（文字数据）
-https://weacw.com/searchinfo.php;
+https://aw.weacw.com/anywhere/searchinfo.php;
 以Get形式上传;
 ?search=PLACE
 search:搜索关键词以place为搜索条件

@@ -21,7 +21,7 @@ namespace Anywhere.UI
     public class DatasourceMgr : Singleton<DatasourceMgr>
     {
         List<PageItem> m_Itemdatalist;
-        Dictionary<int, string> ItemBackgroundDic;//<id , 背景图>
+        Dictionary<int, Sprite> ItemBackgroundDic;//<id , 背景图>
 
         void Start()
         {
@@ -31,13 +31,7 @@ namespace Anywhere.UI
         public void Init()
         {
             m_Itemdatalist = new List<PageItem>();
-            ItemBackgroundDic = new Dictionary<int, string>();
-            //DoRefreshDataSource();
-        }
-
-        void Update()
-        {
-
+            ItemBackgroundDic = new Dictionary<int, Sprite>();
         }
 
         /// <summary>
@@ -122,15 +116,39 @@ namespace Anywhere.UI
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.NET_SEARCHPAGE);
         }
 
+        /// <summary>
+        /// 下载分页背景
+        /// </summary>
         private void DownItemBackground()
         {
             foreach (PageItem _item in m_Itemdatalist)
             {
-                GetObject.AsyncGetObject(UIConst.m_BUCKETNAME, _item.thumbnailName + ".png");
-                Debug.Log("下载背景图:" + _item.thumbnailName + ".png");
+                GetObject.SyncGetObject(UIConst.m_BUCKETNAME, _item.thumbnailName + ".png");
+                Texture2D tmp_tex2d = GetIcon(_item,10, 10);
+                Sprite tmp_Sprite = Sprite.Create(tmp_tex2d, new Rect(0, 0, tmp_tex2d.width, tmp_tex2d.height), new Vector2(0, 0));
+                tmp_Sprite.name = _item.thumbnailName;
+                ItemBackgroundDic.Add(_item.id, tmp_Sprite);
+                Debug.Log("download background:" + _item.thumbnailName + ".png");
             }
         }
 
+        private Texture2D GetIcon(PageItem _item,int _t2dwith, int _t2dheight)
+        {
+            byte[] m_T2dbyts = File.ReadAllBytes(Path.Combine(Config.DirToDownload, _item.thumbnailName + ".png"));
+            Texture2D m_T2d = new Texture2D(_t2dwith, _t2dheight);
+            m_T2d.LoadImage(m_T2dbyts);
+            return m_T2d;
+        }
+
+        public Sprite GetItemBackgroundById(int _id)
+        {
+            if (ItemBackgroundDic.ContainsKey(_id))
+            {
+               return ItemBackgroundDic[_id];
+            }
+            return null;
+        }
+        
 
         #region 测试功能
 
