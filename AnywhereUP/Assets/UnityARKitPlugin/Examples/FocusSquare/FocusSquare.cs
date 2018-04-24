@@ -192,5 +192,6 @@ public class FocusSquare : MonoBehaviour
     private void TurnOffFocus(Anywhere.Notification _notif)
     {
         squareState = FocusState.Putdown;
+        this.gameObject.SetActive(false);
     }
 }
