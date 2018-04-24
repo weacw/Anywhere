@@ -10,7 +10,8 @@ public class FocusSquare : MonoBehaviour
     {
         Initializing,
         Finding,
-        Found
+        Found,
+        Putdown
     }
 
     public GameObject findingSquare;
@@ -20,8 +21,7 @@ public class FocusSquare : MonoBehaviour
     public float maxRayDistance = 30.0f;
     public LayerMask collisionLayerMask;
     public float findingSquareDist = 0.5f;
-    private bool m_IsPut;
-    private FocusState squareState;
+    [SerializeField] private FocusState squareState;
     public FocusState SquareState
     {
         get
@@ -44,6 +44,7 @@ public class FocusSquare : MonoBehaviour
         SquareState = FocusState.Initializing;
         trackingInitialized = true;
         Anywhere.NotifCenter.GetNotice.AddEventListener(Anywhere.NotifEventKey.OPERATER_SETFOCUSPOSTOCONTENT, SetFocusPosToContent);
+        Anywhere.NotifCenter.GetNotice.AddEventListener(Anywhere.NotifEventKey.ARKIT_FOCUS, SetuFocusStatus);
     }
 
 
@@ -65,7 +66,7 @@ public class FocusSquare : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (squareState == FocusState.Putdown || UnityARKitControl.m_ARKitState == UnityARKitControl.ARKITSTATE.PAUSSING) return;
         //use center of screen for focusing
         Vector3 center = new Vector3(Screen.width / 2, Screen.height / 2, findingSquareDist);
 
@@ -160,9 +161,17 @@ public class FocusSquare : MonoBehaviour
 
     private void SetFocusPosToContent(Anywhere.Notification _notif)
     {
+        squareState = FocusState.Putdown;
         Vector3 focusPos = foundSquare.transform.position;
         ContentPlaceHelper cph = new ContentPlaceHelper();
         cph.m_ContentPos = focusPos;
+        cph.m_FocusGameObject = this.gameObject;
         Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.OPERATER_PLACECONTENT, cph);
+    }
+    private void SetuFocusStatus(Anywhere.Notification _notif)
+    {
+        squareState = FocusState.Initializing;
+        this.gameObject.SetActive(true);
+        trackingInitialized = true;
     }
 }

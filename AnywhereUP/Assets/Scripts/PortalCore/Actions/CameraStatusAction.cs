@@ -8,10 +8,14 @@ namespace Anywhere
     [CreateAssetMenu(menuName = "Anywhere/Actions/CameraStatus Action")]
     public class CameraStatusAction : BaseAction
     {
-        public TransformVariable m_Device;
+        private Transform m_Device;
+        private void Awake()
+        {
+            m_Device = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        }
         public override void Execute(PortalActionManager _hook)
         {
-            Vector3 worldPos = m_Device.m_Transform.position + m_Device.m_Transform.forward * Camera.main.nearClipPlane;
+            Vector3 worldPos = m_Device.position + m_Device.forward * Camera.main.nearClipPlane;
             Vector3 pos = _hook.transform.InverseTransformPoint(worldPos);
             _hook.m_CameraPos = pos;
         }

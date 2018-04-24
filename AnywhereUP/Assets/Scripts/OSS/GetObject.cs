@@ -13,6 +13,7 @@ namespace Aliyun.OSS
 {
     public enum DownLoadState
     {
+        NONE,
         STARTDOWNLOAD,
         DOWNLOADING,
         DOWNLOADCOMPLETE
@@ -129,8 +130,10 @@ namespace Aliyun.OSS
                             length = requestStream.Read(buf, 0, length);
                             fs.Write(buf, 0, length);
                             downloadLen += length;
+#if UNITY_EDITOR
                             Debug.LogError("download length:" + downloadLen);
-                            m_DownLoadProgress = downloadLen / result.Metadata.ContentLength;
+#endif
+                            m_DownLoadProgress = (float)downloadLen / result.Metadata.ContentLength;
                             m_DownLoadState = DownLoadState.DOWNLOADING;
                         } while (length != 0);
                     }

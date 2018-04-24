@@ -14,6 +14,7 @@ using UnityEngine.UI;
 using Anywhere.Net;
 using Aliyun.OSS;
 using SuperScrollView;
+using System.IO;
 
 namespace Anywhere.UI
 {
@@ -26,8 +27,6 @@ namespace Anywhere.UI
         private Transform m_Mainuiroot;//主界面UI
         private InputField m_Inputfield;
         private Button m_CallBtn;
-
-
 
 
         //AR Scene
@@ -87,6 +86,8 @@ namespace Anywhere.UI
         public void Return()
         {
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_REMOVEALL);
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_FOCUS);
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_PAUSE);            
         }
 
         private void Refresh()
@@ -135,6 +136,7 @@ namespace Anywhere.UI
                         return;
                     m_Downloadabitem.OnABDownloading();
                 }
+
                 if (GetObject.GetDownLoadState() == DownLoadState.DOWNLOADCOMPLETE)
                 {
                     if (m_Downloadabitem == null)
@@ -159,7 +161,11 @@ namespace Anywhere.UI
         public void CallToPortal()
         {
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.OPERATER_SETFOCUSPOSTOCONTENT);
+            m_CallBtn.gameObject.SetActive(false);
         }
+
+
+
         #endregion
     }
 

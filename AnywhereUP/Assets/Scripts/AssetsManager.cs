@@ -32,6 +32,7 @@ namespace Anywhere
             ContentPlaceHelper cph = _notif.param as ContentPlaceHelper;
             m_Content.transform.localPosition = cph.m_ContentPos;
             m_Content.SetActive(true);
+            cph.m_FocusGameObject.SetActive(false);
         }
 
 

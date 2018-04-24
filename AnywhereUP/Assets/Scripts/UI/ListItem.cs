@@ -14,6 +14,7 @@ using UnityEngine.UI;
 using SuperScrollView;
 using Anywhere.Net;
 using Aliyun.OSS;
+using System.IO;
 
 namespace Anywhere.UI
 {
@@ -28,7 +29,8 @@ namespace Anywhere.UI
         public Button m_Downloadbtn;//下载按钮
 
         private Text m_Downloadbtntext;//按钮文字
-        private Image m_Progressimg;//进度
+        private Transform m_Downloadprogress;//进度父对象
+        private Image m_Progressimg;//进度圈
         private PageItem m_Pageitem;//自身属性
         private bool m_Assetisdownloading;
         private bool m_Assetisdownloaded;
@@ -39,6 +41,7 @@ namespace Anywhere.UI
             tmp_Listener.SetClickEventHandler(OnDownloadBtnClick);
             m_Downloadbtntext = m_Downloadbtn.transform.Find("Text").GetComponent<Text>();
             m_Progressimg = m_DownloadArea.Find("DownloadProgress/ProgressValue").GetComponent<Image>();
+            m_Downloadprogress = m_DownloadArea.Find("DownloadProgress");
         }
 
         public void SetItemData(PageItem _itemdata, int _itemindex)
@@ -53,6 +56,7 @@ namespace Anywhere.UI
             m_Pageitem = _itemdata;
             m_Destext.text = _itemdata.descript;
             m_Progressimg.fillAmount = 0;
+            m_Progressimg.transform.parent.gameObject.SetActive(false);
             m_Progressimg.gameObject.SetActive(false);
             m_CurData = _itemdata.assetName;
             //TODO  判断是否已下载
@@ -65,6 +69,14 @@ namespace Anywhere.UI
             {
                 m_Downloadbtntext.text = "下载";
             }
+            if (DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id) != null)
+            {
+                m_Icon.sprite = DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id);
+            }
+            //Texture2D m_Tex = GetIcon(50, 50);
+            //Sprite tempSprite = Sprite.Create(m_Tex, new Rect(0, 0, m_Tex.width, m_Tex.height), new Vector2(0, 0));
+            //m_Icon.sprite = tempSprite;
+            //tempSprite.name = m_Pageitem.thumbnailName;
         }
 
         void OnDownloadBtnClick(GameObject _btn)
@@ -72,39 +84,51 @@ namespace Anywhere.UI
             Debug.Log("开始下载");
             if (m_Assetisdownloaded)
             {
+                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_PLAY);
                 NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.AB_INSTANCE, new ABInstaniateHelper() { m_ABName = m_CurData });
                 //进入场景
                 UIManager.Instance.JumpToARScene();
             }
             else
             {
-                Debug.Log("下载AB包：" + m_Pageitem.assetName + ".assetbundle");
+                Debug.Log("下载AB包：" + m_Pageitem.assetName + "." + m_Pageitem.type.ToLower());
                 UIManager.Instance.StartListItemABDownload(this);
-                //GetObject.AsyncGetObject("anywhere-v-1", "assets.assetbundle");
-                GetObject.AsyncGetObject("anywhere-v-1", m_Pageitem.assetName + ".assetbundle");
+                GetObject.AsyncGetObject("anywhere-v-1", m_Pageitem.assetName + "." + m_Pageitem.type.ToLower());
             }
         }
 
         //下载中
         public void OnABDownloading()
         {
+            m_Progressimg.fillAmount = GetObject.GetDownLoadProgress();
             if (m_Assetisdownloading)
                 return;
             m_Assetisdownloading = true;
             m_Downloadbtntext.text = "下载中";
+            m_Downloadbtn.gameObject.SetActive(false);
+            m_Downloadprogress.gameObject.SetActive(true);
             m_Progressimg.gameObject.SetActive(true);
-            m_Progressimg.fillAmount = GetObject.GetDownLoadProgress();
             //Debug.Log("进度"+GetObject.GetDownLoadProgress());
         }
 
         //下载结束
         public void OnABDownloadComplete()
         {
+            m_Downloadbtn.gameObject.SetActive(true);
             m_Assetisdownloaded = true;
             m_Assetisdownloading = false;
             m_Downloadbtntext.text = "打开";
+            m_Downloadprogress.gameObject.SetActive(false);
             m_Progressimg.gameObject.SetActive(false);
         }
+
+        //private Texture2D GetIcon(int _t2dwith, int _t2dheight)
+        //{
+        //    byte[] m_T2dbyts = File.ReadAllBytes(Path.Combine(Config.DirToDownload, m_Pageitem.thumbnailName + ".png"));
+        //    Texture2D m_T2d = new Texture2D(_t2dwith, _t2dheight);
+        //    m_T2d.LoadImage(m_T2dbyts);
+        //    return m_T2d;
+        //}
 
     }
 }

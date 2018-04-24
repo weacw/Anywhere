@@ -6,7 +6,12 @@ namespace UnityEngine.XR.iOS
 {
     public class UnityARKitControl : MonoBehaviour
     {
-
+        public enum ARKITSTATE
+        {
+            PLAYING,
+            PAUSSING
+        };
+        public static ARKITSTATE m_ARKitState;
         UnityARSessionRunOption[] runOptions = new UnityARSessionRunOption[4];
         UnityARAlignment[] alignmentOptions = new UnityARAlignment[3];
         UnityARPlaneDetection[] planeOptions = new UnityARPlaneDetection[4];
@@ -29,9 +34,10 @@ namespace UnityEngine.XR.iOS
 
             planeOptions[0] = UnityARPlaneDetection.Horizontal;
             planeOptions[1] = UnityARPlaneDetection.None;
-            
+
             Anywhere.NotifCenter.GetNotice.AddEventListener(Anywhere.NotifEventKey.ARKIT_PLAY, TurnOnARKit);
             Anywhere.NotifCenter.GetNotice.AddEventListener(Anywhere.NotifEventKey.ARKIT_PAUSE, TurnOffARKit);
+            TurnOffARKit(null);
         }
 
 
@@ -39,11 +45,12 @@ namespace UnityEngine.XR.iOS
         {
             ARKitWorldTrackingSessionConfiguration sessionConfig = new ARKitWorldTrackingSessionConfiguration(alignmentOptions[currentAlignmentIndex], planeOptions[currentPlaneIndex]);
             UnityARSessionNativeInterface.GetARSessionNativeInterface().RunWithConfigAndOptions(sessionConfig, runOptions[currentOptionIndex]);
+            m_ARKitState = ARKITSTATE.PLAYING;
         }
         private void TurnOffARKit(Anywhere.Notification _notif)
         {
             UnityARSessionNativeInterface.GetARSessionNativeInterface().Pause();
-
+            m_ARKitState = ARKITSTATE.PAUSSING;
         }
 
         // void OnGUI()

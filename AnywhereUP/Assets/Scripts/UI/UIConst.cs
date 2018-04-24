@@ -15,7 +15,7 @@ namespace Anywhere.UI
 {
     public class UIConst
     {
-        public static string Host = "http://weacw.com/anywhere/";
-
+        public static string m_HOST = "https://aw.weacw.com/anywhere/";
+        public static string m_BUCKETNAME = "anywhere-v-1";
     }
 }
