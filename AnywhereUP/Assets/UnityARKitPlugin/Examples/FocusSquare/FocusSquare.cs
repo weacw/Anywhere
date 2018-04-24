@@ -110,8 +110,7 @@ public class FocusSquare : MonoBehaviour
 			//ARHitTestResultType.ARHitTestResultTypeFeaturePoint
 		};
 
-        if(SquareState == FocusState.Found && UnityARKitControl.m_ARKitState != UnityARKitControl.ARKITSTATE.PAUSSING)
-            Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_SHOWCALLBTN);
+        
 
 
         foreach (ARHitTestResultType resultType in resultTypes)
@@ -119,6 +118,8 @@ public class FocusSquare : MonoBehaviour
             if (HitTestWithResultType(point, resultType))
             {
                 SquareState = FocusState.Found;
+                if(UnityARKitControl.m_ARKitState != UnityARKitControl.ARKITSTATE.PAUSSING)
+                    Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_SHOWCALLBTN);
                 return;
             }
         }
