@@ -77,6 +77,7 @@ namespace Anywhere.UI
             Debug.Log("开始下载");
             if (m_Assetisdownloaded)
             {
+                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_PLAY);
                 NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.AB_INSTANCE, new ABInstaniateHelper() { m_ABName = m_CurData });
                 //进入场景
                 UIManager.Instance.JumpToARScene();
@@ -85,7 +86,7 @@ namespace Anywhere.UI
             {
                 Debug.Log("下载AB包：" + m_Pageitem.assetName + "." + m_Pageitem.type.ToLower());
                 UIManager.Instance.StartListItemABDownload(this);
-                GetObject.AsyncGetObject("anywhere-v-1", m_Pageitem.assetName + "."+m_Pageitem.type.ToLower());
+                GetObject.AsyncGetObject("anywhere-v-1", m_Pageitem.assetName + "." + m_Pageitem.type.ToLower());
             }
         }
 
@@ -116,7 +117,7 @@ namespace Anywhere.UI
 
         private Texture2D GetIcon(int _t2dwith, int _t2dheight)
         {
-            byte[] m_T2dbyts = File.ReadAllBytes(Config.DirToDownload + "/Download/Texture/" + m_Pageitem.thumbnailName + ".png");
+            byte[] m_T2dbyts = File.ReadAllBytes(Path.Combine(Config.DirToDownload, m_Pageitem.thumbnailName + ".png"));
             Texture2D m_T2d = new Texture2D(_t2dwith, _t2dheight);
             m_T2d.LoadImage(m_T2dbyts);
             return m_T2d;

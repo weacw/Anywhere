@@ -86,6 +86,8 @@ namespace Anywhere.UI
         public void Return()
         {
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_REMOVEALL);
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_FOCUS);
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_PAUSE);            
         }
 
         private void Refresh()
@@ -158,6 +160,7 @@ namespace Anywhere.UI
         public void CallToPortal()
         {
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.OPERATER_SETFOCUSPOSTOCONTENT);
+            m_CallBtn.gameObject.SetActive(false);
         }
 
 

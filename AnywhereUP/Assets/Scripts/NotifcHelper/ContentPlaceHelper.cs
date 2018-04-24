@@ -4,5 +4,6 @@ using UnityEngine;
 using System;
 public class ContentPlaceHelper : EventArgs
 {
-    public Vector3 m_ContentPos;    
+    public Vector3 m_ContentPos;
+    public GameObject m_FocusGameObject;
 }

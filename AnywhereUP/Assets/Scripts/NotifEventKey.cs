@@ -33,6 +33,7 @@
         //关闭ARKit   
         ARKIT_PAUSE,
         //开启ARKit
-        ARKIT_PLAY
+        ARKIT_PLAY,
+        ARKIT_FOCUS
     }
 }

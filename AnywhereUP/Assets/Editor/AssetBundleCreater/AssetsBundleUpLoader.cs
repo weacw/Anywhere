@@ -41,7 +41,7 @@ public class AssetbundleUploader : EditorWindow
 
     private Object m_AssetbundleFile = null;
     private Texture m_ThumbnailFile;
-    private const string m_Gateway = "http://weacw.com/anywhere/uploadinfo.php";
+    private const string m_Gateway = "https://aw.weacw.com/anywhere/uploadinfo.php";
     private FILETYPE m_FileType;
 
     private bool m_ShowInfo;
@@ -100,25 +100,27 @@ public class AssetbundleUploader : EditorWindow
                 Debug.LogError("File is empty");
                 return;
             }
-			string m_Filetypename="";
-			switch (m_FileType) {
-			case FILETYPE.ASSETBUNDLE:
-				m_Filetypename = ".assetbundle";
-				break;
-			case FILETYPE.IMAGE360:
-				m_Filetypename = ".png";
-				break;
-			case FILETYPE.VIDEO360:
-				m_Filetypename = ".mp4";
-				break;
-			}
-			UploadObject.UploadFile (AssetDatabase.GetAssetPath (m_AssetbundleFile), m_Buckname, m_AssetbundleFile.name + m_Filetypename);
-            UploadObject.UploadFile(AssetDatabase.GetAssetPath(m_ThumbnailFile), m_Buckname, m_ThumbnailFile.name+".png");
+            string m_Filetypename = "";
+            switch (m_FileType)
+            {
+                case FILETYPE.ASSETBUNDLE:
+                    m_Filetypename = ".assetbundle";
+                    break;
+                case FILETYPE.IMAGE360:
+                    m_Filetypename = ".png";
+                    break;
+                case FILETYPE.VIDEO360:
+                    m_Filetypename = ".mp4";
+                    break;
+            }
+            UploadObject.UploadFile(AssetDatabase.GetAssetPath(m_AssetbundleFile), m_Buckname, m_AssetbundleFile.name + m_Filetypename);
+            UploadObject.UploadFile(AssetDatabase.GetAssetPath(m_ThumbnailFile), m_Buckname, m_ThumbnailFile.name + ".png");
             string tmp_Myurl = string.Format(m_Gateway + "?place={0}&type={1}&descript={2}&version={3}&assetName={4}&thumbnailName={5}",
-                m_Place, m_FileType.ToString(), m_Descript, m_Version, m_AssetbundleFile.name, m_ThumbnailFile.name);
+                m_Place, m_FileType.ToString(), m_Descript, m_Version, m_AssetbundleFile.name+m_Filetypename, m_ThumbnailFile.name+".png");
+            Debug.Log(tmp_Myurl);
             MyThread tmp_Mythrea = new MyThread(tmp_Myurl);
-			Thread tmp_thread = new Thread (new ThreadStart (tmp_Mythrea.CreateGetHttpResponse));
-			tmp_thread.Start();
+            Thread tmp_thread = new Thread(new ThreadStart(tmp_Mythrea.CreateGetHttpResponse));
+            tmp_thread.Start();
         }
 
         if (GUILayout.Button("Clean"))
@@ -134,7 +136,7 @@ public class AssetbundleUploader : EditorWindow
         EditorGUILayout.BeginVertical("WindowBackground");
         m_ShowInfo = EditorGUILayout.Foldout(m_ShowInfo, "Upload info");
         if (m_ShowInfo)
-        {            
+        {
             GUILayout.Label(string.Format("AB Name:{0}", m_AssetbundleFile == null ? "Empty" : m_AssetbundleFile.name));
             GUILayout.Label(string.Format("Thumbnail Name:{0}", m_ThumbnailFile == null ? "Empty" : m_ThumbnailFile.name));
         }
