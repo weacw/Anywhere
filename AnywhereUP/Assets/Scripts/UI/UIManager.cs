@@ -86,7 +86,7 @@ namespace Anywhere.UI
         public void Return()
         {
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_REMOVEALL);
-            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_FOCUS);
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_FOCUS_ON);
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_PAUSE);            
         }
 

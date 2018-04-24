@@ -21,6 +21,8 @@ public class FocusSquare : MonoBehaviour
     public float maxRayDistance = 30.0f;
     public LayerMask collisionLayerMask;
     public float findingSquareDist = 0.5f;
+    private bool trackingInitialized;
+
     [SerializeField] private FocusState squareState;
     public FocusState SquareState
     {
@@ -36,15 +38,16 @@ public class FocusSquare : MonoBehaviour
         }
     }
 
-    bool trackingInitialized;
 
     // Use this for initialization
     void Start()
     {
         SquareState = FocusState.Initializing;
         trackingInitialized = true;
-        Anywhere.NotifCenter.GetNotice.AddEventListener(Anywhere.NotifEventKey.OPERATER_SETFOCUSPOSTOCONTENT, SetFocusPosToContent);
-        Anywhere.NotifCenter.GetNotice.AddEventListener(Anywhere.NotifEventKey.ARKIT_FOCUS, SetuFocusStatus);
+
+        Anywhere.NotifCenter.GetNotice.AddEventListener(Anywhere.NotifEventKey.OPERATER_SETFOCUSPOSTOCONTENT, SyncFocusPosToContent);
+        Anywhere.NotifCenter.GetNotice.AddEventListener(Anywhere.NotifEventKey.ARKIT_FOCUS_ON, TurnOnFocus);
+        Anywhere.NotifCenter.GetNotice.AddEventListener(Anywhere.NotifEventKey.ARKIT_FOCUS_OFF, TurnOffFocus);
     }
 
 
@@ -66,7 +69,7 @@ public class FocusSquare : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (squareState == FocusState.Putdown || UnityARKitControl.m_ARKitState == UnityARKitControl.ARKITSTATE.PAUSSING) return;
+        if (squareState == FocusState.Putdown) return;
         //use center of screen for focusing
         Vector3 center = new Vector3(Screen.width / 2, Screen.height / 2, findingSquareDist);
 
@@ -107,7 +110,7 @@ public class FocusSquare : MonoBehaviour
 			//ARHitTestResultType.ARHitTestResultTypeFeaturePoint
 		};
 
-        if(SquareState == FocusState.Found)
+        if(SquareState == FocusState.Found && UnityARKitControl.m_ARKitState != UnityARKitControl.ARKITSTATE.PAUSSING)
             Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_SHOWCALLBTN);
 
 
@@ -117,10 +120,6 @@ public class FocusSquare : MonoBehaviour
             {
                 SquareState = FocusState.Found;
                 return;
-            }
-            else
-            {
-              //  Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_HINT);
             }
         }
 #endif
@@ -159,19 +158,39 @@ public class FocusSquare : MonoBehaviour
         }
     }
 
-    private void SetFocusPosToContent(Anywhere.Notification _notif)
+    /// <summary>
+    /// 将内容的位置与focus的位置进行同步
+    /// </summary>
+    /// <param name="_notif"></param>
+    private void SyncFocusPosToContent(Anywhere.Notification _notif)
     {
-        squareState = FocusState.Putdown;
         Vector3 focusPos = foundSquare.transform.position;
-        ContentPlaceHelper cph = new ContentPlaceHelper();
-        cph.m_ContentPos = focusPos;
-        cph.m_FocusGameObject = this.gameObject;
+        ContentPlaceHelper cph = new ContentPlaceHelper
+        {
+            m_ContentPos = focusPos,
+            m_FocusGameObject = this.gameObject
+        };
         Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.OPERATER_PLACECONTENT, cph);
+        Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.ARKIT_FOCUS_OFF);
     }
-    private void SetuFocusStatus(Anywhere.Notification _notif)
+
+    /// <summary>
+    /// 开启focus
+    /// </summary>
+    /// <param name="_notif"></param>
+    private void TurnOnFocus(Anywhere.Notification _notif)
     {
         squareState = FocusState.Initializing;
         this.gameObject.SetActive(true);
         trackingInitialized = true;
+    }
+
+    /// <summary>
+    /// 关闭focus
+    /// </summary>
+    /// <param name="_notif"></param>
+    private void TurnOffFocus(Anywhere.Notification _notif)
+    {
+        squareState = FocusState.Putdown;
     }
 }
