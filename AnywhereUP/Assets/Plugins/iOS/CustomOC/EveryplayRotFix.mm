@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 #import "UnityAppController.h"
-
 @interface UMediaManager:NSObject
 + (void)flipVideoSynchronous:(NSURL *)videoURL andOutputPath:(NSString *)exportPath;
 + (void)flipVideoAsynchronous:(NSURL *)videoURL andOutputPath:(NSString *)exportPath;
@@ -73,7 +72,7 @@
 
 	exportSession.videoComposition = mutableVideoComposition;
 	exportSession.outputURL = [NSURL fileURLWithPath:exportPath];
-	exportSession.outputFileType=AVFileTypeQuickTimeMovie;
+	exportSession.outputFileType=AVFileTypeMPEG4;
 	exportSession.shouldOptimizeForNetworkUse = YES;
 
 	dispatch_semaphore_t sema = dispatch_semaphore_create(0);

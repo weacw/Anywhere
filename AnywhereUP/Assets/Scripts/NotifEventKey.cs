@@ -73,6 +73,11 @@
         /// <summary>
         /// 关闭Focus
         /// </summary>        
-        ARKIT_FOCUS_OFF
+        ARKIT_FOCUS_OFF,
+
+        /// <summary>
+        ///分享
+        /// </summary> 
+        SOCIAL_SHARE
     }
 }

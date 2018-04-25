@@ -266,10 +266,10 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 0}
+      m_Icon: {fileID: 2800000, guid: f3c964b0435ce55419b80741c22ff197, type: 3}
       m_Width: 128
       m_Height: 128
-      m_Kind: 54053
+      m_Kind: 0
   m_BuildTargetBatching: []
   m_BuildTargetGraphicsAPIs:
   - m_BuildTarget: AndroidPlayer
@@ -382,7 +382,7 @@ PlayerSettings:
   actionOnDotNetUnhandledException: 1
   enableInternalProfiler: 0
   logObjCUncaughtExceptions: 1
-  enableCrashReportAPI: 0
+  enableCrashReportAPI: 1
   cameraUsageDescription: Used to watch the new world.
   locationUsageDescription: 
   microphoneUsageDescription: 
@@ -642,7 +642,7 @@ PlayerSettings:
   webGLCompressionFormat: 1
   scriptingDefineSymbols:
     1: 
-    4: 
+    4: EVERYPLAY_IPHONE
     7: 
     25: 
   platformArchitecture:

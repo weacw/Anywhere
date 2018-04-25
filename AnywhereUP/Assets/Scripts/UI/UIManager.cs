@@ -61,6 +61,7 @@ namespace Anywhere.UI
             NetHttp.Instance.GetPageInfo();
             ClickEventListener tmp_Listener = ClickEventListener.Get(m_ReturnToMainButton.gameObject);
             tmp_Listener.SetClickEventHandler(OnBackToMainButtonClick);
+            m_RecordButton.GetComponent<Button>().onClick.AddListener(() => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.EVERYPLAY_RECORDING_START));
         }
 
         private void ShowCallBtn(Notification _notif)

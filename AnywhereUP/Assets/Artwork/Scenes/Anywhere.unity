@@ -184,7 +184,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967263
+    m_Bits: 2147483615
   m_RenderingPath: 1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -919,6 +919,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d34705f615140484fabcf890746af8a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &206611186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 206611181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33eddfef257360a4488657a661b3b1de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &206611187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 206611181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36535f9524e9c4913a5b57a8d9e9643b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &209830572
@@ -2108,7 +2130,8 @@ GameObject:
   m_Component:
   - component: {fileID: 855546448}
   - component: {fileID: 855546447}
-  m_Layer: 0
+  - component: {fileID: 855546449}
+  m_Layer: 5
   m_Name: UICamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2164,6 +2187,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &855546449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 855546446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6b861c5d12354f5daea8cc43d23925d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &899032982
 GameObject:
   m_ObjectHideFlags: 0
@@ -3003,7 +3037,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1281757887
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4709,7 +4743,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -508.74}
+  m_AnchoredPosition: {x: 0, y: -460.72}
   m_SizeDelta: {x: 167.04, y: 88.16}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2142608108

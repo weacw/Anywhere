@@ -12,12 +12,13 @@ namespace Anywhere
 
         void Awake()
         {
+            Everyplay.SetMaxRecordingSecondsLength(30);
             m_isRecording = false;
             m_isRecordingFinished = false;
             Everyplay.RecordingStarted += RecordingStarted;
             Everyplay.RecordingStopped += RecordingStopped;
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.EVERYPLAY_RECORDING_START, OnRecordingStart);
-            NotifCenter.GetNotice.AddEventListener(NotifEventKey.EVERYPLAY_RECORDING_STOP,OnRecordingStop);
+            NotifCenter.GetNotice.AddEventListener(NotifEventKey.EVERYPLAY_RECORDING_STOP, OnRecordingStop);
         }
 
         void OnDestroy()
@@ -31,8 +32,10 @@ namespace Anywhere
         // start recording
         private void OnRecordingStart(Notification _notif)
         {
+            Debug.Log("Start");
             if (m_isRecording)
             {
+                OnRecordingStop(null);
                 return;
             }
             Everyplay.StartRecording();
@@ -52,7 +55,10 @@ namespace Anywhere
             m_isRecordingFinished = true;
         }
 
-        private void RecordingStarted() { }
+        private void RecordingStarted()
+        {
+            Debug.Log("Started recording");
+        }
 
         private void RecordingStopped()
         {
