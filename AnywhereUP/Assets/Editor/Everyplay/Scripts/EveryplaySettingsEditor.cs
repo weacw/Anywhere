@@ -61,7 +61,7 @@ public class EveryplaySettingsEditor : Editor
                 return;
             }
 
-            currentSettings = (EveryplaySettings) target;
+            currentSettings = (EveryplaySettings)target;
 
             if (currentSettings != null)
             {
@@ -186,16 +186,16 @@ public class EveryplaySettingsEditor : Editor
 
     private static EveryplaySettings CreateEveryplaySettings()
     {
-        EveryplaySettings everyplaySettings = (EveryplaySettings) ScriptableObject.CreateInstance(typeof(EveryplaySettings));
+        EveryplaySettings everyplaySettings = (EveryplaySettings)ScriptableObject.CreateInstance(typeof(EveryplaySettings));
 
         if (everyplaySettings != null)
         {
-            if (!Directory.Exists(System.IO.Path.Combine(Application.dataPath, "Plugins/Everyplay/Resources")))
+            if (!Directory.Exists(System.IO.Path.Combine(Application.dataPath, "Resources")))
             {
-                AssetDatabase.CreateFolder("Assets/Plugins/Everyplay", "Resources");
+                AssetDatabase.CreateFolder("Assets/", "Resources");
             }
 
-            AssetDatabase.CreateAsset(everyplaySettings, "Assets/Plugins/Everyplay/Resources/" + settingsFile + settingsFileExtension);
+            AssetDatabase.CreateAsset(everyplaySettings, "Assets/Resources/" + settingsFile + settingsFileExtension);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
@@ -207,12 +207,12 @@ public class EveryplaySettingsEditor : Editor
 
     public static EveryplaySettings LoadEveryplaySettings()
     {
-        return (EveryplaySettings) Resources.Load(settingsFile);
+        return (EveryplaySettings)Resources.Load(settingsFile);
     }
 
     public void EnableTestButtons(bool enable)
     {
-        string dstFile = "Plugins/Everyplay/Resources/" + testButtonsResourceFile;
+        string dstFile = "Resources/" + testButtonsResourceFile;
 
         if (enable)
         {

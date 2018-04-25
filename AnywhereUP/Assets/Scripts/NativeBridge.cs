@@ -5,46 +5,152 @@ using System.Runtime.InteropServices;
 namespace Anywhere
 {
     //# 桥接器，用于联通Unity与IOS原生
-    public class NativeBridge : Singleton<NativeBridge>
+    public class NativeBridge : MonoBehaviour
     {
-#if UNITY_IPHONE
-        [DllImport("__Internal")]
-        private static extern void _NativeShare(string scriptTarget, string _text, string _image, string _encodedMedia);
+        /// <summary>
+        /// Shares on file maximum
+        /// </summary>
+        /// <param name="body"></param>
+        /// <param name="filePath">The path to the attached file</param>
+        /// <param name="url"></param>
+        /// <param name="subject"></param>
+        /// <param name="mimeType"></param>
+        /// <param name="chooser"></param>
+        /// <param name="chooserText"></param>
+        public static void Share(Notification _notif)
+        {
+            SocialHelper sh = _notif.param as SocialHelper;
+            ShareMultiple(sh.m_Body, new string[] { sh.m_FilePath }, sh.m_URL, sh.m_Subject, sh.m_MimeType, false, "Select sharing app");
+        }
+
+        /// <summary>
+        /// Shares multiple files at once
+        /// </summary>
+        /// <param name="body"></param>
+        /// <param name="filePaths">The paths to the attached files</param>
+        /// <param name="url"></param>
+        /// <param name="subject"></param>
+        /// <param name="mimeType"></param>
+        /// <param name="chooser"></param>
+        /// <param name="chooserText"></param>
+        public static void ShareMultiple(string body, string[] filePaths = null, string url = null, string subject = "", string mimeType = "text/html", bool chooser = false, string chooserText = "Select sharing app")
+        {
+#if UNITY_ANDROID
+		ShareAndroid(body, subject, url, filePaths, mimeType, chooser, chooserText);
+#elif UNITY_IOS
+            ShareIOS(body, subject, url, filePaths);
+#else
+        Debug.Log("No sharing set up for this platform.");
+        Debug.Log("Subject: " + subject);
+        Debug.Log("Body: " + body);
+#endif
+        }
+
+#if UNITY_ANDROID
+	public static void ShareAndroid(string body, string subject, string url, string[] filePaths, string mimeType, bool chooser, string chooserText)
+	{
+		using (AndroidJavaClass intentClass = new AndroidJavaClass("android.content.Intent"))
+		using (AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent"))
+		{
+			using (intentObject.Call<AndroidJavaObject>("setAction", intentClass.GetStatic<string>("ACTION_SEND")))
+			{ }
+			using (intentObject.Call<AndroidJavaObject>("setType", mimeType))
+			{ }
+			using (intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_SUBJECT"), subject))
+			{ }
+			using (intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TEXT"), body))
+			{ }
+
+			if (!string.IsNullOrEmpty(url))
+			{
+				// attach url
+				using (AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri"))
+				using (AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse", url))
+				using (intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject))
+				{ }
+			}
+			else if (filePaths != null)
+			{
+				// attach extra files (pictures, pdf, etc.)
+				using (AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri"))
+				using (AndroidJavaObject uris = new AndroidJavaObject("java.util.ArrayList"))
+				{
+					for (int i = 0; i < filePaths.Length; i++)
+					{
+						//instantiate the object Uri with the parse of the url's file
+						using (AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse", "file://" + filePaths[i]))
+						{
+							uris.Call<bool>("add", uriObject);
+						}
+					}
+
+					using (intentObject.Call<AndroidJavaObject>("putParcelableArrayListExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uris))
+					{ }
+				}
+			}
+
+			// finally start application
+			using (AndroidJavaClass unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+			using (AndroidJavaObject currentActivity = unity.GetStatic<AndroidJavaObject>("currentActivity"))
+			{
+				if (chooser)
+                {
+                    AndroidJavaObject jChooser = intentClass.CallStatic<AndroidJavaObject>("createChooser", intentObject, chooserText);
+                    currentActivity.Call("startActivity", jChooser);
+                }
+                else
+                {
+                    currentActivity.Call("startActivity", intentObject);
+                }
+			}
+		}
+	}
 #endif
 
-        public delegate void OnShareSuccess(string _platform);
-        public delegate void OnShareCancel(string _platform);
+#if UNITY_IOS
+        public struct ConfigStruct
+        {
+            public string title;
+            public string message;
+        }
 
-        public OnShareSuccess onShareSuccess = null;
-        public OnShareCancel onShareCancel = null;
+        [DllImport("__Internal")] private static extern void showAlertMessage(ref ConfigStruct conf);
+
+        public struct SocialSharingStruct
+        {
+            public string text;
+            public string subject;
+            public string filePaths;
+        }
+
+        [DllImport("__Internal")] private static extern void showSocialSharing(ref SocialSharingStruct conf);
+
+        public static void ShareIOS(string title, string message)
+        {
+            ConfigStruct conf = new ConfigStruct();
+            conf.title = title;
+            conf.message = message;
+            showAlertMessage(ref conf);
+        }
+
+        public static void ShareIOS(string body, string subject, string url, string[] filePaths)
+        {
+            SocialSharingStruct conf = new SocialSharingStruct();
+            conf.text = body;
+            string paths = string.Join(";", filePaths);
+            if (string.IsNullOrEmpty(paths))
+                paths = url;
+            else if (!string.IsNullOrEmpty(url))
+                paths += ";" + url;
+            conf.filePaths = paths;
+            conf.subject = subject;
+
+            showSocialSharing(ref conf);
+        }
+#endif
         private void Start()
         {
-            this.gameObject.name = "NativeBridge";
-        }
-        /// <summary>
-        /// 调用系统分享
-        /// </summary>
-        /// <param name="_descript">分享描述</param>
-        /// <param name="bytes">分享logo</param>
-        /// <param name="_shareurl">分享链接</param>
-        public void SocialShare(string _descript, byte[] bytes, string _shareurl)
-        {
-#if UNITY_IPHONE
-            if (_shareurl == null) return;
-            _NativeShare(this.name, _descript, System.Convert.ToBase64String(bytes), _shareurl);
-#endif
-        }
-
-        private void OnNativeShareSuccess(string _result)
-        {
-            if (onShareSuccess == null) return;
-            onShareSuccess.Invoke(_result);
-        }
-
-        private void OnNativeShareCancel(string _result)
-        {
-            if (onShareCancel == null) return;
-            onShareCancel.Invoke(_result);
+            Anywhere.NotifCenter.GetNotice.AddEventListener(NotifEventKey.SOCIAL_SHARE, Share);
         }
     }
 }

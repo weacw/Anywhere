@@ -2,38 +2,82 @@
 {
     public enum NotifEventKey
     {
-        //录屏开始
+        /// <summary>
+        /// 录屏开始
+        /// </summary>
         EVERYPLAY_RECORDING_START,
-        //录屏结束
-        EVERYPLAY_RECORDING_STOP,     
-        //删除内容
+        /// <summary>
+        /// 录屏结束
+        /// </summary>
+        EVERYPLAY_RECORDING_STOP,
+        /// <summary>
+        /// 删除内容
+        /// </summary>
         ASSETS_REMOVEALL,
-        //加载ab
+        /// <summary>
+        /// 加载ab
+        /// </summary>
         ASSETS_LOAD,
-        //实例化ab
+        /// <summary>
+        /// 实例化ab
+        /// </summary>
         AB_INSTANCE,
-        //播放视频
+        /// <summary>
+        /// 播放视频
+        /// </summary>
         ASSETS_VIDEOPLAY,
-        //显示召唤按钮
+        /// <summary>
+        /// 显示召唤按钮
+        /// </summary>
         UI_SHOWCALLBTN,
-        //设置提示
+        /// <summary>
+        /// 设置提示
+        /// </summary>
         UI_SETHINT,
-        //放置内容
+        /// <summary>
+        /// 放置内容
+        /// </summary>
         OPERATER_PLACECONTENT,
-        //设置内容的位置与focus位置相同
+        /// <summary>
+        /// 设置内容的位置与focus位置相同
+        /// </summary>
         OPERATER_SETFOCUSPOSTOCONTENT,
-        //从服务器获取分页信息
-        NET_GETALLPAGEINFO,   
-        //从服务检索完毕
-        NET_SEARCHPAGE,       
-        //AB下载中
-        NET_ABDOWNLOADING,   
-        //AB下载完成
-        NET_ABDOWNLOADCOMPLETE,   
-        //关闭ARKit   
+        /// <summary>
+        /// 从服务器获取分页信息
+        /// </summary>
+        NET_GETALLPAGEINFO,
+        /// <summary>
+        /// 从服务检索完毕
+        /// </summary>
+        NET_SEARCHPAGE,
+        /// <summary>
+        /// AB下载中
+        /// </summary>
+        NET_ABDOWNLOADING,
+        /// <summary>
+        /// AB下载完成
+        /// </summary>
+        NET_ABDOWNLOADCOMPLETE,
+        /// <summary>
+        /// 关闭ARKit   
+        /// </summary>
         ARKIT_PAUSE,
-        //开启ARKit
+        /// <summary>
+        /// 开启ARKit
+        /// </summary>
         ARKIT_PLAY,
-        ARKIT_FOCUS
+        /// <summary>
+        /// 开启Focus
+        /// </summary>
+        ARKIT_FOCUS_ON,
+        /// <summary>
+        /// 关闭Focus
+        /// </summary>        
+        ARKIT_FOCUS_OFF,
+
+        /// <summary>
+        ///分享
+        /// </summary> 
+        SOCIAL_SHARE
     }
 }

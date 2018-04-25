@@ -40,6 +40,21 @@ namespace Anywhere
 
                 if (SavedPath != null)
                     Debug.Log("Video saved: " + SavedPath);
+                // FileStream fs = new FileStream(SavedPath, FileMode.Open);
+                // long size = fs.Length;
+                // byte[] array = new byte[size];
+                // fs.Read(array, 0, array.Length);
+                // fs.Close();
+                // Debug.Log(array.Length);
+                yield return  new WaitForEndOfFrame();
+                Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.SOCIAL_SHARE, new SocialHelper()
+                {
+                    m_Body = "This is test",
+                    m_FilePath = SavedPath,
+                    m_Subject = "Share to your friends",
+                    m_MimeType = "media/mp4",
+                    m_URL = ""
+                });
             }
             else
             {
@@ -66,7 +81,7 @@ namespace Anywhere
 #if UNITY_ANDROID
 		recordedVideoDir = Path.Combine( new DirectoryInfo( Application.temporaryCachePath ).FullName, "sessions" );
 #elif UNITY_IOS
-        recordedVideoDir = new DirectoryInfo( Application.persistentDataPath ).Parent.FullName + "/tmp/Everyplay/session";
+            recordedVideoDir = new DirectoryInfo(Application.persistentDataPath).Parent.FullName + "/tmp/Everyplay/session";
 #endif
 
             FileInfo[] files = new DirectoryInfo(recordedVideoDir).GetFiles("*.mp4", SearchOption.AllDirectories);
@@ -99,7 +114,6 @@ namespace Anywhere
 			if( !async )
 			{
 				_FlipVideoSynchronous( recordedVideoDir, path );
-
 				if( !File.Exists( path ) )
 					return false;
 
