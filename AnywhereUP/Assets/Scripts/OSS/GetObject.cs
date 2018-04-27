@@ -51,7 +51,7 @@ namespace Aliyun.OSS
                     }
                 }
 
-                Debug.LogError("Get object succeeded");
+                // Debug.LogError("Get object succeeded");
             }
             catch (OssException ex)
             {

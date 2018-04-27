@@ -47,7 +47,7 @@ namespace Anywhere.UI
                 ListItem tmp_Itemscript = tmp_Item.GetComponent<ListItem>();
                 float tmp_Scale = 1 - Mathf.Abs(tmp_Item.DistanceWithViewPortSnapCenter) / 700f;
                 tmp_Scale = Mathf.Clamp(tmp_Scale, 0.8f, 1);
-                tmp_Itemscript.m_Contentrootobj.GetComponent<CanvasGroup>().alpha = tmp_Scale;
+                // tmp_Itemscript.m_Contentrootobj.GetComponent<CanvasGroup>().alpha = tmp_Scale;
                 tmp_Itemscript.m_Contentrootobj.transform.localScale = new Vector3(tmp_Scale, tmp_Scale, 1);
             }
         }
