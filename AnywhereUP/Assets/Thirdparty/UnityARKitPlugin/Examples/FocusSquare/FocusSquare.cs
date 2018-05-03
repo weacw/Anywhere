@@ -24,6 +24,7 @@ public class FocusSquare : MonoBehaviour
     private bool trackingInitialized;
 
     [SerializeField] private FocusState squareState;
+    private IEnumerator m_FocusCoroutine;
     public FocusState SquareState
     {
         get
@@ -44,10 +45,12 @@ public class FocusSquare : MonoBehaviour
     {
         SquareState = FocusState.Initializing;
         trackingInitialized = true;
+        m_FocusCoroutine = CheckingPlane();
 
         Anywhere.NotifCenter.GetNotice.AddEventListener(Anywhere.NotifEventKey.OPERATER_SETFOCUSPOSTOCONTENT, SyncFocusPosToContent);
         Anywhere.NotifCenter.GetNotice.AddEventListener(Anywhere.NotifEventKey.ARKIT_FOCUS_ON, TurnOnFocus);
         Anywhere.NotifCenter.GetNotice.AddEventListener(Anywhere.NotifEventKey.ARKIT_FOCUS_OFF, TurnOffFocus);
+        StartCoroutine(m_FocusCoroutine);
     }
 
 
@@ -66,8 +69,7 @@ public class FocusSquare : MonoBehaviour
         return false;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void UpdateFocus()
     {
         if (squareState == FocusState.Putdown) return;
         //use center of screen for focusing
@@ -110,9 +112,6 @@ public class FocusSquare : MonoBehaviour
 			//ARHitTestResultType.ARHitTestResultTypeFeaturePoint
 		};
 
-        
-
-
         foreach (ARHitTestResultType resultType in resultTypes)
         {
             if (HitTestWithResultType(point, resultType))
@@ -124,7 +123,6 @@ public class FocusSquare : MonoBehaviour
             }
         }
 #endif
-
         //if you got here, we have not found a plane, so if camera is facing below horizon, display the focus "finding" square
         if (trackingInitialized)
         {
@@ -184,6 +182,7 @@ public class FocusSquare : MonoBehaviour
         squareState = FocusState.Initializing;
         this.gameObject.SetActive(true);
         trackingInitialized = true;
+        StartCoroutine(m_FocusCoroutine);
     }
 
     /// <summary>
@@ -193,6 +192,20 @@ public class FocusSquare : MonoBehaviour
     private void TurnOffFocus(Anywhere.Notification _notif)
     {
         squareState = FocusState.Putdown;
+        StopCoroutine(m_FocusCoroutine);
         this.gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// 开启focus检测
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator CheckingPlane()
+    {
+        while (squareState == FocusState.Found || squareState == FocusState.Finding || squareState == FocusState.Initializing)
+        {
+            yield return null;
+            UpdateFocus();
+        }
     }
 }
