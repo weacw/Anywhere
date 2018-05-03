@@ -78,6 +78,10 @@
         /// <summary>
         ///分享
         /// </summary> 
-        SOCIAL_SHARE
+        SOCIAL_SHARE,
+        /// <summary>
+        /// 删除AR平面锚点
+        /// </summary>
+        ARKIT_DESTROYARANCHOR
     }
 }

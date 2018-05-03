@@ -11,7 +11,7 @@ namespace UnityEngine.XR.iOS
             PLAYING,
             PAUSSING
         };
-        public static ARKITSTATE m_ARKitState;
+        public ARKITSTATE m_ARKitState;
         UnityARSessionRunOption[] runOptions = new UnityARSessionRunOption[4];
         UnityARAlignment[] alignmentOptions = new UnityARAlignment[3];
         UnityARPlaneDetection[] planeOptions = new UnityARPlaneDetection[4];
@@ -46,9 +46,11 @@ namespace UnityEngine.XR.iOS
         /// <param name="_notif"></param>
         private void TurnOnARKit(Anywhere.Notification _notif)
         {
+            m_ARKitState = ARKITSTATE.PLAYING;
+
             ARKitWorldTrackingSessionConfiguration sessionConfig = new ARKitWorldTrackingSessionConfiguration(alignmentOptions[currentAlignmentIndex], planeOptions[currentPlaneIndex], true, false);
             UnityARSessionNativeInterface.GetARSessionNativeInterface().RunWithConfigAndOptions(sessionConfig, runOptions[currentOptionIndex]);
-            m_ARKitState = ARKITSTATE.PLAYING;
+            Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.ARKIT_DESTROYARANCHOR);
             Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.ARKIT_FOCUS_ON);
         }
 
@@ -58,9 +60,12 @@ namespace UnityEngine.XR.iOS
         /// <param name="_notif"></param>
         private void TurnOffARKit(Anywhere.Notification _notif)
         {
-            UnityARSessionNativeInterface.GetARSessionNativeInterface().Pause();
             m_ARKitState = ARKITSTATE.PAUSSING;
+
+            UnityARSessionNativeInterface.GetARSessionNativeInterface().Pause();
             Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.ARKIT_FOCUS_OFF);
+            Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.ARKIT_DESTROYARANCHOR);
+
             Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.ASSETS_REMOVEALL);
         }
 

@@ -22,39 +22,47 @@ public class FocusSquare : MonoBehaviour
     public LayerMask collisionLayerMask;
     public float findingSquareDist = 0.5f;
     private bool trackingInitialized;
+    private bool m_ShowedButton;
 
-    [SerializeField] private FocusState squareState;
+    private FocusState squareValue;
     private IEnumerator m_FocusCoroutine;
-    public FocusState SquareState
+    private FocusState SquareState
     {
         get
         {
-            return squareState;
+            return squareValue;
         }
         set
         {
-            squareState = value;
-            foundSquare.SetActive(squareState == FocusState.Found);
-            findingSquare.SetActive(squareState != FocusState.Found);
+            squareValue = value;
+            foundSquare.SetActive(squareValue == FocusState.Found);
+            findingSquare.SetActive(squareValue != FocusState.Found);
         }
     }
 
 
-    // Use this for initialization
-    void Start()
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    private void Start()
     {
-        SquareState = FocusState.Initializing;
-        trackingInitialized = true;
-        m_FocusCoroutine = CheckingPlane();
-
         Anywhere.NotifCenter.GetNotice.AddEventListener(Anywhere.NotifEventKey.OPERATER_SETFOCUSPOSTOCONTENT, SyncFocusPosToContent);
         Anywhere.NotifCenter.GetNotice.AddEventListener(Anywhere.NotifEventKey.ARKIT_FOCUS_ON, TurnOnFocus);
         Anywhere.NotifCenter.GetNotice.AddEventListener(Anywhere.NotifEventKey.ARKIT_FOCUS_OFF, TurnOffFocus);
-        StartCoroutine(m_FocusCoroutine);
+
+        SquareState = FocusState.Initializing;
+        trackingInitialized = true;
+
+        m_FocusCoroutine = CheckingPlane();
     }
 
-
-    bool HitTestWithResultType(ARPoint point, ARHitTestResultType resultTypes)
+    /// <summary>
+    /// 检测到平面
+    /// </summary>
+    /// <param name="point"></param>
+    /// <param name="resultTypes"></param>
+    /// <returns></returns>
+    private bool HitTestWithResultType(ARPoint point, ARHitTestResultType resultTypes)
     {
         List<ARHitTestResult> hitResults = UnityARSessionNativeInterface.GetARSessionNativeInterface().HitTest(point, resultTypes);
         if (hitResults.Count > 0)
@@ -71,7 +79,7 @@ public class FocusSquare : MonoBehaviour
 
     private void UpdateFocus()
     {
-        if (squareState == FocusState.Putdown) return;
+        if (SquareState == FocusState.Putdown) return;
         //use center of screen for focusing
         Vector3 center = new Vector3(Screen.width / 2, Screen.height / 2, findingSquareDist);
 
@@ -90,11 +98,15 @@ public class FocusSquare : MonoBehaviour
             //and the rotation from the transform of the plane collider
             SquareState = FocusState.Found;
             foundSquare.transform.rotation = hit.transform.rotation;
-            Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_SHOWCALLBTN);
+            if (!m_ShowedButton)
+            {
+                Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_SHOWCALLBTN);
+                m_ShowedButton = true;
+            }
             return;
         }
 
-
+        //#endif
 #else
         var screenPosition = Camera.main.ScreenToViewportPoint(center);
         ARPoint point = new ARPoint
@@ -117,8 +129,11 @@ public class FocusSquare : MonoBehaviour
             if (HitTestWithResultType(point, resultType))
             {
                 SquareState = FocusState.Found;
-                if(UnityARKitControl.m_ARKitState != UnityARKitControl.ARKITSTATE.PAUSSING)
+                if (!m_ShowedButton)
+                {
+                    m_ShowedButton = true;
                     Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_SHOWCALLBTN);
+                }
                 return;
             }
         }
@@ -179,9 +194,11 @@ public class FocusSquare : MonoBehaviour
     /// <param name="_notif"></param>
     private void TurnOnFocus(Anywhere.Notification _notif)
     {
-        squareState = FocusState.Initializing;
-        this.gameObject.SetActive(true);
+        m_ShowedButton = false;
         trackingInitialized = true;
+        SquareState = FocusState.Initializing;
+
+        this.gameObject.SetActive(true);
         StartCoroutine(m_FocusCoroutine);
     }
 
@@ -191,9 +208,10 @@ public class FocusSquare : MonoBehaviour
     /// <param name="_notif"></param>
     private void TurnOffFocus(Anywhere.Notification _notif)
     {
-        squareState = FocusState.Putdown;
-        StopCoroutine(m_FocusCoroutine);
+        trackingInitialized = false;
+        SquareState = FocusState.Putdown;
         this.gameObject.SetActive(false);
+        StopCoroutine(m_FocusCoroutine);
     }
 
     /// <summary>
@@ -202,7 +220,7 @@ public class FocusSquare : MonoBehaviour
     /// <returns></returns>
     private IEnumerator CheckingPlane()
     {
-        while (squareState == FocusState.Found || squareState == FocusState.Finding || squareState == FocusState.Initializing)
+        while (SquareState == FocusState.Found || SquareState == FocusState.Finding || SquareState == FocusState.Initializing)
         {
             yield return null;
             UpdateFocus();

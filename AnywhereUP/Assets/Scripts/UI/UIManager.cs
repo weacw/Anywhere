@@ -106,7 +106,7 @@ namespace Anywhere.UI
         public void JumpToARScene()
         {
             m_Mainuiroot.gameObject.SetActive(false);
-            m_Aruiroot.gameObject.SetActive(true);
+            m_Aruiroot.gameObject.SetActive(true);            
         }
 
         //场景跳转-主场景
