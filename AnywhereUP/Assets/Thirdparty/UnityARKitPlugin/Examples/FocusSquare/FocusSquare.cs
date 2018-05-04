@@ -141,7 +141,7 @@ public class FocusSquare : MonoBehaviour
         if (trackingInitialized)
         {
             SquareState = FocusState.Finding;
-            m_ShowedButton=false;
+            m_ShowedButton = false;
             Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_HIDECALLBTN);
             //check camera forward is facing downward
             if (Vector3.Dot(Camera.main.transform.forward, Vector3.down) > 0)
@@ -178,11 +178,15 @@ public class FocusSquare : MonoBehaviour
     /// <param name="_notif"></param>
     private void SyncFocusPosToContent(Anywhere.Notification _notif)
     {
-        Vector3 focusPos = foundSquare.transform.position;
+        //Vector3 focusPos = foundSquare.transform.position;
+        Vector3 dir = Camera.main.transform.position - foundSquare.transform.position;
+        Quaternion newQuat = Quaternion.LookRotation(dir);
+        newQuat.x = newQuat.z = 0;
         ContentPlaceHelper cph = new ContentPlaceHelper
         {
-            m_ContentPos = focusPos,
-            m_ContentRot = foundSquare.transform.localRotation,
+            //Camera.main.transform.rotation
+            m_ContentPos = foundSquare.transform.localPosition,
+            m_ContentRot = newQuat,
             m_FocusGameObject = this.gameObject
         };
         Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.OPERATER_PLACECONTENT, cph);
