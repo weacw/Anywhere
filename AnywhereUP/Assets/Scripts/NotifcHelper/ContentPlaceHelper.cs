@@ -5,5 +5,6 @@ using System;
 public class ContentPlaceHelper : EventArgs
 {
     public Vector3 m_ContentPos;
+    public Quaternion m_ContentRot;
     public GameObject m_FocusGameObject;
 }

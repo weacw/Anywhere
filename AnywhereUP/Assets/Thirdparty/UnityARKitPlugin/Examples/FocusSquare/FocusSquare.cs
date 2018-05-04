@@ -182,6 +182,7 @@ public class FocusSquare : MonoBehaviour
         ContentPlaceHelper cph = new ContentPlaceHelper
         {
             m_ContentPos = focusPos,
+            m_ContentRot = foundSquare.transform.localRotation,
             m_FocusGameObject = this.gameObject
         };
         Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.OPERATER_PLACECONTENT, cph);
