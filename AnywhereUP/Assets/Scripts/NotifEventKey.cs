@@ -31,6 +31,10 @@
         /// </summary>
         UI_SHOWCALLBTN,
         /// <summary>
+        /// 隐藏召唤按钮
+        /// </summary>
+        UI_HIDECALLBTN,
+        /// <summary>
         /// 设置提示
         /// </summary>
         UI_SETHINT,
@@ -82,6 +86,11 @@
         /// <summary>
         /// 删除AR平面锚点
         /// </summary>
-        ARKIT_DESTROYARANCHOR
+        ARKIT_DESTROYARANCHOR,
+
+        /// <summary>
+        /// 创建AR平面锚点
+        /// </summary>
+        ARKIT_CREATARANCHOR
     }
 }
