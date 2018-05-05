@@ -4,4 +4,7 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Artwork/Scenes/Anywhere.unity
+    guid: 8d19327a21e3c4be4b353ddd0780ce28

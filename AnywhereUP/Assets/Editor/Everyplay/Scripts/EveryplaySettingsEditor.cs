@@ -190,12 +190,12 @@ public class EveryplaySettingsEditor : Editor
 
         if (everyplaySettings != null)
         {
-            if (!Directory.Exists(System.IO.Path.Combine(Application.dataPath, "Resources/Everyplay")))
+            if (!Directory.Exists(System.IO.Path.Combine(Application.dataPath, "Plugins/Everyplay/Resources")))
             {
-                AssetDatabase.CreateFolder("Assets/Resources/", "Everyplay");
+                AssetDatabase.CreateFolder("Assets/Plugins/Everyplay", "Resources");
             }
 
-            AssetDatabase.CreateAsset(everyplaySettings, "Assets/Resources/Everyplay" + settingsFile + settingsFileExtension);
+            AssetDatabase.CreateAsset(everyplaySettings, "Assets/Plugins/Everyplay/Resources/" + settingsFile + settingsFileExtension);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
@@ -212,7 +212,7 @@ public class EveryplaySettingsEditor : Editor
 
     public void EnableTestButtons(bool enable)
     {
-        string dstFile = "Plugins/Resources/Everyplay/" + testButtonsResourceFile;
+        string dstFile = "Plugins/Everyplay/Resources/" + testButtonsResourceFile;
 
         if (enable)
         {

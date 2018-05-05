@@ -1695,10 +1695,10 @@ public class EveryplayEditorRecording
 {
     static EveryplayEditorRecording()
     {
-        EditorApplication.playmodeStateChanged = OnUnityPlayModeChanged;
+        EditorApplication.playModeStateChanged += OnUnityPlayModeChanged;
     }
 
-    private static void OnUnityPlayModeChanged()
+    private static void OnUnityPlayModeChanged(PlayModeStateChange _mode)
     {
         if (EditorApplication.isPaused == true)
         {
@@ -1707,6 +1707,7 @@ public class EveryplayEditorRecording
         else if (EditorApplication.isPlaying == true)
         {
             Everyplay.ResumeRecording();
+
         }
     }
 }

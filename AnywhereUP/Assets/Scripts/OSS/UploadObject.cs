@@ -34,7 +34,7 @@ namespace Anywhere
                      {
                          try
                          {
-                             var r = ossClient.EndPutObject(asyncResult);
+                             ossClient.EndPutObject(asyncResult);
                          }
                          catch (Exception ex)
                          {

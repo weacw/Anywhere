@@ -13,10 +13,25 @@ namespace Aliyun.OSS
 
         public static string Endpoint = "oss-cn-beijing.aliyuncs.com";
 
-        public static string DirToDownload = Path.Combine(Application.dataPath , "");
+        public static string DirToDownload = GetCachePath();
 
         public static string FileToUpload = Path.Combine(Application.dataPath, "");
 
         public static string BigFileToUpload = "";
+
+        static public string GetCachePath()
+        {
+            string cachePath;
+#if UNITY_EDITOR
+            cachePath = Application.streamingAssetsPath + "/ResCache";
+#elif UNITY_IPHONE
+		cachePath = Application.temporaryCachePath+"/ResCache";
+#elif UNITY_ANDROID
+        cachePath = "file://"+Application.persistentDataPath+"/ResCache";
+#endif
+            if (!Directory.Exists(cachePath))
+                Directory.CreateDirectory(cachePath);
+            return cachePath;
+        }
     }
 }
