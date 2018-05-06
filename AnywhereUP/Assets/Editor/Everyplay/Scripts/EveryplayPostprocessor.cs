@@ -382,7 +382,7 @@ public static class EveryplayPostprocessor
                     key.InnerText = "NSCameraUsageDescription";
 
                     XmlElement str = xmlDocument.CreateElement("string");
-                    str.InnerText = "Everyplay requires access to the camera";
+                    str.InnerText = "Anywhere requires access to the camera";
 
                     dict.AppendChild(key);
                     dict.AppendChild(str);
@@ -397,7 +397,7 @@ public static class EveryplayPostprocessor
                     key.InnerText = "NSMicrophoneUsageDescription";
 
                     XmlElement str = xmlDocument.CreateElement("string");
-                    str.InnerText = "Everyplay requires access to the microphone";
+                    str.InnerText = "Anywhere requires access to the microphone";
 
                     dict.AppendChild(key);
                     dict.AppendChild(str);
@@ -412,7 +412,7 @@ public static class EveryplayPostprocessor
                     key.InnerText = "NSPhotoLibraryUsageDescription";
 
                     XmlElement str = xmlDocument.CreateElement("string");
-                    str.InnerText = "Everyplay requires access to the photo library";
+                    str.InnerText = "Anywhere requires access to the photo library";
 
                     dict.AppendChild(key);
                     dict.AppendChild(str);

@@ -47,6 +47,7 @@ namespace Anywhere.UI
             m_Tiptoptext = m_Aruiroot.Find("Hint/Hintbackground/Hinttext").GetComponent<Text>();
             m_CallBtn = m_Aruiroot.Find("CallPortalBtn").GetComponent<Button>();
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_SHOWCALLBTN, ShowCallBtn);
+            NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_HIDECALLBTN, HideCallBtn);
             Init();
         }
         void Update()
@@ -61,6 +62,7 @@ namespace Anywhere.UI
             NetHttp.Instance.GetPageInfo();
             ClickEventListener tmp_Listener = ClickEventListener.Get(m_ReturnToMainButton.gameObject);
             tmp_Listener.SetClickEventHandler(OnBackToMainButtonClick);
+            m_RecordButton.GetComponent<Button>().onClick.AddListener(() => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.EVERYPLAY_RECORDING_START));
         }
 
         private void ShowCallBtn(Notification _notif)
@@ -70,7 +72,13 @@ namespace Anywhere.UI
                 m_CallBtn.gameObject.SetActive(true);
             }
         }
-
+        private void HideCallBtn(Notification _notif)
+        {
+            if (m_CallBtn.gameObject.activeSelf)
+            {
+                m_CallBtn.gameObject.SetActive(false);
+            }
+        }
 
         #endregion
 
@@ -85,9 +93,7 @@ namespace Anywhere.UI
 
         public void Return()
         {
-            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_REMOVEALL);
-            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_FOCUS);
-            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_PAUSE);            
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_PAUSE);
         }
 
         private void Refresh()
