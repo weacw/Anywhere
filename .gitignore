@@ -33,5 +33,5 @@ sysinfo.txt
 *.apk
 *.unitypackage
 AnywhereUP/.vscode/
-[Ss]treamingAssets/
-[Tt]hird Parties[Model]/
+AnywhereUP/Assets/StreamingAssets/
+AnywhereUP/Assets/Artwork/Third Parties[Model]/
