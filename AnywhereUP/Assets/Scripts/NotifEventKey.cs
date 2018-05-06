@@ -31,6 +31,10 @@
         /// </summary>
         UI_SHOWCALLBTN,
         /// <summary>
+        /// 隐藏召唤按钮
+        /// </summary>
+        UI_HIDECALLBTN,
+        /// <summary>
         /// 设置提示
         /// </summary>
         UI_SETHINT,
@@ -74,10 +78,18 @@
         /// 关闭Focus
         /// </summary>        
         ARKIT_FOCUS_OFF,
-
+        /// <summary>
+        /// 删除锚点
+        /// </summary>        
+        ARKIT_DESTORYARANCHOR,
+        /// <summary>
+        /// 创建锚点
+        /// </summary>        
+        ARKIT_CREATEARANCHOR,
         /// <summary>
         ///分享
         /// </summary> 
-        SOCIAL_SHARE
+        SOCIAL_SHARE,
+
     }
 }

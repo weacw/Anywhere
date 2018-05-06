@@ -47,6 +47,7 @@ namespace Anywhere.UI
             m_Tiptoptext = m_Aruiroot.Find("Hint/Hintbackground/Hinttext").GetComponent<Text>();
             m_CallBtn = m_Aruiroot.Find("CallPortalBtn").GetComponent<Button>();
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_SHOWCALLBTN, ShowCallBtn);
+            NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_HIDECALLBTN, HideCallBtn);
             Init();
         }
         void Update()
@@ -71,7 +72,13 @@ namespace Anywhere.UI
                 m_CallBtn.gameObject.SetActive(true);
             }
         }
-
+        private void HideCallBtn(Notification _notif)
+        {
+            if (m_CallBtn.gameObject.activeSelf)
+            {
+                m_CallBtn.gameObject.SetActive(false);
+            }
+        }
 
         #endregion
 

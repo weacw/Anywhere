@@ -6,12 +6,6 @@ namespace UnityEngine.XR.iOS
 {
     public class UnityARKitControl : MonoBehaviour
     {
-        public enum ARKITSTATE
-        {
-            PLAYING,
-            PAUSSING
-        };
-        public static ARKITSTATE m_ARKitState;
         UnityARSessionRunOption[] runOptions = new UnityARSessionRunOption[4];
         UnityARAlignment[] alignmentOptions = new UnityARAlignment[3];
         UnityARPlaneDetection[] planeOptions = new UnityARPlaneDetection[4];
@@ -45,11 +39,11 @@ namespace UnityEngine.XR.iOS
         /// </summary>
         /// <param name="_notif"></param>
         private void TurnOnARKit(Anywhere.Notification _notif)
-        {
+        {            
             ARKitWorldTrackingSessionConfiguration sessionConfig = new ARKitWorldTrackingSessionConfiguration(alignmentOptions[currentAlignmentIndex], planeOptions[currentPlaneIndex], true, false);
             UnityARSessionNativeInterface.GetARSessionNativeInterface().RunWithConfigAndOptions(sessionConfig, runOptions[currentOptionIndex]);
-            m_ARKitState = ARKITSTATE.PLAYING;
             Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.ARKIT_FOCUS_ON);
+            Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.ARKIT_CREATEARANCHOR);
         }
 
         /// <summary>
@@ -58,10 +52,10 @@ namespace UnityEngine.XR.iOS
         /// <param name="_notif"></param>
         private void TurnOffARKit(Anywhere.Notification _notif)
         {
-            UnityARSessionNativeInterface.GetARSessionNativeInterface().Pause();
-            m_ARKitState = ARKITSTATE.PAUSSING;
+            UnityARSessionNativeInterface.GetARSessionNativeInterface().Pause();            
             Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.ARKIT_FOCUS_OFF);
             Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.ASSETS_REMOVEALL);
+            Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.ARKIT_DESTORYARANCHOR);
         }
 
         // void OnGUI()
