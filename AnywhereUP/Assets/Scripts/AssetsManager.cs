@@ -20,8 +20,9 @@ namespace Anywhere
         {
             m_OutPath = Config.GetCachePath();
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_REMOVEALL, RemoveABSource);
-            NotifCenter.GetNotice.AddEventListener(NotifEventKey.AB_INSTANCE, InstaniateAB);
+            NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_ABINSTANCE, InstaniateAB);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_VIDEOPLAY, PlayVideo);
+            NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_IMAGELOAD, LoadTexture);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.OPERATER_PLACECONTENT, PlaceContent);
             // NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.AB_INSTANCE, new ABInstaniateHelper() { m_ABName = "testscene" });
         }
@@ -49,14 +50,12 @@ namespace Anywhere
             StartCoroutine(SyncLoadABFromFile(abhelper.m_ABName));
         }
 
-        private Texture LoadTexture(string _texturename, int _t2dwith, int _t2dheight)
+        private void LoadTexture(Notification _notif)
         {
-
-            byte[] m_T2dbyts = File.ReadAllBytes(Config.DirToDownload + "/Download/Texture/" + _texturename + ".png");
-            Texture2D m_T2d = new Texture2D(_t2dwith, _t2dheight);
-            m_T2d.LoadImage(m_T2dbyts);
-            return m_T2d;
-
+            Image360Helper tmp_image360Helper = _notif.param as Image360Helper;            
+            byte[] m_T2dbyts = File.ReadAllBytes(Config.DirToDownload + "/" + tmp_image360Helper.m_ImageName + ".jpg");
+            Texture2D m_T2d = new Texture2D(tmp_image360Helper.m_Width, tmp_image360Helper.m_Height);
+            m_T2d.LoadImage(m_T2dbyts);          
         }
 
         /// <summary>
@@ -78,19 +77,19 @@ namespace Anywhere
         private void PlayVideo(Notification _notif)
         {
             VideoPlayerHelper tmp_videoPlayerHelper = _notif.param as VideoPlayerHelper;
-            VideoPlayer m_Vp = tmp_videoPlayerHelper.m_Videorender.GetComponent<VideoPlayer>();
-            if (m_Vp != null)
-            {
-                if (m_Vp.isPlaying)
-                    m_Vp.Stop();
-            }
-            else
-                m_Vp = tmp_videoPlayerHelper.m_Videorender.AddComponent<VideoPlayer>();
+            GameObject tmp_videoPlayer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            Renderer tmp_rd = tmp_videoPlayer.GetComponent<Renderer>();
+            tmp_rd.material = Resources.Load<Material>("Video360_Mat");
+            VideoPlayer m_Vp = tmp_videoPlayer.AddComponent<VideoPlayer>();
             m_Vp.source = VideoSource.Url;
-            m_Vp.url = "file:///" + Config.DirToDownload + "/Download/Video/" + tmp_videoPlayerHelper.m_Videoname + ".mp4";
+#if UNITY_EDITOR
+            m_Vp.url = Config.DirToDownload + "/" + tmp_videoPlayerHelper.m_Videoname + ".mp4";
+#else
+            m_Vp.url = "file://"+ Config.DirToDownload +"/"+ tmp_videoPlayerHelper.m_Videoname + ".mp4";
+#endif
             m_Vp.renderMode = VideoRenderMode.MaterialOverride;
-            m_Vp.targetMaterialRenderer = tmp_videoPlayerHelper.m_Videorender.GetComponent<Renderer>();
-            tmp_videoPlayerHelper.m_Videorender.GetComponent<Renderer>().material.shader = Shader.Find("Custom/Video360");
+            m_Vp.targetMaterialRenderer = tmp_videoPlayer.GetComponent<Renderer>();
+            //tmp_videoPlayerHelper.m_Videorender.GetComponent<Renderer>().material.shader = Shader.Find("Custom/Video360");
             m_Vp.Play();
             m_Vp.isLooping = tmp_videoPlayerHelper.m_Isloop;
         }
@@ -98,7 +97,11 @@ namespace Anywhere
 
 
 
-
+        /// <summary>
+        /// 异步将Assetbundle文件从缓存中加载到内存
+        /// </summary>
+        /// <param name="_name"></param>
+        /// <returns></returns>
         private IEnumerator SyncLoadABFromFile(string _name)
         {
             yield return null;
@@ -109,10 +112,16 @@ namespace Anywhere
                 StartCoroutine(SyncABLoad(abcr));
             };
         }
-        private IEnumerator SyncABLoad(AssetBundleCreateRequest _r)
+
+        /// <summary>
+        /// 异步将内存中的Assetbundle实例化到场景中
+        /// </summary>
+        /// <param name="_request"></param>
+        /// <returns></returns>
+        private IEnumerator SyncABLoad(AssetBundleCreateRequest _request)
         {
             yield return null;
-            m_AssetBundle = _r.assetBundle;
+            m_AssetBundle = _request.assetBundle;
             AssetBundleRequest r = m_AssetBundle.LoadAllAssetsAsync<GameObject>();
             if (r == null) yield return null; ;
             m_Content = Instantiate(r.asset as GameObject);

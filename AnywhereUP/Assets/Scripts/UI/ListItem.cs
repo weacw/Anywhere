@@ -81,19 +81,42 @@ namespace Anywhere.UI
 
         void OnDownloadBtnClick(GameObject _btn)
         {
-            Debug.Log("开始下载");
+
             if (m_Assetisdownloaded)
             {
+                switch (m_Pageitem.type.ToLower())
+                {
+                    case "assetbundle":
+                        NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_ABINSTANCE, new ABInstaniateHelper() { m_ABName = m_CurData });
+                        break;
+                    case "video360":
+                        NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_VIDEOPLAY, new VideoPlayerHelper() { m_Videoname = m_Pageitem.assetName, m_Isloop = true });
+                        break;
+                    case "image360":
+                        NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_IMAGELOAD, new Image360Helper() { m_ImageName = m_Pageitem.assetName });
+                        break;
+                }
                 NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_PLAY);
-                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.AB_INSTANCE, new ABInstaniateHelper() { m_ABName = m_CurData });
                 //进入场景
                 UIManager.Instance.JumpToARScene();
             }
             else
             {
-                Debug.Log("下载AB包：" + m_Pageitem.assetName + "." + m_Pageitem.type.ToLower());
+                string tmpFileExtension = null;
+                switch (m_Pageitem.type.ToLower())
+                {
+                    case "assetbundle":
+                        tmpFileExtension = "assetbundle";
+                        break;
+                    case "video360":
+                        tmpFileExtension = "mp4";
+                        break;
+                    case "image360":
+                        tmpFileExtension = "jpg";
+                        break;
+                }
                 UIManager.Instance.StartListItemABDownload(this);
-                GetObject.AsyncGetObject("anywhere-v-1", m_Pageitem.assetName + "." + m_Pageitem.type.ToLower());
+                GetObject.AsyncGetObject("anywhere-v-1", m_Pageitem.assetName + "." + tmpFileExtension);
             }
         }
 

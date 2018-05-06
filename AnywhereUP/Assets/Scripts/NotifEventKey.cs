@@ -21,11 +21,15 @@
         /// <summary>
         /// 实例化ab
         /// </summary>
-        AB_INSTANCE,
+        ASSETS_ABINSTANCE,
         /// <summary>
         /// 播放视频
         /// </summary>
         ASSETS_VIDEOPLAY,
+        /// <summary>
+        /// 加载360图片
+        /// </summary>
+        ASSETS_IMAGELOAD,
         /// <summary>
         /// 显示召唤按钮
         /// </summary>
