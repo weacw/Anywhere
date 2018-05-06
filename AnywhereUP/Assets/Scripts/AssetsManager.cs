@@ -5,6 +5,7 @@ using Aliyun.OSS;
 using System.IO;
 using System.Collections;
 using UnityEngine.XR.iOS;
+using UnityEngine.SceneManagement;
 
 namespace Anywhere
 {
@@ -32,7 +33,7 @@ namespace Anywhere
             ContentPlaceHelper cph = _notif.param as ContentPlaceHelper;
             m_Content.transform.localPosition = cph.m_ContentPos;
             m_Content.transform.rotation = cph.m_ContentRot;
-            m_Content.SetActive(true);            
+            m_Content.SetActive(true);
         }
 
 
@@ -110,13 +111,35 @@ namespace Anywhere
         }
         private IEnumerator SyncABLoad(AssetBundleCreateRequest _r)
         {
+            bool loaded = false;
             yield return null;
             m_AssetBundle = _r.assetBundle;
-            AssetBundleRequest r = m_AssetBundle.LoadAllAssetsAsync<GameObject>();
-            if (r == null) yield return null; ;
-            m_Content = Instantiate(r.asset as GameObject);
+            if (m_AssetBundle.isStreamedSceneAssetBundle)
+            {
+                string[] scenePaths = m_AssetBundle.GetAllScenePaths();
+                string sceneName = Path.GetFileNameWithoutExtension(scenePaths[0]);
+                SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+                SceneManager.sceneLoaded += (name, mode) =>
+                {
+                    m_Content = GameObject.Find("ContentRoot");
+                    loaded = true;
+                };
+                while (!loaded)
+                {
+                    yield return null;
+                }
+            }
+            else
+            {
+                AssetBundleRequest r = m_AssetBundle.LoadAllAssetsAsync<GameObject>();
+
+                if (r == null) yield return null; ;
+                m_Content = Instantiate(r.asset as GameObject);
+            }
+
             m_Content.SetActive(false);
             m_AssetBundle.Unload(false);
+
         }
     }
 }
