@@ -128,7 +128,6 @@ namespace Anywhere.UI
                 Sprite tmp_Sprite = Sprite.Create(tmp_tex2d, new Rect(0, 0, tmp_tex2d.width, tmp_tex2d.height), new Vector2(0, 0));
                 tmp_Sprite.name = _item.thumbnailName;
                 ItemBackgroundDic.Add(_item.id, tmp_Sprite);
-                Debug.Log("download background:" + _item.thumbnailName + ".png");
             }
         }
 

@@ -54,7 +54,6 @@ namespace Anywhere.UI
 
         void Init()
         {
-            Debug.Log("start");
             m_Inputfield.onEndEdit.AddListener(OnInputFiledEndEdit);
             NetHttp.Instance.GetPageInfo();
             ClickEventListener tmp_Listener = ClickEventListener.Get(m_ReturnToMainButton.gameObject);

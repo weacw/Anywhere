@@ -61,7 +61,6 @@ namespace Anywhere.Net
             StringBuilder getUrl = new StringBuilder();
             getUrl.Append(UIConst.m_HOST).Append("getinfo.php?page=" + m_PageNum);
             WWW www = new WWW(getUrl.ToString());
-            Debug.Log(getUrl.ToString());
             yield return www;
             if (www.error != null)
             {

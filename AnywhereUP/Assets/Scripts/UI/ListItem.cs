@@ -61,18 +61,34 @@ namespace Anywhere.UI
             m_CurData = _itemdata.assetName;
             //TODO  判断是否已下载
             m_Assetisdownloaded = false;
-            if (m_Assetisdownloaded)
+            string path = Application.streamingAssetsPath + "/ResCache/" + _itemdata.assetName + "." + _itemdata.type;
+            Loom.RunAsync(() =>
             {
-                m_Downloadbtntext.text = "打开";
-            }
-            else
-            {
-                m_Downloadbtntext.text = "下载";
-            }
-            if (DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id) != null)
-            {
-                m_Icon.sprite = DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id);
-            }
+                if (File.Exists(path))
+                {
+                    m_Assetisdownloaded = true;
+                }
+                Loom.QueueOnMainThread((parm) =>
+                {
+                    if (m_Assetisdownloaded)
+                    {
+                        m_Downloadbtntext.text = "打开";
+                    }
+                    else
+                    {
+                        m_Downloadbtntext.text = "下载";
+                    }
+                    if (DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id) != null)
+                    {
+                        m_Icon.sprite = DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id);
+                    }
+                }, null);
+            });
+
+
+
+
+
             //Texture2D m_Tex = GetIcon(50, 50);
             //Sprite tempSprite = Sprite.Create(m_Tex, new Rect(0, 0, m_Tex.width, m_Tex.height), new Vector2(0, 0));
             //m_Icon.sprite = tempSprite;
