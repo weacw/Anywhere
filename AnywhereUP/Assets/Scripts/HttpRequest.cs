@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Anywhere
 {
-	[CreateAssetMenu(menuName="Anywhere/HttpRequset")]
+	[CreateAssetMenu(menuName="Anywhere/Http/Http Requset")]
     public class HttpRequest : ScriptableObject
     {
         public void GetHttpResponse(Anywhere.Notification _notif)
