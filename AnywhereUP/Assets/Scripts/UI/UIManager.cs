@@ -7,14 +7,12 @@
 *		
 */
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Anywhere.Net;
 using Aliyun.OSS;
 using SuperScrollView;
-using System.IO;
+
 
 namespace Anywhere.UI
 {
@@ -35,8 +33,7 @@ namespace Anywhere.UI
         private GameObject m_ReturnToMainButton;
         private GameObject m_RecordButton;
         private Text m_Tiptoptext;//上方提示文字
-
-
+       
         #region 生命周期
         private void Start()
         {
@@ -48,7 +45,7 @@ namespace Anywhere.UI
             m_CallBtn = m_Aruiroot.Find("CallPortalBtn").GetComponent<Button>();
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_SHOWCALLBTN, ShowCallBtn);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_HIDECALLBTN, HideCallBtn);
-            Init();
+            Init();            
         }
         void Update()
         {
@@ -57,7 +54,6 @@ namespace Anywhere.UI
 
         void Init()
         {
-            Debug.Log("start");
             m_Inputfield.onEndEdit.AddListener(OnInputFiledEndEdit);
             NetHttp.Instance.GetPageInfo();
             ClickEventListener tmp_Listener = ClickEventListener.Get(m_ReturnToMainButton.gameObject);

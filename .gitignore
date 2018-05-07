@@ -32,6 +32,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
-AnywhereUP/.vscode/
-AnywhereUP/ProjectSettings/ProjectVersion.txt
-AnywhereUP/Assets/StreamingAssets/
+.vscode/
+StreamingAssets/
+Third Parties model/
+Third Parties model.meta

@@ -123,12 +123,25 @@ namespace Anywhere.UI
         {
             foreach (PageItem _item in m_Itemdatalist)
             {
-                GetObject.SyncGetObject(UIConst.m_BUCKETNAME, _item.thumbnailName + ".png");
-                Texture2D tmp_tex2d = GetIcon(_item,10, 10);
-                Sprite tmp_Sprite = Sprite.Create(tmp_tex2d, new Rect(0, 0, tmp_tex2d.width, tmp_tex2d.height), new Vector2(0, 0));
-                tmp_Sprite.name = _item.thumbnailName;
-                ItemBackgroundDic.Add(_item.id, tmp_Sprite);
-                Debug.Log("download background:" + _item.thumbnailName + ".png");
+                //GetObject.SyncGetObject(UIConst.m_BUCKETNAME, _item.thumbnailName + ".png");
+                //Texture2D tmp_tex2d = GetIcon(_item,10, 10);
+                //Sprite tmp_Sprite = Sprite.Create(tmp_tex2d, new Rect(0, 0, tmp_tex2d.width, tmp_tex2d.height), new Vector2(0, 0));
+                //tmp_Sprite.name = _item.thumbnailName;
+                //ItemBackgroundDic.Add(_item.id, tmp_Sprite);
+
+
+                Loom.RunAsync(() =>
+                {
+                    GetObject.SyncGetObject(UIConst.m_BUCKETNAME, _item.thumbnailName + ".png");
+                    Loom.QueueOnMainThread((parm) =>
+                    {
+
+                        Texture2D tmp_tex2d = GetIcon(_item, 10, 10);
+                        Sprite tmp_Sprite = Sprite.Create(tmp_tex2d, new Rect(0, 0, tmp_tex2d.width, tmp_tex2d.height), new Vector2(0, 0));
+                        tmp_Sprite.name = _item.thumbnailName;
+                        ItemBackgroundDic.Add(_item.id, tmp_Sprite);
+                    }, null);
+                });
             }
         }
 
