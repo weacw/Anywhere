@@ -62,14 +62,14 @@ namespace Anywhere.UI
             //TODO  判断是否已下载
             m_Assetisdownloaded = false;
             string path = Application.streamingAssetsPath + "/ResCache/" + _itemdata.assetName + "." + _itemdata.type;
-            Loom.RunAsync(() =>
-            {
+            //Loom.RunAsync(() =>
+            //{
                 if (File.Exists(path))
                 {
                     m_Assetisdownloaded = true;
                 }
-                Loom.QueueOnMainThread((parm) =>
-                {
+                //Loom.QueueOnMainThread((parm) =>
+                //{
                     if (m_Assetisdownloaded)
                     {
                         m_Downloadbtntext.text = "打开";
@@ -80,10 +80,11 @@ namespace Anywhere.UI
                     }
                     if (DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id) != null)
                     {
+                        Debug.Log("123");
                         m_Icon.sprite = DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id);
                     }
-                }, null);
-            });
+                //}, null);
+            //});
 
 
 

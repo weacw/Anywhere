@@ -72,7 +72,7 @@ namespace Anywhere.UI
         /// </summary>
         /// <param name="_itemid"></param>
         /// <returns></returns>
-        public PageItem GetItemDataByPlace(string _place,out int index)
+        public PageItem GetItemDataByPlace(string _place, out int index)
         {
             int tmp_Count = m_Itemdatalist.Count;
             for (int i = 0; i < tmp_Count; i++)
@@ -86,7 +86,7 @@ namespace Anywhere.UI
             index = 0;
             return null;
         }
-        
+
         /// <summary>
         /// 数据个数
         /// </summary>
@@ -106,7 +106,6 @@ namespace Anywhere.UI
         {
             m_Itemdatalist = new List<PageItem>(_itemarray);
             DownItemBackground();
-            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.NET_GETALLPAGEINFO);
         }
 
         public void AddDatas(PageItem[] _items)
@@ -121,31 +120,35 @@ namespace Anywhere.UI
         /// </summary>
         private void DownItemBackground()
         {
-            foreach (PageItem _item in m_Itemdatalist)
+            Loom.RunAsync(() =>
             {
-                //GetObject.SyncGetObject(UIConst.m_BUCKETNAME, _item.thumbnailName + ".png");
-                //Texture2D tmp_tex2d = GetIcon(_item,10, 10);
-                //Sprite tmp_Sprite = Sprite.Create(tmp_tex2d, new Rect(0, 0, tmp_tex2d.width, tmp_tex2d.height), new Vector2(0, 0));
-                //tmp_Sprite.name = _item.thumbnailName;
-                //ItemBackgroundDic.Add(_item.id, tmp_Sprite);
-
-
-                Loom.RunAsync(() =>
+                bool wasCreated = false;
+                foreach (PageItem _item in m_Itemdatalist)
                 {
+                    //GetObject.SyncGetObject(UIConst.m_BUCKETNAME, _item.thumbnailName + ".png");
+                    //Texture2D tmp_tex2d = GetIcon(_item, 10, 10);
+                    //Sprite tmp_Sprite = Sprite.Create(tmp_tex2d, new Rect(0, 0, tmp_tex2d.width, tmp_tex2d.height), new Vector2(0, 0));
+                    //tmp_Sprite.name = _item.thumbnailName;
+                    //ItemBackgroundDic.Add(_item.id, tmp_Sprite);
+
+
+
                     GetObject.SyncGetObject(UIConst.m_BUCKETNAME, _item.thumbnailName + ".png");
                     Loom.QueueOnMainThread((parm) =>
                     {
-
                         Texture2D tmp_tex2d = GetIcon(_item, 10, 10);
                         Sprite tmp_Sprite = Sprite.Create(tmp_tex2d, new Rect(0, 0, tmp_tex2d.width, tmp_tex2d.height), new Vector2(0, 0));
                         tmp_Sprite.name = _item.thumbnailName;
                         ItemBackgroundDic.Add(_item.id, tmp_Sprite);
+                        if (!wasCreated)
+                            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.NET_GETALLPAGEINFO);
+                        wasCreated = true;
                     }, null);
-                });
-            }
+                }
+            });
         }
 
-        private Texture2D GetIcon(PageItem _item,int _t2dwith, int _t2dheight)
+        private Texture2D GetIcon(PageItem _item, int _t2dwith, int _t2dheight)
         {
             byte[] m_T2dbyts = File.ReadAllBytes(Path.Combine(Config.DirToDownload, _item.thumbnailName + ".png"));
             Texture2D m_T2d = new Texture2D(_t2dwith, _t2dheight);
@@ -157,11 +160,11 @@ namespace Anywhere.UI
         {
             if (ItemBackgroundDic.ContainsKey(_id))
             {
-               return ItemBackgroundDic[_id];
+                return ItemBackgroundDic[_id];
             }
             return null;
         }
-        
+
 
         #region 测试功能
 

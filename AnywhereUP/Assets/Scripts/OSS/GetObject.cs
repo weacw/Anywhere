@@ -23,8 +23,7 @@ namespace Aliyun.OSS
     {
         private static float m_DownLoadProgress;
         private static DownLoadState m_DownLoadState;
-
-
+        
         static AutoResetEvent _event = new AutoResetEvent(false);
         public static void SyncGetObject(string bucketName, string key)
         {
@@ -50,8 +49,7 @@ namespace Aliyun.OSS
 
                     }
                 }
-
-                Debug.LogError("Get object succeeded");
+                Debug.LogError("Get object succeeded");                
             }
             catch (OssException ex)
             {
