@@ -90,6 +90,7 @@
         ///分享
         /// </summary> 
         SOCIAL_SHARE,
-
+        HTTP_GETREQUEST,
+        HTTP_DOWNLOADFILE
     }
 }
