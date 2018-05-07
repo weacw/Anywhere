@@ -22,7 +22,7 @@ public class Configs : ScriptableObject
     {
         get
         {
-            return "https://aw.weacw.com/anywehre";
+            return "https://aw.weacw.com/anywhere";
         }
     }
 
