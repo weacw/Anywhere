@@ -23,7 +23,7 @@ public class ByteConverter
 
             byte[] destination = ms.ToArray();
 
-            Debug.Log(source.Length.ToString() + " vs " + ms.Length.ToString());
+            //Debug.Log(source.Length.ToString() + " vs " + ms.Length.ToString());
 
             return destination;
         }
@@ -44,7 +44,7 @@ public class ByteConverter
 
             byte[] destination = output.ToArray();
 
-            Debug.Log("Decompress Size : " + output.Length);
+            //Debug.Log("Decompress Size : " + output.Length);
 
             return destination;
         }
