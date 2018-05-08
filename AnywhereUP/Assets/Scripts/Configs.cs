@@ -58,4 +58,16 @@ public class Configs : ScriptableObject
             return Application.persistentDataPath + "/cache/";
         }
     }
+
+    /// <summary>
+    /// oss资源地址
+    /// </summary>
+    public string m_OSSURI
+    {
+        get
+        {
+            return "https://oss.weacw.com/";
+        }
+    }
+
 }
