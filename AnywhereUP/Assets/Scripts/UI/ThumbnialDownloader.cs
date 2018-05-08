@@ -9,9 +9,10 @@ namespace Anywhere
     [CreateAssetMenu(menuName = "Anywhere/Http/ThumbnialDownloader")]
     public class ThumbnialDownloader : ScriptableObject
     {
-        private int m_PageIndex = 0;
+        //private int m_PageIndex = 0;
         public void ThumbDownload()
         {
+            int m_PageIndex = 0;
             HttpRequestHelper helper = new HttpRequestHelper()
             {
                 m_URI = Configs.GetConfigs.m_GetInfoHost + m_PageIndex,
@@ -19,6 +20,7 @@ namespace Anywhere
                 {
                     Loom.QueueOnMainThread((parm) =>
                     {
+                        Debug.Log(json);
                         HttpSaveDataHelper tmp_SaveDataHelper = new HttpSaveDataHelper();
                         tmp_SaveDataHelper.m_PageItemArray = (JsonHelper.FromJson<PageItem>(json));
                         NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_SAVEDATA, tmp_SaveDataHelper);

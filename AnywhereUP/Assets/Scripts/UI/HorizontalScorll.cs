@@ -117,7 +117,24 @@ namespace Anywhere.UI
             }
             else //本地没有 网络检索
             {
-                NetHttp.Instance.GetSerchInfo(_place);
+                // NetHttp.Instance.GetSerchInfo(_place);
+                HttpRequestHelper tmp_HttpRequestHelper = new HttpRequestHelper();
+                tmp_HttpRequestHelper.m_URI = Configs.GetConfigs.m_SearchInfoHost + _place;
+                tmp_HttpRequestHelper.m_TimeOut = 30000;
+                tmp_HttpRequestHelper.m_Succeed = (json) =>
+                {
+                    PageItem[] tmp_Itemarray = JsonHelper.FromJson<PageItem>(json);
+                    if (tmp_Itemarray.Length <= 0)
+                    {
+                        Debug.Log("Not found");
+                        return;
+                    }
+                    HttpSaveDataHelper tmp_SaveDataHelper = new HttpSaveDataHelper();
+                    tmp_SaveDataHelper.m_PageItemArray = tmp_Itemarray;
+                    tmp_SaveDataHelper.m_Action = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.NET_SEARCHPAGE);
+                    NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_SAVEDATA, tmp_SaveDataHelper);
+                };
+                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETREQUEST, tmp_HttpRequestHelper);
             }
         }
 

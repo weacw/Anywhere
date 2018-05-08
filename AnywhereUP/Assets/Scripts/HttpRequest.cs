@@ -2,14 +2,17 @@
 using System.Net;
 using System;
 using UnityEngine;
+using System.Security.Cryptography.X509Certificates;
+using System.Net.Security;
 
 namespace Anywhere
 {
-	[CreateAssetMenu(menuName="Anywhere/Http/Http Requset")]
+    [CreateAssetMenu(menuName = "Anywhere/Http/Http Requset")]
     public class HttpRequest : ScriptableObject
     {
         public void GetHttpResponse(Anywhere.Notification _notif)
         {
+            ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
             HttpRequestHelper tmp_RequestHelper = _notif.param as HttpRequestHelper;
             if (string.IsNullOrEmpty(tmp_RequestHelper.m_URI))
                 throw new ArgumentNullException("url");
@@ -29,7 +32,7 @@ namespace Anywhere
             }
             catch (WebException ex)
             {
-                UnityEngine.Debug.LogError(ex.Message);
+                Debug.LogError(ex.Message);
                 switch ((ex.Response as HttpWebResponse).StatusCode)
                 {
                     case HttpStatusCode.NotFound:

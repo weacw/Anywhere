@@ -17,15 +17,14 @@ using System;
 
 namespace Anywhere.Net
 {
-    public class NetHttp : Singleton<NetHttp>
+    public class NetHttp : MonoBehaviour
     {
         private int m_PageNum = 1;
 
         #region Get
         //获取分页信息
         public void GetPageInfo()
-        {
-            // StartCoroutine(Getpageinfo());
+        {            
             HttpRequestHelper helper = new HttpRequestHelper()
             {
                 m_URI = Configs.GetConfigs.m_GetInfoHost + m_PageNum,
@@ -45,28 +44,7 @@ namespace Anywhere.Net
         //查询信息
         public void GetSerchInfo(string _palce)
         {
-            StartCoroutine(Getsearchinfo(_palce));
-        }
-
-        //分页信息（拉取10条）
-        IEnumerator Getpageinfo()
-        {
-            StringBuilder getUrl = new StringBuilder();
-            getUrl.Append(UIConst.m_HOST).Append("getinfo.php?page=" + m_PageNum);
-            WWW www = new WWW(getUrl.ToString());
-            yield return www;
-            if (www.error != null)
-            {
-                Debug.LogError("Error is :" + www.error);
-            }
-            else
-            {
-                //Debug.Log("<color=green> Page </color> Request:" + www.text);
-                if (www.text.Contains("null")) yield return null;
-                PageItem[] tmp_Itemarray = JsonHelper.FromJson<PageItem>(www.text);
-                //DatasourceMgr.Instance.SaveData(tmp_Itemarray);
-                m_PageNum++;
-            }
+            //StartCoroutine(Getsearchinfo(_palce));
         }
 
 

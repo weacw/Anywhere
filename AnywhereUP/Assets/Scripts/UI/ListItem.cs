@@ -62,37 +62,24 @@ namespace Anywhere.UI
             //TODO  判断是否已下载
             m_Assetisdownloaded = false;
             string path = Application.streamingAssetsPath + "/ResCache/" + _itemdata.assetName + "." + _itemdata.type;
-            //Loom.RunAsync(() =>
-            //{
-                if (File.Exists(path))
-                {
-                    m_Assetisdownloaded = true;
-                }
-                //Loom.QueueOnMainThread((parm) =>
-                //{
-                    if (m_Assetisdownloaded)
-                    {
-                        m_Downloadbtntext.text = "打开";
-                    }
-                    else
-                    {
-                        m_Downloadbtntext.text = "下载";
-                    }
-                    if (DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id) != null)
-                    {
-                        m_Icon.sprite = DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id);
-                    }
-                //}, null);
-            //});
 
+            if (File.Exists(path))
+            {
+                m_Assetisdownloaded = true;
+            }
 
-
-
-
-            //Texture2D m_Tex = GetIcon(50, 50);
-            //Sprite tempSprite = Sprite.Create(m_Tex, new Rect(0, 0, m_Tex.width, m_Tex.height), new Vector2(0, 0));
-            //m_Icon.sprite = tempSprite;
-            //tempSprite.name = m_Pageitem.thumbnailName;
+            if (m_Assetisdownloaded)
+            {
+                m_Downloadbtntext.text = "打开";
+            }
+            else
+            {
+                m_Downloadbtntext.text = "下载";
+            }
+            if (DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id) != null)
+            {
+                m_Icon.sprite = DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id);
+            }
         }
 
         void OnDownloadBtnClick(GameObject _btn)
@@ -137,14 +124,5 @@ namespace Anywhere.UI
             m_Downloadprogress.gameObject.SetActive(false);
             m_Progressimg.gameObject.SetActive(false);
         }
-
-        //private Texture2D GetIcon(int _t2dwith, int _t2dheight)
-        //{
-        //    byte[] m_T2dbyts = File.ReadAllBytes(Path.Combine(Config.DirToDownload, m_Pageitem.thumbnailName + ".png"));
-        //    Texture2D m_T2d = new Texture2D(_t2dwith, _t2dheight);
-        //    m_T2d.LoadImage(m_T2dbyts);
-        //    return m_T2d;
-        //}
-
     }
 }

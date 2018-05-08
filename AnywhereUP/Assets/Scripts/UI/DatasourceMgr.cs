@@ -26,6 +26,18 @@ namespace Anywhere.UI
         private bool wasCreated = false;
         private string path = null;
         private Thread thread;
+
+        /// <summary>
+        /// 数据个数
+        /// </summary>
+        public int m_Totalitemcount
+        {
+            get
+            {
+                return m_Itemdatalist.Count;
+            }
+        }
+
         void Start()
         {
             m_Itemdatalist = new List<PageItem>();
@@ -75,16 +87,7 @@ namespace Anywhere.UI
             return tmp_PageItem;
         }
 
-        /// <summary>
-        /// 数据个数
-        /// </summary>
-        public int m_Totalitemcount
-        {
-            get
-            {
-                return m_Itemdatalist.Count;
-            }
-        }
+
 
         /// <summary>
         /// 存储分页数据
@@ -106,7 +109,7 @@ namespace Anywhere.UI
         {
             Loom.RunAsync(() =>
             {
-                thread = new Thread(RunThread);
+                thread = new Thread(MultThreadSetupThumbnials);
                 thread.Start();
             });
         }
@@ -116,7 +119,7 @@ namespace Anywhere.UI
                 thread.Abort();
         }
 
-        private void RunThread()
+        private void MultThreadSetupThumbnials()
         {
             if (wasCreated) return;
             foreach (PageItem _item in m_Itemdatalist)
