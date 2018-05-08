@@ -3,8 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Anywhere/Configs")]
-public class Configs : ScriptableObject
+public class Configs
 {
+
+    private static Configs m_Instance;
+    public static Configs GetConfigs
+    {
+        get
+        {
+            if (m_Instance == null)
+                m_Instance = new Configs();
+            return m_Instance;
+        }
+    }
+
+
+
     /// <summary>
     /// ARKit开启点云HUD设置
     /// </summary>
@@ -55,7 +69,11 @@ public class Configs : ScriptableObject
     {
         get
         {
+#if !UNITY_EDITOR
             return Application.persistentDataPath + "/cache/";
+#elif UNITY_EDITOR
+            return Application.streamingAssetsPath + "/cache/";
+#endif
         }
     }
 

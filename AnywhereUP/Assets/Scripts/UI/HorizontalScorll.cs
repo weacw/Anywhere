@@ -85,7 +85,6 @@ namespace Anywhere.UI
             {
                 _index = DatasourceMgr.Instance.m_Totalitemcount + _index;
             }
-
             PageItem tmp_Itemdata = DatasourceMgr.Instance.GetItemDataByIndex(_index);
             tmp_itemscript.SetItemData(tmp_Itemdata, _index);
             return tmp_Item;
@@ -110,7 +109,7 @@ namespace Anywhere.UI
             PageItem tmp_Item = null;
             //本地检索
             int index = 0;
-            tmp_Item = DatasourceMgr.Instance.GetItemDataByPlace(_place,out index);
+            tmp_Item = DatasourceMgr.Instance.GetItemDataByPlace(_place, out index);
             //Debug.Log(index + " id:" + tmp_Item.id);
             if (tmp_Item != null)
             {
@@ -127,7 +126,7 @@ namespace Anywhere.UI
         {
             m_Looplistview.ResetListView(false);
             int index = 0;
-            PageItem tmp_Item = DatasourceMgr.Instance.GetItemDataByPlace(m_Searchplace,out index);
+            PageItem tmp_Item = DatasourceMgr.Instance.GetItemDataByPlace(m_Searchplace, out index);
             m_Looplistview.MovePanelToItemIndex(tmp_Item.id, 0);
         }
 

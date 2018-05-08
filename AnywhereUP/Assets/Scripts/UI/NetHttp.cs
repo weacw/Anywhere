@@ -17,28 +17,6 @@ using System;
 
 namespace Anywhere.Net
 {
-    [Serializable]
-    public class PageItem
-    {
-        public int id;//索引
-        public string place;//位置
-        public string type;//资源种类
-        public string descript;//描述
-        public string version;//版本
-        public string assetName;//资源名称
-        public string thumbnailName;//缩列图名称
-        public PageItem()
-        {
-            id = 0;
-            place = "";
-            type = "";
-            descript = "";
-            version = "";
-            assetName = "";
-            thumbnailName = "";
-        }
-    }
-
     public class NetHttp : Singleton<NetHttp>
     {
         private int m_PageNum = 1;
@@ -47,7 +25,22 @@ namespace Anywhere.Net
         //获取分页信息
         public void GetPageInfo()
         {
-            StartCoroutine(Getpageinfo());
+            // StartCoroutine(Getpageinfo());
+            HttpRequestHelper helper = new HttpRequestHelper()
+            {
+                m_URI = Configs.GetConfigs.m_GetInfoHost + m_PageNum,
+                m_Succeed = (json) =>
+                {
+                    Loom.QueueOnMainThread((parm) =>
+                    {
+                        PageItem[] tmp_Itemarray = JsonHelper.FromJson<PageItem>(json);
+                        //DatasourceMgr.Instance.SaveData(tmp_Itemarray);
+                        m_PageNum++;
+                    }, null);
+                },
+                m_TimeOut = 30000
+            };
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETREQUEST, helper);
         }
         //查询信息
         public void GetSerchInfo(string _palce)
@@ -71,7 +64,7 @@ namespace Anywhere.Net
                 //Debug.Log("<color=green> Page </color> Request:" + www.text);
                 if (www.text.Contains("null")) yield return null;
                 PageItem[] tmp_Itemarray = JsonHelper.FromJson<PageItem>(www.text);
-                DatasourceMgr.Instance.SaveData(tmp_Itemarray);
+                //DatasourceMgr.Instance.SaveData(tmp_Itemarray);
                 m_PageNum++;
             }
         }
@@ -104,7 +97,10 @@ namespace Anywhere.Net
                 }
                 else//不为空
                 {
-                    DatasourceMgr.Instance.AddDatas(tmp_Itemarray);
+                    HttpSaveDataHelper tmp_SaveDataHelper = new HttpSaveDataHelper();
+                    tmp_SaveDataHelper.m_PageItemArray = tmp_Itemarray;
+                    tmp_SaveDataHelper.m_Action = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.NET_SEARCHPAGE);
+                    NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_SAVEDATA, tmp_SaveDataHelper);
                 }
             }
         }

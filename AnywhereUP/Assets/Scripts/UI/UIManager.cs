@@ -19,6 +19,10 @@ namespace Anywhere.UI
 
     public class UIManager : Singleton<UIManager>
     {
+        public ThumbnialDownloader m_Thumb;
+
+
+
         //Main Scene
         private HorizontalScorll m_Horizontalscorll;
         [SerializeField]
@@ -33,7 +37,7 @@ namespace Anywhere.UI
         private GameObject m_ReturnToMainButton;
         private GameObject m_RecordButton;
         private Text m_Tiptoptext;//上方提示文字
-       
+        public GameObject m_LoadingScreen;
         #region 生命周期
         private void Start()
         {
@@ -43,9 +47,10 @@ namespace Anywhere.UI
             m_RecordButton = m_Aruiroot.Find("Recording/RecordingBtn").gameObject;
             m_Tiptoptext = m_Aruiroot.Find("Hint/Hintbackground/Hinttext").GetComponent<Text>();
             m_CallBtn = m_Aruiroot.Find("CallPortalBtn").GetComponent<Button>();
+            m_LoadingScreen = m_Mainuiroot.Find("Loading").gameObject;
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_SHOWCALLBTN, ShowCallBtn);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_HIDECALLBTN, HideCallBtn);
-            Init();            
+            Init();
         }
         void Update()
         {
@@ -55,10 +60,11 @@ namespace Anywhere.UI
         void Init()
         {
             m_Inputfield.onEndEdit.AddListener(OnInputFiledEndEdit);
-            NetHttp.Instance.GetPageInfo();
             ClickEventListener tmp_Listener = ClickEventListener.Get(m_ReturnToMainButton.gameObject);
             tmp_Listener.SetClickEventHandler(OnBackToMainButtonClick);
             m_RecordButton.GetComponent<Button>().onClick.AddListener(() => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.EVERYPLAY_RECORDING_START));
+
+            m_Thumb.ThumbDownload();
         }
 
         private void ShowCallBtn(Notification _notif)

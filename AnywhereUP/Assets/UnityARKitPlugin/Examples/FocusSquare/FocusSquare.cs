@@ -185,7 +185,7 @@ public class FocusSquare : MonoBehaviour
         ContentPlaceHelper cph = new ContentPlaceHelper
         {
             //Camera.main.transform.rotation
-            m_ContentPos = foundSquare.transform.localPosition,
+            m_ContentPos = foundSquare.transform.position,
             m_ContentRot = newQuat,
             m_FocusGameObject = this.gameObject
         };

@@ -90,7 +90,17 @@
         ///分享
         /// </summary> 
         SOCIAL_SHARE,
+        /// <summary>
+        ///Http 请求
+        /// </summary> 
         HTTP_GETREQUEST,
-        HTTP_DOWNLOADFILE
+        /// <summary>
+        ///http 下载
+        /// </summary> 
+        HTTP_DOWNLOADFILE,
+        /// <summary>
+        ///存储数据
+        /// </summary> 
+        HTTP_SAVEDATA
     }
 }

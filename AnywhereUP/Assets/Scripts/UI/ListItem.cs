@@ -80,7 +80,6 @@ namespace Anywhere.UI
                     }
                     if (DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id) != null)
                     {
-                        Debug.Log("123");
                         m_Icon.sprite = DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id);
                     }
                 //}, null);
