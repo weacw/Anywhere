@@ -79,11 +79,11 @@ namespace Anywhere.UI
             {
                 m_Downloadbtntext.text = "下载";
             }
-            m_Icon.sprite = DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id);
-            // if (DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id) != null)
-            // {
-            //     m_Icon.sprite = DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id);
-            // }
+
+            if (DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id) != null)
+            {
+                m_Icon.sprite = DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id);
+            }
         }
 
         public void UpdateThumbnail(Sprite _sprite)

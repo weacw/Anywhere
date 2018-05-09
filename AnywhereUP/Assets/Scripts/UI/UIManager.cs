@@ -87,6 +87,7 @@ namespace Anywhere.UI
         {
             //从本地和服务器检索地名
             //Debug.Log(_inputstr);
+            if (string.IsNullOrEmpty(_inputstr)) return;
             m_Horizontalscorll.JumpByLocation(_inputstr);
         }
 

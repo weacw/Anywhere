@@ -20,7 +20,6 @@ namespace Anywhere.UI
     public class HorizontalScorll : MonoBehaviour
     {
         public LoopListView m_Looplistview;
-        public List<ListItem> m_Items = new List<ListItem>();
         private System.Threading.Thread thread;
         #region 生命周期
 
@@ -86,7 +85,7 @@ namespace Anywhere.UI
             {
                 _index = DatasourceMgr.Instance.m_Totalitemcount + _index;
             }
-            m_Items.Add(tmp_itemscript);
+
             PageItem tmp_Itemdata = DatasourceMgr.Instance.GetItemDataByIndex(_index);
             tmp_itemscript.SetItemData(tmp_Itemdata, _index);
             return tmp_Item;
@@ -130,6 +129,7 @@ namespace Anywhere.UI
                         Debug.Log(tmp_HttpRequestHelper.m_URI);
                         tmp_HttpRequestHelper.m_Succeed = (json) =>
                         {
+                            if (json.Contains("null")) return;
                             PageItem[] tmp_Itemarray = JsonHelper.FromJson<PageItem>(json);
                             if (tmp_Itemarray.Length <= 0)
                             {
@@ -138,7 +138,12 @@ namespace Anywhere.UI
                             }
                             HttpSaveDataHelper tmp_SaveDataHelper = new HttpSaveDataHelper();
                             tmp_SaveDataHelper.m_PageItemArray = tmp_Itemarray;
-                            tmp_SaveDataHelper.m_Action = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.NET_SEARCHPAGE);
+                            tmp_SaveDataHelper.m_Action = () =>
+                            {
+
+                                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.NET_SEARCHPAGE);
+                            };
+                            if (tmp_SaveDataHelper.m_PageItemArray == null || tmp_SaveDataHelper.m_PageItemArray.Length == 0) return;
                             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETPAGEITEM, tmp_SaveDataHelper);
                         };
                         NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETREQUEST, tmp_HttpRequestHelper);

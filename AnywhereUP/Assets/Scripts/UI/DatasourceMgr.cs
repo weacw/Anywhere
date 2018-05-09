@@ -21,9 +21,9 @@ namespace Anywhere.UI
 
     public class DatasourceMgr : Singleton<DatasourceMgr>
     {
-        private int index = -1;
+        private int index = 0;
         [SerializeField] private List<PageItem> m_Itemdatalist;
-        private Dictionary<int, Sprite> ItemBackgroundDic;//<id , 背景图>
+        public Dictionary<int, Sprite> ItemBackgroundDic;//<id , 背景图>
         private bool wasCreated = false;
         private string path = null;
         private Thread thread;
@@ -109,27 +109,18 @@ namespace Anywhere.UI
             //存储服务器返回的数据
             m_Itemdatalist.AddRange(helper.m_PageItemArray);
 
-            //只允许创建一次
-            if (!wasCreated)
+            for (var i = index; i < m_Itemdatalist.Count; i++)
             {
-                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.NET_GETALLPAGEINFO);
-                wasCreated = true;
+                MultThreadSetupThumbnials(i, helper.m_Action);
+                index++;
             }
-
-            for (var i = 0; i < m_Itemdatalist.Count; i++)
-            {
-                new Thread(() =>
-                {
-                    MultThreadSetupThumbnials(i);
-                }).Start();
-            }
-            //回调
-            if (helper.m_Action != null)
-                helper.m_Action.Invoke();
         }
 
-        HorizontalScorll horizontalScorll;
-        private void MultThreadSetupThumbnials(int index)
+        /// <summary>
+        /// 多线程下载Thumbnail
+        /// </summary>
+        /// <param name="index"></param>
+        private void MultThreadSetupThumbnials(int index, System.Action _action)
         {
             HttpRequestHelper helpr = new HttpRequestHelper()
             {
@@ -137,21 +128,18 @@ namespace Anywhere.UI
                 m_LocalPath = path,
                 m_Succeed = (json) =>
                  {
-                     if (horizontalScorll == null)
-                     {
-                         horizontalScorll = FindObjectOfType<HorizontalScorll>();
-                     }
-
                      Texture2D tmp_tex2d = GetIcon(m_Itemdatalist[index], 10, 10);
                      Sprite tmp_Sprite = Sprite.Create(tmp_tex2d, new Rect(0, 0, tmp_tex2d.width, tmp_tex2d.height), new Vector2(0, 0));
                      tmp_Sprite.name = m_Itemdatalist[index].thumbnailName;
                      if (!ItemBackgroundDic.ContainsKey(m_Itemdatalist[index].id))
                          ItemBackgroundDic.Add(m_Itemdatalist[index].id, tmp_Sprite);
 
-                     Debug.Log(index);
-
-                     //TODO:加载Sprite
-                     horizontalScorll.m_Items[index % m_Totalitemcount].UpdateThumbnail(tmp_Sprite);
+                     if (_action != null) _action.Invoke();
+                     if (index == m_Itemdatalist.Count - 1 && !wasCreated)
+                     {
+                         NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.NET_GETALLPAGEINFO);
+                         wasCreated = true;
+                     }
                  },
                 m_TimeOut = 30000
             };
