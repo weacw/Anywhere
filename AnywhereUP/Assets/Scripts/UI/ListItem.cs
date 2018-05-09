@@ -51,6 +51,7 @@ namespace Anywhere.UI
                 Debug.LogError("itemData is null ! pls check");
                 return;
             }
+
             m_Destext.text = _itemdata.descript;
             m_Loactiontext.text = _itemdata.place;
             m_Pageitem = _itemdata;
@@ -59,6 +60,8 @@ namespace Anywhere.UI
             m_Progressimg.transform.parent.gameObject.SetActive(false);
             m_Progressimg.gameObject.SetActive(false);
             m_CurData = _itemdata.assetName;
+
+
             //TODO  判断是否已下载
             m_Assetisdownloaded = false;
             string path = Application.streamingAssetsPath + "/ResCache/" + _itemdata.assetName + "." + _itemdata.type;
@@ -76,10 +79,16 @@ namespace Anywhere.UI
             {
                 m_Downloadbtntext.text = "下载";
             }
-            if (DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id) != null)
-            {
-                m_Icon.sprite = DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id);
-            }
+            m_Icon.sprite = DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id);
+            // if (DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id) != null)
+            // {
+            //     m_Icon.sprite = DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id);
+            // }
+        }
+
+        public void UpdateThumbnail(Sprite _sprite)
+        {
+            m_Icon.sprite = _sprite;
         }
 
         void OnDownloadBtnClick(GameObject _btn)

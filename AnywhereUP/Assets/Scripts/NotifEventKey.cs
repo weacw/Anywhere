@@ -101,6 +101,6 @@
         /// <summary>
         ///存储数据
         /// </summary> 
-        HTTP_SAVEDATA
+        HTTP_GETPAGEITEM
     }
 }

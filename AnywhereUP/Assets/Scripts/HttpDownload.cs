@@ -26,6 +26,7 @@ namespace Anywhere
                 //本地文件不存在则从网上下载
                 if (!CacheMachine.IsCache(tmpFile))
                 {
+                    Debug.LogFormat("<color=green>[{0}]Load from internel.</color>", Path.GetFileName(tmpFile));
                     HttpWebRequest tmpRequest = WebRequest.Create(tmp_httpRequestHelper.m_URI) as HttpWebRequest;
                     tmpRequest.Timeout = tmp_httpRequestHelper.m_TimeOut;
                     HttpWebResponse tmpResponse = tmpRequest.GetResponse() as HttpWebResponse;
@@ -52,6 +53,10 @@ namespace Anywhere
                     }
                     tmpFileStream.Close();
                     tmpResponseStream.Close();
+                }
+                else
+                {
+                    Debug.LogFormat("<color=green>[{0}]Load from cache.</color>", Path.GetFileName(tmpFile));
                 }
 
                 Loom.QueueOnMainThread((parm) =>

@@ -18,14 +18,10 @@ namespace Anywhere
                 m_URI = Configs.GetConfigs.m_GetInfoHost + m_PageIndex,
                 m_Succeed = (json) =>
                 {
-                    Loom.QueueOnMainThread((parm) =>
-                    {
-                        Debug.Log(json);
-                        HttpSaveDataHelper tmp_SaveDataHelper = new HttpSaveDataHelper();
-                        tmp_SaveDataHelper.m_PageItemArray = (JsonHelper.FromJson<PageItem>(json));
-                        NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_SAVEDATA, tmp_SaveDataHelper);
-                        m_PageIndex++;
-                    }, null);
+                    HttpSaveDataHelper tmp_SaveDataHelper = new HttpSaveDataHelper();
+                    tmp_SaveDataHelper.m_PageItemArray = (JsonHelper.FromJson<PageItem>(json));
+                    NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETPAGEITEM, tmp_SaveDataHelper);
+                    m_PageIndex++;
                 },
                 m_TimeOut = 30000
             };

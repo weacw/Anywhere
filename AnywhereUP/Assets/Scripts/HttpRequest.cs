@@ -23,12 +23,12 @@ namespace Anywhere
                 if (tmp_RequestHelper.m_TimeOut != 0)
                     request.Timeout = tmp_RequestHelper.m_TimeOut;
                 HttpWebResponse response = request.GetResponse() as HttpWebResponse;
-                using (StreamReader tmp_Reader = new StreamReader(response.GetResponseStream(), System.Text.Encoding.UTF8))
+                StreamReader tmp_Reader = new StreamReader(response.GetResponseStream(), System.Text.Encoding.UTF8);
+                Loom.QueueOnMainThread((parm) =>
                 {
-                    // UnityEngine.Debug.Log(tmp_Reader.ReadToEnd());
                     if (tmp_RequestHelper.m_Succeed != null)
                         tmp_RequestHelper.m_Succeed.Invoke(tmp_Reader.ReadToEnd());
-                }
+                }, null);
             }
             catch (WebException ex)
             {

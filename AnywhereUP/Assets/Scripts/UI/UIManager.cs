@@ -50,21 +50,18 @@ namespace Anywhere.UI
             m_LoadingScreen = m_Mainuiroot.Find("Loading").gameObject;
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_SHOWCALLBTN, ShowCallBtn);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_HIDECALLBTN, HideCallBtn);
-            Init();
-        }
-        void Update()
-        {
-            DownLoadListItemAB();
-        }
 
-        void Init()
-        {
+
             m_Inputfield.onEndEdit.AddListener(OnInputFiledEndEdit);
             ClickEventListener tmp_Listener = ClickEventListener.Get(m_ReturnToMainButton.gameObject);
             tmp_Listener.SetClickEventHandler(OnBackToMainButtonClick);
             m_RecordButton.GetComponent<Button>().onClick.AddListener(() => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.EVERYPLAY_RECORDING_START));
 
             m_Thumb.ThumbDownload();
+        }
+        void Update()
+        {
+            DownLoadListItemAB();
         }
 
         private void ShowCallBtn(Notification _notif)

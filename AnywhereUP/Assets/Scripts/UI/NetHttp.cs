@@ -17,7 +17,7 @@ using System;
 
 namespace Anywhere.Net
 {
-    public class NetHttp : MonoBehaviour
+    public class NetHttp : Singleton<NetHttp>
     {
         private int m_PageNum = 1;
 
@@ -44,7 +44,7 @@ namespace Anywhere.Net
         //查询信息
         public void GetSerchInfo(string _palce)
         {
-            //StartCoroutine(Getsearchinfo(_palce));
+            StartCoroutine(Getsearchinfo(_palce));
         }
 
 
@@ -78,7 +78,7 @@ namespace Anywhere.Net
                     HttpSaveDataHelper tmp_SaveDataHelper = new HttpSaveDataHelper();
                     tmp_SaveDataHelper.m_PageItemArray = tmp_Itemarray;
                     tmp_SaveDataHelper.m_Action = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.NET_SEARCHPAGE);
-                    NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_SAVEDATA, tmp_SaveDataHelper);
+                    NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETPAGEITEM, tmp_SaveDataHelper);
                 }
             }
         }

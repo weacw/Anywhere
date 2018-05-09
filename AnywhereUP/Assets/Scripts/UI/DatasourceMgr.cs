@@ -21,7 +21,8 @@ namespace Anywhere.UI
 
     public class DatasourceMgr : Singleton<DatasourceMgr>
     {
-        private List<PageItem> m_Itemdatalist;
+        private int index = -1;
+        [SerializeField] private List<PageItem> m_Itemdatalist;
         private Dictionary<int, Sprite> ItemBackgroundDic;//<id , 背景图>
         private bool wasCreated = false;
         private string path = null;
@@ -45,7 +46,7 @@ namespace Anywhere.UI
 
             path = Configs.GetConfigs.m_CachePath;
 
-            NotifCenter.GetNotice.AddEventListener(NotifEventKey.HTTP_SAVEDATA, SaveData);
+            NotifCenter.GetNotice.AddEventListener(NotifEventKey.HTTP_GETPAGEITEM, GetPageItem);
         }
 
 
@@ -81,71 +82,80 @@ namespace Anywhere.UI
         /// <returns></returns>
         public PageItem GetItemDataByPlace(string _place, out int index)
         {
-            PageItem tmp_PageItem = m_Itemdatalist.Find((item) => item.place.Equals(_place));
-            int i = m_Itemdatalist.FindIndex((item) => item.place.Equals(_place));
-            index = i;
-            return tmp_PageItem;
+            try
+            {
+                PageItem tmp_PageItem = m_Itemdatalist.Find((item) => item.place.Equals(_place));
+                int i = m_Itemdatalist.FindIndex((item) => item.place.Equals(_place));
+                index = i;
+                return tmp_PageItem;
+            }
+            catch (System.Exception ex)
+            {
+                index = -1;
+                return null;
+            }
+
         }
 
 
 
         /// <summary>
-        /// 存储分页数据
+        /// 创建item
         /// </summary>
-        /// <param name="_itemarray"></param>
-        public void SaveData(Notification _notif)
+        /// <param name="_notif"></param>
+        public void GetPageItem(Notification _notif)
         {
             HttpSaveDataHelper helper = _notif.param as HttpSaveDataHelper;
+            //存储服务器返回的数据
             m_Itemdatalist.AddRange(helper.m_PageItemArray);
-            DownItemBackground();
+
+            //只允许创建一次
+            if (!wasCreated)
+            {
+                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.NET_GETALLPAGEINFO);
+                wasCreated = true;
+            }
+
+            for (var i = 0; i < m_Itemdatalist.Count; i++)
+            {
+                new Thread(() =>
+                {
+                    MultThreadSetupThumbnials(i);
+                }).Start();
+            }
+            //回调
             if (helper.m_Action != null)
                 helper.m_Action.Invoke();
         }
 
-        /// <summary>
-        /// 下载分页背景
-        /// </summary>
-        private void DownItemBackground()
+        HorizontalScorll horizontalScorll;
+        private void MultThreadSetupThumbnials(int index)
         {
-            Loom.RunAsync(() =>
+            HttpRequestHelper helpr = new HttpRequestHelper()
             {
-                thread = new Thread(MultThreadSetupThumbnials);
-                thread.Start();
-            });
-        }
-        private void OnDisable()
-        {
-            if (thread != null)
-                thread.Abort();
-        }
-
-        private void MultThreadSetupThumbnials()
-        {
-            if (wasCreated) return;
-            foreach (PageItem _item in m_Itemdatalist)
-            {
-                HttpRequestHelper helpr = new HttpRequestHelper()
-                {
-                    m_URI = Configs.GetConfigs.m_OSSURI + _item.thumbnailName + ".png",
-                    m_LocalPath = path,
-                    m_Succeed = (json) =>
+                m_URI = Configs.GetConfigs.m_OSSURI + m_Itemdatalist[index].thumbnailName + ".png",
+                m_LocalPath = path,
+                m_Succeed = (json) =>
+                 {
+                     if (horizontalScorll == null)
                      {
-                         Texture2D tmp_tex2d = GetIcon(_item, 10, 10);
-                         Sprite tmp_Sprite = Sprite.Create(tmp_tex2d, new Rect(0, 0, tmp_tex2d.width, tmp_tex2d.height), new Vector2(0, 0));
-                         tmp_Sprite.name = _item.thumbnailName;
-                         ItemBackgroundDic.Add(_item.id, tmp_Sprite);
-                         if (!wasCreated && _item.id == m_Itemdatalist.Count)
-                         {
-                             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.NET_GETALLPAGEINFO);
-                             wasCreated = true;
-                             if (thread != null) thread.Abort();
-                             UIManager.Instance.m_LoadingScreen.SetActive(false);
-                         }
-                     },
-                    m_TimeOut = 30000
-                };
-                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_DOWNLOADFILE, helpr);
-            }
+                         horizontalScorll = FindObjectOfType<HorizontalScorll>();
+                     }
+
+                     Texture2D tmp_tex2d = GetIcon(m_Itemdatalist[index], 10, 10);
+                     Sprite tmp_Sprite = Sprite.Create(tmp_tex2d, new Rect(0, 0, tmp_tex2d.width, tmp_tex2d.height), new Vector2(0, 0));
+                     tmp_Sprite.name = m_Itemdatalist[index].thumbnailName;
+                     if (!ItemBackgroundDic.ContainsKey(m_Itemdatalist[index].id))
+                         ItemBackgroundDic.Add(m_Itemdatalist[index].id, tmp_Sprite);
+
+                     Debug.Log(index);
+
+                     //TODO:加载Sprite
+                     horizontalScorll.m_Items[index % m_Totalitemcount].UpdateThumbnail(tmp_Sprite);
+                 },
+                m_TimeOut = 30000
+            };
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_DOWNLOADFILE, helpr);
         }
 
         private Texture2D GetIcon(PageItem _item, int _t2dwith, int _t2dheight)
