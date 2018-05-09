@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Anywhere
 {
     [CreateAssetMenu(menuName = "Anywhere/Http/ThumbnialDownloader")]
-    public class ThumbnialDownloader : ScriptableObject
+    public class ThumbnialDownloader : BaseModule
     {
         //private int m_PageIndex = 0;
         public void ThumbDownload()

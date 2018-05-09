@@ -101,6 +101,7 @@
         /// <summary>
         ///存储数据
         /// </summary> 
-        HTTP_GETPAGEITEM
+        HTTP_GETPAGEITEM,
+        OPERATER_SEARCH
     }
 }

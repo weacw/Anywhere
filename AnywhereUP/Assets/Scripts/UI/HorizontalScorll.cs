@@ -20,7 +20,6 @@ namespace Anywhere.UI
     public class HorizontalScorll : MonoBehaviour
     {
         public LoopListView m_Looplistview;
-        private System.Threading.Thread thread;
         #region 生命周期
 
 
@@ -121,7 +120,7 @@ namespace Anywhere.UI
                 // NetHttp.Instance.GetSerchInfo(_place);
                 Loom.RunAsync(() =>
                 {
-                    thread = new System.Threading.Thread(() =>
+                    new System.Threading.Thread(() =>
                     {
                         HttpRequestHelper tmp_HttpRequestHelper = new HttpRequestHelper();
                         tmp_HttpRequestHelper.m_URI = Configs.GetConfigs.m_SearchInfoHost + _place;
@@ -140,15 +139,13 @@ namespace Anywhere.UI
                             tmp_SaveDataHelper.m_PageItemArray = tmp_Itemarray;
                             tmp_SaveDataHelper.m_Action = () =>
                             {
-
                                 NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.NET_SEARCHPAGE);
                             };
                             if (tmp_SaveDataHelper.m_PageItemArray == null || tmp_SaveDataHelper.m_PageItemArray.Length == 0) return;
                             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETPAGEITEM, tmp_SaveDataHelper);
                         };
                         NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETREQUEST, tmp_HttpRequestHelper);
-                    });
-                    thread.Start();
+                    }).Start();
                 });
             }
         }
@@ -162,7 +159,12 @@ namespace Anywhere.UI
             if (tmp_Item == null || index == -1) return;
             m_Looplistview.MovePanelToItemIndex(index, 0);
         }
-
+        private void MovePanelToItemIndex(Notification _notif)
+        {
+            SearchResultsHelper resultHelper = _notif.param as SearchResultsHelper;
+            //单元数据id从1开始 数据存储索引从0开始,这里是用索引跳转
+            m_Looplistview.MovePanelToItemIndex(resultHelper.m_Index, 0);
+        }
     }
 
 }

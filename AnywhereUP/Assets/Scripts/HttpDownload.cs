@@ -7,7 +7,7 @@ using System.Net.Security;
 namespace Anywhere
 {
     [CreateAssetMenu(menuName = "Anywhere/Http/Http Download")]
-    public class HttpDownload : ScriptableObject
+    public class HttpDownload : BaseModule
     {
         public void HttpDownloadFile(Notification _notif)
         {

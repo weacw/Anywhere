@@ -8,7 +8,7 @@ using System.Net.Security;
 namespace Anywhere
 {
     [CreateAssetMenu(menuName = "Anywhere/Http/Http Requset")]
-    public class HttpRequest : ScriptableObject
+    public class HttpRequest : BaseModule
     {
         public void GetHttpResponse(Anywhere.Notification _notif)
         {
