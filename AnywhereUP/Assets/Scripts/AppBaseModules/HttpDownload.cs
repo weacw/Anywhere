@@ -6,7 +6,7 @@ using System.Net.Security;
 
 namespace Anywhere
 {
-    [CreateAssetMenu(menuName = "Anywhere/Http/Http Download")]
+    [CreateAssetMenu(menuName = "Anywhere/AppModules/Http/Http Download")]
     public class HttpDownload : BaseModule
     {
         public void HttpDownloadFile(Notification _notif)
@@ -19,8 +19,7 @@ namespace Anywhere
                 Directory.CreateDirectory(tmpPath);
 
             try
-            {
-                string tmpExtension = Path.GetExtension(tmp_httpRequestHelper.m_URI);
+            {                
                 string tmpFile = Path.Combine(tmpPath, Path.GetFileName(tmp_httpRequestHelper.m_URI));
 
                 //本地文件不存在则从网上下载

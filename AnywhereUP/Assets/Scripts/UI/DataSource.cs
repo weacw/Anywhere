@@ -7,19 +7,15 @@
 *		
 */
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SuperScrollView;
-using Anywhere.Net;
-using Aliyun.OSS;
 using System.IO;
 using System.Threading;
 
 namespace Anywhere.UI
 {
 
-    public class DatasourceMgr : Singleton<DatasourceMgr>
+    public class DataSource : Singleton<DataSource>
     {
         private int index = 0;
         [SerializeField] private List<PageItem> m_Itemdatalist;
@@ -92,6 +88,7 @@ namespace Anywhere.UI
             catch (System.Exception ex)
             {
                 index = -1;
+                Debug.LogError(ex.Message);
                 return null;
             }
         }
@@ -106,8 +103,7 @@ namespace Anywhere.UI
         {
             HttpSaveDataHelper helper = _notif.param as HttpSaveDataHelper;
             //存储服务器返回的数据
-            m_Itemdatalist.AddRange(helper.m_PageItemArray);
-
+            m_Itemdatalist.AddRange(helper.m_PageItemArray);            
             for (var i = index; i < m_Itemdatalist.Count; i++)
             {
                 MultThreadSetupThumbnials(i, helper.m_Action);
@@ -119,7 +115,7 @@ namespace Anywhere.UI
         /// 多线程下载Thumbnail
         /// </summary>
         /// <param name="index"></param>
-        private void MultThreadSetupThumbnials(int index, System.Action _action)
+        private void MultThreadSetupThumbnials(int index, System.Action _callback)
         {
             HttpRequestHelper helpr = new HttpRequestHelper()
             {
@@ -133,7 +129,10 @@ namespace Anywhere.UI
                      if (!ItemBackgroundDic.ContainsKey(m_Itemdatalist[index].id))
                          ItemBackgroundDic.Add(m_Itemdatalist[index].id, tmp_Sprite);
 
-                     if (_action != null) _action.Invoke();
+                     if (_callback != null) _callback.Invoke();
+
+
+                     //下载到列表最后一个时才进行生成
                      if (index == m_Itemdatalist.Count - 1 && !wasCreated)
                      {
                          NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.NET_GETALLPAGEINFO);

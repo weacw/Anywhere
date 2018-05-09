@@ -6,15 +6,9 @@
 *		Jeno
 *		
 */
-
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using SuperScrollView;
-using Anywhere.Net;
-using Aliyun.OSS;
-using System.IO;
 
 namespace Anywhere.UI
 {
@@ -64,26 +58,12 @@ namespace Anywhere.UI
 
             //TODO  判断是否已下载
             m_Assetisdownloaded = false;
-            string path = Application.streamingAssetsPath + "/ResCache/" + _itemdata.assetName + "." + _itemdata.type;
+            string path = Configs.GetConfigs.m_CachePath + _itemdata.assetName + "." + _itemdata.type;
 
-            if (File.Exists(path))
-            {
-                m_Assetisdownloaded = true;
-            }
-
-            if (m_Assetisdownloaded)
-            {
-                m_Downloadbtntext.text = "打开";
-            }
-            else
-            {
-                m_Downloadbtntext.text = "下载";
-            }
-
-            if (DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id) != null)
-            {
-                m_Icon.sprite = DatasourceMgr.Instance.GetItemBackgroundById(m_Pageitem.id);
-            }
+            m_Assetisdownloaded = CacheMachine.IsCache(path);
+            m_Downloadbtntext.text = m_Assetisdownloaded ? "打开" : "下载";
+            Sprite tmp_Sprite = DataSource.Instance.GetItemBackgroundById(m_Pageitem.id);
+            m_Icon.sprite = tmp_Sprite ? tmp_Sprite : null;
         }
 
         public void UpdateThumbnail(Sprite _sprite)
@@ -97,7 +77,7 @@ namespace Anywhere.UI
             if (m_Assetisdownloaded)
             {
                 NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_PLAY);
-                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.AB_INSTANCE, new ABInstaniateHelper() { m_ABName = m_CurData });
+                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_ABINSTANCE, new ABInstaniateHelper() { m_ABName = m_CurData });
                 //进入场景
                 UIManager.Instance.JumpToARScene();
             }
@@ -105,22 +85,32 @@ namespace Anywhere.UI
             {
                 Debug.Log("下载AB包：" + m_Pageitem.assetName + "." + m_Pageitem.type.ToLower());
                 UIManager.Instance.StartListItemABDownload(this);
-                GetObject.AsyncGetObject("anywhere-v-1", m_Pageitem.assetName + "." + m_Pageitem.type.ToLower());
+                HttpRequestHelper tmp_HttpRequestHelper = new HttpRequestHelper();
+                tmp_HttpRequestHelper.m_LocalPath = Configs.GetConfigs.m_CachePath;
+                Loom.RunAsync(() =>
+                {
+                    tmp_HttpRequestHelper.m_URI = Configs.GetConfigs.m_OSSURI + m_CurData + "." + m_Pageitem.type.ToLower();
+                    tmp_HttpRequestHelper.m_Downloading = (progress) =>
+                    {
+                        m_Progressimg.fillAmount = progress;
+                        if (!m_Assetisdownloading) OnABDownloading();
+                    };
+                    tmp_HttpRequestHelper.m_Succeed = (json) => OnABDownloadComplete();
+                    NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_DOWNLOADFILE, tmp_HttpRequestHelper);
+                });
             }
         }
 
         //下载中
         public void OnABDownloading()
-        {
-            m_Progressimg.fillAmount = GetObject.GetDownLoadProgress();
+        {            
             if (m_Assetisdownloading)
                 return;
             m_Assetisdownloading = true;
             m_Downloadbtntext.text = "下载中";
             m_Downloadbtn.gameObject.SetActive(false);
             m_Downloadprogress.gameObject.SetActive(true);
-            m_Progressimg.gameObject.SetActive(true);
-            //Debug.Log("进度"+GetObject.GetDownLoadProgress());
+            m_Progressimg.gameObject.SetActive(true);            
         }
 
         //下载结束

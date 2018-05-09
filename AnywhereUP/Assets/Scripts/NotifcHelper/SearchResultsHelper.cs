@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using System;
+using SuperScrollView;
 
-public class SearchResultsHelper : EventArgs
+public class SearchHelper : EventArgs
 {
-	public int m_Index=0;	
+    public string m_Keywords;    
 }

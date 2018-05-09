@@ -12,19 +12,14 @@ namespace Anywhere
     /// <summary>
     ///加载视频,图片，AB资源类; 
     /// </summary>
-    public class AssetsManager : MonoBehaviour
+    public class AssetsManager : Singleton<AssetsManager>
     {
-        public GameObject m_Content { get; private set; }
-        private string m_OutPath = null;
-        private AssetBundle m_AssetBundle = null;
-        private void Awake()
+        public GameObject m_Content;
+        public override void Awake()
         {
-            m_OutPath = Config.GetCachePath();
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_REMOVEALL, RemoveABSource);
-            NotifCenter.GetNotice.AddEventListener(NotifEventKey.AB_INSTANCE, InstaniateAB);
-            NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_VIDEOPLAY, PlayVideo);
+                        NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_VIDEOPLAY, PlayVideo);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.OPERATER_PLACECONTENT, PlaceContent);
-            // NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.AB_INSTANCE, new ABInstaniateHelper() { m_ABName = "testscene" });
         }
 
 
@@ -37,26 +32,14 @@ namespace Anywhere
         }
 
 
-        /// <summary>
-        ///_AssetName=null或空时，实例化该AB包所有资源
-        /// </summary>
-        /// <returns>The A.</returns>
-        /// <param name="_ABname">A bname.</param>
-        /// <param name="_AssetName">Asset name.</param>
-        private void InstaniateAB(Notification _notif)
-        {
-            ABInstaniateHelper abhelper = _notif.param as ABInstaniateHelper;
-            StartCoroutine(SyncLoadABFromFile(abhelper.m_ABName));
-        }
-
+       
         private Texture LoadTexture(string _texturename, int _t2dwith, int _t2dheight)
         {
 
-            byte[] m_T2dbyts = File.ReadAllBytes(Config.DirToDownload + "/Download/Texture/" + _texturename + ".png");
+            byte[] m_T2dbyts = File.ReadAllBytes(Configs.GetConfigs.m_CachePath+"/Texture/" + _texturename + ".png");
             Texture2D m_T2d = new Texture2D(_t2dwith, _t2dheight);
             m_T2d.LoadImage(m_T2dbyts);
             return m_T2d;
-
         }
 
         /// <summary>
@@ -87,59 +70,12 @@ namespace Anywhere
             else
                 m_Vp = tmp_videoPlayerHelper.m_Videorender.AddComponent<VideoPlayer>();
             m_Vp.source = VideoSource.Url;
-            m_Vp.url = "file:///" + Config.DirToDownload + "/Download/Video/" + tmp_videoPlayerHelper.m_Videoname + ".mp4";
+            m_Vp.url = "file:///" + Configs.GetConfigs.m_CachePath+"/Video/" + tmp_videoPlayerHelper.m_Videoname + ".mp4";
             m_Vp.renderMode = VideoRenderMode.MaterialOverride;
             m_Vp.targetMaterialRenderer = tmp_videoPlayerHelper.m_Videorender.GetComponent<Renderer>();
             tmp_videoPlayerHelper.m_Videorender.GetComponent<Renderer>().material.shader = Shader.Find("Custom/Video360");
             m_Vp.Play();
             m_Vp.isLooping = tmp_videoPlayerHelper.m_Isloop;
-        }
-
-
-
-
-
-        private IEnumerator SyncLoadABFromFile(string _name)
-        {
-            yield return null;
-            AssetBundleCreateRequest abcr = null;
-            abcr = AssetBundle.LoadFromFileAsync(Path.Combine(m_OutPath, _name + ".assetbundle"));
-            abcr.completed += (x) =>
-            {
-                StartCoroutine(SyncABLoad(abcr));
-            };
-        }
-        private IEnumerator SyncABLoad(AssetBundleCreateRequest _r)
-        {
-            bool loaded = false;
-            yield return null;
-            m_AssetBundle = _r.assetBundle;
-            if (m_AssetBundle.isStreamedSceneAssetBundle)
-            {
-                string[] scenePaths = m_AssetBundle.GetAllScenePaths();
-                string sceneName = Path.GetFileNameWithoutExtension(scenePaths[0]);
-                SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
-                SceneManager.sceneLoaded += (name, mode) =>
-                {
-                    m_Content = GameObject.Find("ContentRoot");
-                    loaded = true;
-                };
-                while (!loaded)
-                {
-                    yield return null;
-                }
-            }
-            else
-            {
-                AssetBundleRequest r = m_AssetBundle.LoadAllAssetsAsync<GameObject>();
-
-                if (r == null) yield return null; ;
-                m_Content = Instantiate(r.asset as GameObject);
-            }
-
-            m_Content.SetActive(false);
-            m_AssetBundle.Unload(false);
-
-        }
+        }      
     }
 }

@@ -21,7 +21,7 @@
         /// <summary>
         /// 实例化ab
         /// </summary>
-        AB_INSTANCE,
+        ASSETS_ABINSTANCE,
         /// <summary>
         /// 播放视频
         /// </summary>
@@ -102,6 +102,10 @@
         ///存储数据
         /// </summary> 
         HTTP_GETPAGEITEM,
-        OPERATER_SEARCH
+        HTTP_GETPAGEDATAS,
+        /// <summary>
+        /// 获取搜索数据
+        /// </summary>
+        SEARCH_GETRESULT
     }
 }

@@ -5,32 +5,35 @@ using System.IO;
 
 namespace Anywhere
 {
-    public class EveryplayManager : MonoBehaviour
+    [CreateAssetMenu(menuName = "Anywhere/AppModules/EveryplayModule")]
+    public class EveryplayModule : BaseModule
     {
         private bool m_isRecording;
-        private bool m_isRecordingFinished;
+        //private bool m_isRecordingFinished;
 
-        void Awake()
+        private void Awake()
         {
             Everyplay.SetMaxRecordingSecondsLength(30);
             m_isRecording = false;
-            m_isRecordingFinished = false;
+            //m_isRecordingFinished = false;
             Everyplay.RecordingStarted += RecordingStarted;
             Everyplay.RecordingStopped += RecordingStopped;
-            NotifCenter.GetNotice.AddEventListener(NotifEventKey.EVERYPLAY_RECORDING_START, OnRecordingStart);
-            NotifCenter.GetNotice.AddEventListener(NotifEventKey.EVERYPLAY_RECORDING_STOP, OnRecordingStop);
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             Everyplay.RecordingStarted -= RecordingStarted;
             Everyplay.RecordingStopped -= RecordingStopped;
             NotifCenter.GetNotice.RemoveEventListener(NotifEventKey.EVERYPLAY_RECORDING_START, OnRecordingStart);
             NotifCenter.GetNotice.RemoveEventListener(NotifEventKey.EVERYPLAY_RECORDING_STOP, OnRecordingStop);
         }
+        private void OnDisable()
+        {
+            m_isRecording = false;
+        }
 
         // start recording
-        private void OnRecordingStart(Notification _notif)
+        internal void OnRecordingStart(Notification _notif)
         {
             Debug.Log("Start");
             if (m_isRecording)
@@ -40,11 +43,11 @@ namespace Anywhere
             }
             Everyplay.StartRecording();
             m_isRecording = true;
-            m_isRecordingFinished = false;
+            //m_isRecordingFinished = false;
         }
 
         //stop recording
-        private void OnRecordingStop(Notification _notif)
+        internal void OnRecordingStop(Notification _notif)
         {
             if (!m_isRecording)
             {
@@ -52,7 +55,7 @@ namespace Anywhere
             }
             Everyplay.StopRecording();
             m_isRecording = false;
-            m_isRecordingFinished = true;
+            //m_isRecordingFinished = true;
         }
 
         private void RecordingStarted()
@@ -62,7 +65,7 @@ namespace Anywhere
 
         private void RecordingStopped()
         {
-            StartCoroutine(EveryplayLocalSaveAsync());
+            AppManager.Instance.StartCoroutine(EveryplayLocalSaveAsync());
         }
 
         IEnumerator EveryplayLocalSaveAsync()

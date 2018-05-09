@@ -9,8 +9,6 @@
 
 using UnityEngine;
 using UnityEngine.UI;
-using Anywhere.Net;
-using Aliyun.OSS;
 using SuperScrollView;
 
 
@@ -19,29 +17,25 @@ namespace Anywhere.UI
 
     public class UIManager : Singleton<UIManager>
     {
-        public ThumbnialDownloader m_Thumb;
-
-
+        [SerializeField] private Transform m_Mainuiroot;
+        [SerializeField] private Transform m_Aruiroot;
 
         //Main Scene
-        private HorizontalScorll m_Horizontalscorll;
-        [SerializeField]
-        private Transform m_Mainuiroot;//主界面UI
+        //private LoopListViewHelper m_Horizontalscorll;
         private InputField m_Inputfield;
         private Button m_CallBtn;
 
-
         //AR Scene
-        [SerializeField]
-        private Transform m_Aruiroot;//AR界面UI
         private GameObject m_ReturnToMainButton;
         private GameObject m_RecordButton;
-        private Text m_Tiptoptext;//上方提示文字
+
+        //上方提示文字
+        private Text m_Tiptoptext;
         public GameObject m_LoadingScreen;
         #region 生命周期
         private void Start()
         {
-            m_Horizontalscorll = transform.GetComponent<HorizontalScorll>();
+            //m_Horizontalscorll = transform.GetComponent<LoopListViewHelper>();
             m_Inputfield = m_Mainuiroot.Find("SearchBar/SearchbarField").GetComponent<InputField>();
             m_ReturnToMainButton = m_Aruiroot.Find("BackButton").gameObject;
             m_RecordButton = m_Aruiroot.Find("Recording/RecordingBtn").gameObject;
@@ -57,7 +51,7 @@ namespace Anywhere.UI
             tmp_Listener.SetClickEventHandler(OnBackToMainButtonClick);
             m_RecordButton.GetComponent<Button>().onClick.AddListener(() => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.EVERYPLAY_RECORDING_START));
 
-            m_Thumb.ThumbDownload();
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETPAGEDATAS, new HttpGetDataHelper() { m_PageIndex = 0 });
         }
         void Update()
         {
@@ -88,7 +82,8 @@ namespace Anywhere.UI
             //从本地和服务器检索地名
             //Debug.Log(_inputstr);
             if (string.IsNullOrEmpty(_inputstr)) return;
-            m_Horizontalscorll.JumpByLocation(_inputstr);
+            SearchHelper m_SearchHelper = new SearchHelper() { m_Keywords = _inputstr };
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.SEARCH_GETRESULT, m_SearchHelper);
         }
 
         public void Return()
@@ -136,21 +131,21 @@ namespace Anywhere.UI
         {
             if (m_Isdownitemab)
             {
-                if (GetObject.GetDownLoadState() == DownLoadState.DOWNLOADING)
-                {
-                    if (m_Downloadabitem == null)
-                        return;
-                    m_Downloadabitem.OnABDownloading();
-                }
+                //if (GetObject.GetDownLoadState() == DownLoadState.DOWNLOADING)
+                //{
+                //    if (m_Downloadabitem == null)
+                //        return;
+                //    m_Downloadabitem.OnABDownloading();
+                //}
 
-                if (GetObject.GetDownLoadState() == DownLoadState.DOWNLOADCOMPLETE)
-                {
-                    if (m_Downloadabitem == null)
-                        return;
-                    m_Downloadabitem.OnABDownloadComplete();
-                    m_Downloadabitem = null;
-                    m_Isdownitemab = false;
-                }
+                //if (GetObject.GetDownLoadState() == DownLoadState.DOWNLOADCOMPLETE)
+                //{
+                //    if (m_Downloadabitem == null)
+                //        return;
+                //    m_Downloadabitem.OnABDownloadComplete();
+                //    m_Downloadabitem = null;
+                //    m_Isdownitemab = false;
+                //}
             }
         }
 

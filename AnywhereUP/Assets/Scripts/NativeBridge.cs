@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Runtime.InteropServices;
 namespace Anywhere
 {
     //# 桥接器，用于联通Unity与IOS原生
-    public class NativeBridge : MonoBehaviour
+    [CreateAssetMenu(menuName = "Anywhere/AppModules/NativeBridge")]
+    public class NativeBridge : BaseModule
     {
         /// <summary>
         /// Shares on file maximum
@@ -17,7 +16,7 @@ namespace Anywhere
         /// <param name="mimeType"></param>
         /// <param name="chooser"></param>
         /// <param name="chooserText"></param>
-        public static void Share(Notification _notif)
+        public void Share(Notification _notif)
         {
             SocialHelper sh = _notif.param as SocialHelper;
             ShareMultiple(sh.m_Body, new string[] { sh.m_FilePath }, sh.m_URL, sh.m_Subject, sh.m_MimeType, false, "Select sharing app");
@@ -148,9 +147,5 @@ namespace Anywhere
             showSocialSharing(ref conf);
         }
 #endif
-        private void Start()
-        {
-            Anywhere.NotifCenter.GetNotice.AddEventListener(NotifEventKey.SOCIAL_SHARE, Share);
-        }
     }
 }
