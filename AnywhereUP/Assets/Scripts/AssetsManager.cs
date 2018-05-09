@@ -1,11 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Video;
-using System.Collections.Generic;
-using Aliyun.OSS;
 using System.IO;
-using System.Collections;
-using UnityEngine.XR.iOS;
-using UnityEngine.SceneManagement;
 
 namespace Anywhere
 {
