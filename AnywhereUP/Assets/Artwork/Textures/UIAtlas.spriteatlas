@@ -10,7 +10,7 @@ SpriteAtlas:
     textureSettings:
       serializedVersion: 2
       anisoLevel: 1
-      compressionQuality: 38
+      compressionQuality: 50
       maxTextureSize: 2048
       textureCompression: 1
       filterMode: 1
