@@ -73,18 +73,21 @@ namespace Anywhere.UI
 
         void OnDownloadBtnClick(GameObject _btn)
         {
-            Debug.Log("开始下载");
             if (m_Assetisdownloaded)
             {
                 NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_PLAY);
-                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_ABINSTANCE, new ABInstaniateHelper() { m_ABName = m_CurData });
+                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_ABINSTANCE, new ABInstaniateHelper()
+                {
+                    m_ABName = m_CurData,
+                    m_BeginInstance = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = true }),
+                    m_EndIntance = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false })
+                });
                 //进入场景
                 UIManager.Instance.JumpToARScene();
             }
             else
             {
-                Debug.Log("下载AB包：" + m_Pageitem.assetName + "." + m_Pageitem.type.ToLower());
-                UIManager.Instance.StartListItemABDownload(this);
+                Debug.Log("开始下载");
                 HttpRequestHelper tmp_HttpRequestHelper = new HttpRequestHelper();
                 tmp_HttpRequestHelper.m_LocalPath = Configs.GetConfigs.m_CachePath;
                 Loom.RunAsync(() =>
@@ -103,14 +106,14 @@ namespace Anywhere.UI
 
         //下载中
         public void OnABDownloading()
-        {            
+        {
             if (m_Assetisdownloading)
                 return;
             m_Assetisdownloading = true;
             m_Downloadbtntext.text = "下载中";
             m_Downloadbtn.gameObject.SetActive(false);
             m_Downloadprogress.gameObject.SetActive(true);
-            m_Progressimg.gameObject.SetActive(true);            
+            m_Progressimg.gameObject.SetActive(true);
         }
 
         //下载结束

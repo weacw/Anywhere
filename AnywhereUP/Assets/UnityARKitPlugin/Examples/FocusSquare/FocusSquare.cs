@@ -187,7 +187,6 @@ public class FocusSquare : MonoBehaviour
             //Camera.main.transform.rotation
             m_ContentPos = foundSquare.transform.position,
             m_ContentRot = newQuat,
-            m_FocusGameObject = this.gameObject
         };
         Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.OPERATER_PLACECONTENT, cph);
         Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.ARKIT_FOCUS_OFF);

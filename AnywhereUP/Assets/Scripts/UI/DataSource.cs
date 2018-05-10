@@ -103,7 +103,7 @@ namespace Anywhere.UI
         {
             HttpSaveDataHelper helper = _notif.param as HttpSaveDataHelper;
             //存储服务器返回的数据
-            m_Itemdatalist.AddRange(helper.m_PageItemArray);            
+            m_Itemdatalist.AddRange(helper.m_PageItemArray);
             for (var i = index; i < m_Itemdatalist.Count; i++)
             {
                 MultThreadSetupThumbnials(i, helper.m_Action);
@@ -135,7 +135,11 @@ namespace Anywhere.UI
                      //下载到列表最后一个时才进行生成
                      if (index == m_Itemdatalist.Count - 1 && !wasCreated)
                      {
-                         NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.NET_GETALLPAGEINFO);
+                         NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.NET_GETALLPAGEINFO, new LoadViewHelper()
+                         {
+                             //加载完毕，关闭Loading界面
+                             m_Action = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false })
+                         });
                          wasCreated = true;
                      }
                  },

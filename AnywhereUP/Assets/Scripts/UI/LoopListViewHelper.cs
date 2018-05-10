@@ -13,21 +13,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using SuperScrollView;
 using Anywhere.Net;
-
-namespace Anywhere.UI
+using Anywhere.UI;
+namespace Anywhere
 {
 
-    public class LoopListViewHelper : MonoBehaviour
+    public class LoopListViewHelper : Singleton<LoopListViewHelper>
     {
         public LoopListView m_Looplistview;
         #region 生命周期
-
-
-        private void Start()
-        {
-            NotifCenter.GetNotice.AddEventListener(NotifEventKey.NET_GETALLPAGEINFO, CreatPages);
-        }
-
 
         private void LateUpdate()
         {
@@ -50,9 +43,12 @@ namespace Anywhere.UI
         /// <summary>
         /// 创建列表
         /// </summary>
-        private void CreatPages(Notification _notif)
+        internal void CreatPages(Notification _notif)
         {
             m_Looplistview.InitListView(-1, OnGetItemByIndex);
+            LoadViewHelper tmp_LoadingViewHelper = _notif.param as LoadViewHelper;
+            if (tmp_LoadingViewHelper.m_Action != null)
+                tmp_LoadingViewHelper.m_Action.Invoke();
         }
 
         /// <summary>

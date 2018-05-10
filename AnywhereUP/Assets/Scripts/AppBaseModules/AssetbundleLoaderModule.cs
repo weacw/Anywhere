@@ -9,6 +9,10 @@ namespace Anywhere
     [CreateAssetMenu(menuName = "Anywhere/AppModules/AssetbundleLoaderModule")]
     public class AssetbundleLoaderModule : BaseModule
     {
+
+        private System.Action m_BeginAction;
+        private System.Action m_EndAction;
+
         /// <summary>
         ///_AssetName=null或空时，实例化该AB包所有资源
         /// </summary>
@@ -18,6 +22,9 @@ namespace Anywhere
         public void InstaniateAB(Notification _notif)
         {
             ABInstaniateHelper abhelper = _notif.param as ABInstaniateHelper;
+            m_BeginAction = abhelper.m_BeginInstance;
+            m_EndAction = abhelper.m_EndIntance;
+            if (m_BeginAction != null) m_BeginAction.Invoke();
             AppManager.Instance.StartCoroutine(SyncLoadABFromFile(abhelper.m_ABName));
         }
 
@@ -43,7 +50,7 @@ namespace Anywhere
                 SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
                 SceneManager.sceneLoaded += (name, mode) =>
                 {
-                    AssetsManager.Instance.m_Content = GameObject.Find("ContentRoot");
+                    NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_SETUP, new ContentSetupHelper() { m_Content = GameObject.Find("ContentRoot") });
                     loaded = true;
                 };
                 while (!loaded)
@@ -53,12 +60,13 @@ namespace Anywhere
             else
             {
                 AssetBundleRequest r = m_AssetBundle.LoadAllAssetsAsync<GameObject>();
-                if (r == null) yield return null; ;
-                AssetsManager.Instance.m_Content = Instantiate(r.asset as GameObject);
+                if (r == null) yield return null;
+                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_SETUP, new ContentSetupHelper() { m_Content = Instantiate(r.asset as GameObject) });
             }
 
             AssetsManager.Instance.m_Content.SetActive(false);
             m_AssetBundle.Unload(false);
+            if (m_EndAction != null) m_EndAction.Invoke();
 
         }
     }

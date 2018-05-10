@@ -41,7 +41,7 @@ namespace Anywhere.UI
             m_RecordButton = m_Aruiroot.Find("Recording/RecordingBtn").gameObject;
             m_Tiptoptext = m_Aruiroot.Find("Hint/Hintbackground/Hinttext").GetComponent<Text>();
             m_CallBtn = m_Aruiroot.Find("CallPortalBtn").GetComponent<Button>();
-            m_LoadingScreen = m_Mainuiroot.Find("Loading").gameObject;
+            m_LoadingScreen = transform.Find("Loading").gameObject;
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_SHOWCALLBTN, ShowCallBtn);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_HIDECALLBTN, HideCallBtn);
 
@@ -52,10 +52,6 @@ namespace Anywhere.UI
             m_RecordButton.GetComponent<Button>().onClick.AddListener(() => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.EVERYPLAY_RECORDING_START));
 
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETPAGEDATAS, new HttpGetDataHelper() { m_PageIndex = 0 });
-        }
-        void Update()
-        {
-            DownLoadListItemAB();
         }
 
         private void ShowCallBtn(Notification _notif)
@@ -121,43 +117,6 @@ namespace Anywhere.UI
 
         #region 列表单元下载AB
 
-        private ListItem m_Downloadabitem;//在下载AB的ListItem
-        private bool m_Isdownitemab;//是否在下载AB
-
-        /// <summary>
-        /// 实时更新下载状态
-        /// </summary>
-        private void DownLoadListItemAB()
-        {
-            if (m_Isdownitemab)
-            {
-                //if (GetObject.GetDownLoadState() == DownLoadState.DOWNLOADING)
-                //{
-                //    if (m_Downloadabitem == null)
-                //        return;
-                //    m_Downloadabitem.OnABDownloading();
-                //}
-
-                //if (GetObject.GetDownLoadState() == DownLoadState.DOWNLOADCOMPLETE)
-                //{
-                //    if (m_Downloadabitem == null)
-                //        return;
-                //    m_Downloadabitem.OnABDownloadComplete();
-                //    m_Downloadabitem = null;
-                //    m_Isdownitemab = false;
-                //}
-            }
-        }
-
-        /// <summary>
-        /// 开始下载ListItem对应的AB
-        /// </summary>
-        /// <param name="item"></param>
-        public void StartListItemABDownload(ListItem item)
-        {
-            m_Isdownitemab = true;
-            m_Downloadabitem = item;
-        }
 
         public void CallToPortal()
         {
@@ -165,7 +124,11 @@ namespace Anywhere.UI
             m_CallBtn.gameObject.SetActive(false);
         }
 
-
+        public void ShowHideLoading(Notification _notif)
+        {
+            UICtrlHelper tmp_UICtrlHelper = _notif.param as UICtrlHelper;
+            m_LoadingScreen.SetActive(tmp_UICtrlHelper.m_State);
+        }
 
         #endregion
     }

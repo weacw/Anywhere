@@ -11,6 +11,10 @@
         /// </summary>
         EVERYPLAY_RECORDING_STOP,
         /// <summary>
+        /// 内容填充
+        /// </summary>
+        ASSETS_SETUP,
+        /// <summary>
         /// 删除内容
         /// </summary>
         ASSETS_REMOVEALL,
@@ -38,6 +42,10 @@
         /// 设置提示
         /// </summary>
         UI_SETHINT,
+        /// <summary>
+        /// 显示loading
+        /// </summary>
+        UI_SHOWHIDELOADING,
         /// <summary>
         /// 放置内容
         /// </summary>
