@@ -6,6 +6,6 @@ namespace Anywhere
     public class UICtrlHelper : System.EventArgs
     {
 		public bool m_State;
-		public GameObject m_OperatTarget;
+		public string m_UIAnimType;        
     }
 }

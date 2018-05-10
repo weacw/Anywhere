@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.Video;
 using System.IO;
+using System.Text;
+using UnityEngine.SceneManagement;
 
 namespace Anywhere
 {
@@ -10,6 +12,8 @@ namespace Anywhere
     public class AssetsManager : Singleton<AssetsManager>
     {
         public GameObject m_Content;
+        private bool m_IsSceneStream;
+        private Scene m_Scenes;
 
         internal void PlaceContent(Notification _notif)
         {
@@ -27,6 +31,11 @@ namespace Anywhere
             if (m_Content == null) return;
             m_Content.SetActive(false);
             DestroyImmediate(m_Content);
+            m_Content = null;
+            if (m_IsSceneStream)
+                SceneManager.UnloadSceneAsync(m_Scenes);
+            Resources.UnloadUnusedAssets();
+
         }
 
         /// <summary>
@@ -36,7 +45,9 @@ namespace Anywhere
         internal void SetupContent(Notification _notif)
         {
             ContentSetupHelper tmp_ContentSetupHelper = _notif.param as ContentSetupHelper;
+            m_IsSceneStream = tmp_ContentSetupHelper.m_IsSceneStream;
             m_Content = tmp_ContentSetupHelper.m_Content;
+            m_Scenes = tmp_ContentSetupHelper.m_Scene;
         }
     }
 }

@@ -141,8 +141,11 @@ public class FocusSquare : MonoBehaviour
         if (trackingInitialized)
         {
             SquareState = FocusState.Finding;
-            m_ShowedButton = false;
-            Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_HIDECALLBTN);
+            if (m_ShowedButton)
+            {
+                Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_HIDECALLBTN, new Anywhere.UICtrlHelper() { m_State = false });
+                m_ShowedButton = false;
+            }
             //check camera forward is facing downward
             if (Vector3.Dot(Camera.main.transform.forward, Vector3.down) > 0)
             {

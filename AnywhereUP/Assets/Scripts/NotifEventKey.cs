@@ -114,6 +114,7 @@
         /// <summary>
         /// 获取搜索数据
         /// </summary>
-        SEARCH_GETRESULT
+        SEARCH_GETRESULT,
+        UI_GOTOARSCENE
     }
 }

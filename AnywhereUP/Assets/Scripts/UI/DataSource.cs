@@ -152,6 +152,8 @@ namespace Anywhere.UI
         {
             byte[] m_T2dbyts = File.ReadAllBytes(Path.Combine(Configs.GetConfigs.m_CachePath, _item.thumbnailName + ".png"));
             Texture2D m_T2d = new Texture2D(_t2dwith, _t2dheight);
+            m_T2d.Compress(false);
+            m_T2d.Apply(false);
             m_T2d.LoadImage(m_T2dbyts);
             return m_T2d;
         }

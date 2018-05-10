@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: UIAtlas
+  m_EditorData:
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 38
+      maxTextureSize: 2048
+      textureCompression: 1
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 1
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 2
+      m_BuildTarget: iPhone
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 32
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+    packingParameters:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: eb22ed72e04d3a248861367378cfa717, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 211057095745ee34abeac801ddd4629a, type: 3}
+  - {fileID: 21300000, guid: 8c7031f204bfb4cd6b481274214290db, type: 3}
+  - {fileID: 21300000, guid: c5f55c336ef3dbd4498344df686b7cc7, type: 3}
+  - {fileID: 21300000, guid: a43cf42962fb444d1b41c229f4e1267f, type: 3}
+  - {fileID: 21300000, guid: 902210b0add2cef45b5dd753c23e03db, type: 3}
+  - {fileID: 21300000, guid: 24e5124b3a7f93a4cb3b5e9d3283d050, type: 3}
+  - {fileID: 21300000, guid: 14593c3664613584faebbb9934da32e2, type: 3}
+  - {fileID: 21300000, guid: d39059688a7d26c4eb0018d170d2cedb, type: 3}
+  - {fileID: 21300000, guid: cdb08cc74533b3a429b19b6d3fed2009, type: 3}
+  - {fileID: 21300000, guid: 583115ee73b976249a2bd0d6dcb75b9e, type: 3}
+  - {fileID: 21300000, guid: f91241999548b904198d4ff4175605ae, type: 3}
+  - {fileID: 21300000, guid: c9608ad689160fc47a021deaed303417, type: 3}
+  - {fileID: 21300000, guid: d5e5db8ff30903d4a809c06845306405, type: 3}
+  - {fileID: 21300000, guid: ce7087170ddf41945869311488a0ad03, type: 3}
+  - {fileID: 21300000, guid: 105605519a7546c4596138da5756bc75, type: 3}
+  - {fileID: 21300000, guid: 43085c9b88eaf93468d75ac059499cad, type: 3}
+  - {fileID: 21300000, guid: 672bafddddd707a43acfbe882d0080e6, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Anywhere-Elements-shadow
+  - TestPreview
+  - Anywhere-Elements
+  - TextArea
+  - Tipsbackground
+  - Setting
+  - Favorite
+  - Anywhere-Elements-button-Shadow
+  - Return
+  - Anywhere-Elements-button
+  - RoundButtonBig
+  - search-shadow
+  - RoundButton
+  - search
+  - DownloadProgress-shadow
+  - Refresh
+  - DownloadProgress
+  m_Tag: UIAtlas
+  m_IsVariant: 0

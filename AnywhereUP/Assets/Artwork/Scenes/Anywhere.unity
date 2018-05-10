@@ -505,7 +505,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 3
     m_MaxSize: 40
-    m_Alignment: 3
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 0
     m_HorizontalOverflow: 0
@@ -973,18 +973,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 302173249}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: Return
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &302173249
@@ -2762,7 +2751,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1281757887
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3199,10 +3188,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ecbeffb20171944eb505aeddf6676f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_DontDestroyOnLoad: 0
   m_Mainuiroot: {fileID: 1054319072}
   m_Aruiroot: {fileID: 1052168402}
+  m_SettingBtn: {fileID: 1562528868}
+  m_RefreshBtn: {fileID: 744850466}
+  m_RecordButton: {fileID: 2142608108}
+  m_ReturnToMainButton: {fileID: 302173248}
+  m_CallBtn: {fileID: 2142608108}
+  m_Inputfield: {fileID: 95540210}
+  m_Tiptoptext: {fileID: 81724431}
   m_LoadingScreen: {fileID: 1447685720}
+  m_RecordGroup: {fileID: 1281757886}
 --- !u!1 &1394727191
 GameObject:
   m_ObjectHideFlags: 0
@@ -3314,7 +3310,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 8.299896, y: -1.6975098}
+  m_AnchoredPosition: {x: 8.25, y: -1.75}
   m_SizeDelta: {x: 167.83765, y: 245.57544}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1447685722
@@ -4738,18 +4734,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2142608109}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: CallToPortal
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &2142608109

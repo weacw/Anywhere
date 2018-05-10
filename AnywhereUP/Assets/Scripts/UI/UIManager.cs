@@ -15,122 +15,138 @@ using SuperScrollView;
 namespace Anywhere.UI
 {
 
-    public class UIManager : Singleton<UIManager>
+    public class UIManager : MonoBehaviour
     {
-        [SerializeField] private Transform m_Mainuiroot;
-        [SerializeField] private Transform m_Aruiroot;
 
-        //Main Scene
-        //private LoopListViewHelper m_Horizontalscorll;
-        private InputField m_Inputfield;
-        private Button m_CallBtn;
+        public Transform m_Mainuiroot;
+        public Transform m_Aruiroot;
 
-        //AR Scene
-        private GameObject m_ReturnToMainButton;
-        private GameObject m_RecordButton;
+        public Button m_SettingBtn;
+        public Button m_RefreshBtn;
 
-        //上方提示文字
-        private Text m_Tiptoptext;
+        public Button m_RecordButton;
+        public Button m_ReturnToMainButton;
+        public Button m_CallBtn;
+
+
+        public InputField m_Inputfield;
+
+        public Text m_Tiptoptext;
+
+        //Loading
         public GameObject m_LoadingScreen;
-        #region 生命周期
+        public GameObject m_RecordGroup;
+        /// <summary>
+        /// 初始化
+        /// </summary>
         private void Start()
         {
-            //m_Horizontalscorll = transform.GetComponent<LoopListViewHelper>();
-            m_Inputfield = m_Mainuiroot.Find("SearchBar/SearchbarField").GetComponent<InputField>();
-            m_ReturnToMainButton = m_Aruiroot.Find("BackButton").gameObject;
-            m_RecordButton = m_Aruiroot.Find("Recording/RecordingBtn").gameObject;
-            m_Tiptoptext = m_Aruiroot.Find("Hint/Hintbackground/Hinttext").GetComponent<Text>();
-            m_CallBtn = m_Aruiroot.Find("CallPortalBtn").GetComponent<Button>();
-            m_LoadingScreen = transform.Find("Loading").gameObject;
-            NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_SHOWCALLBTN, ShowCallBtn);
-            NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_HIDECALLBTN, HideCallBtn);
-
-
+            m_CallBtn.onClick.AddListener(CallToPortal);
             m_Inputfield.onEndEdit.AddListener(OnInputFiledEndEdit);
-            ClickEventListener tmp_Listener = ClickEventListener.Get(m_ReturnToMainButton.gameObject);
-            tmp_Listener.SetClickEventHandler(OnBackToMainButtonClick);
-            m_RecordButton.GetComponent<Button>().onClick.AddListener(() => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.EVERYPLAY_RECORDING_START));
+            m_RecordButton.onClick.AddListener(Record);
+            m_ReturnToMainButton.onClick.AddListener(OnBackToMainButtonClick);
+
+
+            //ClickEventListener tmp_Listener = ClickEventListener.Get(m_ReturnToMainButton.gameObject);
+            //tmp_Listener.SetClickEventHandler(OnBackToMainButtonClick);
 
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETPAGEDATAS, new HttpGetDataHelper() { m_PageIndex = 0 });
         }
 
-        private void ShowCallBtn(Notification _notif)
+        /// <summary>
+        /// 显示召唤按钮
+        /// </summary>
+        /// <param name="_notif"></param>
+        internal void ShowHideCallBtn(Notification _notif)
         {
-            if (!m_CallBtn.gameObject.activeSelf)
-            {
-                m_CallBtn.gameObject.SetActive(true);
-            }
-        }
-        private void HideCallBtn(Notification _notif)
-        {
-            if (m_CallBtn.gameObject.activeSelf)
-            {
-                m_CallBtn.gameObject.SetActive(false);
-            }
+            UICtrlHelper tmp_UICtrlHelper = _notif.param as UICtrlHelper;
+            m_CallBtn.gameObject.SetActive(tmp_UICtrlHelper.m_State);
         }
 
-        #endregion
 
-        #region 控件响应
-        //输入框输入结束
+
+        /// <summary>
+        /// 输入框输入结束
+        /// </summary>
+        /// <param name="_inputstr"></param>
         private void OnInputFiledEndEdit(string _inputstr)
         {
-            //从本地和服务器检索地名
-            //Debug.Log(_inputstr);
             if (string.IsNullOrEmpty(_inputstr)) return;
             SearchHelper m_SearchHelper = new SearchHelper() { m_Keywords = _inputstr };
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.SEARCH_GETRESULT, m_SearchHelper);
         }
 
-        public void Return()
-        {
-            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_PAUSE);
-        }
 
+        /// <summary>
+        /// 拉取下一页数据
+        /// </summary>
         private void Refresh()
         {
         }
-        //返回主界面按钮
-        private void OnBackToMainButtonClick(GameObject btn)
+
+        /// <summary>
+        /// 从ARScene返回到Home
+        /// </summary>
+        private void OnBackToMainButtonClick()
         {
-            //场景跳转
-            BackToMainScene();
+            SetHintsText(null);
+            //从ARScene进入Home
+            m_Mainuiroot.gameObject.SetActive(true);
+            m_Aruiroot.gameObject.SetActive(false);
             //TODO 重置场景
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_PAUSE);            
         }
 
-        #endregion
-
-
-        //场景跳转-AR场景
-        public void JumpToARScene()
+        /// <summary>
+        /// 召唤传送门
+        /// </summary>
+        private void CallToPortal()
         {
+            SetHintsText("穿越传送门");
+            m_CallBtn.gameObject.SetActive(false);
+            m_RecordGroup.SetActive(true);
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.OPERATER_SETFOCUSPOSTOCONTENT);
+        }
+        /// <summary>
+        /// 录像
+        /// </summary>
+        private void Record()
+        {
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.EVERYPLAY_RECORDING_START);
+        }
+
+        /// <summary>
+        /// 设置提示文案
+        /// </summary>
+        /// <param name="_text"></param>
+        private void SetHintsText(string _text)
+        {
+            m_Tiptoptext.text = _text;
+        }
+
+
+
+
+        /// <summary>
+        /// 从Home进入ARScene
+        /// </summary>
+        internal void GoToARScene(Notification _notif)
+        {
+            SetHintsText("寻找放置传送门的位置");
             m_Mainuiroot.gameObject.SetActive(false);
             m_Aruiroot.gameObject.SetActive(true);
         }
 
-        //场景跳转-主场景
-        public void BackToMainScene()
-        {
-            m_Mainuiroot.gameObject.SetActive(true);
-            m_Aruiroot.gameObject.SetActive(false);
-        }
 
-        #region 列表单元下载AB
-
-
-        public void CallToPortal()
-        {
-            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.OPERATER_SETFOCUSPOSTOCONTENT);
-            m_CallBtn.gameObject.SetActive(false);
-        }
-
-        public void ShowHideLoading(Notification _notif)
+        /// <summary>
+        /// 显示隐藏加载界面
+        /// </summary>
+        /// <param name="_notif"></param>
+        internal void ShowHideLoading(Notification _notif)
         {
             UICtrlHelper tmp_UICtrlHelper = _notif.param as UICtrlHelper;
             m_LoadingScreen.SetActive(tmp_UICtrlHelper.m_State);
         }
-
-        #endregion
     }
 
 }

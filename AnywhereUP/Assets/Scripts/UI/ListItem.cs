@@ -83,7 +83,7 @@ namespace Anywhere.UI
                     m_EndIntance = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false })
                 });
                 //进入场景
-                UIManager.Instance.JumpToARScene();
+                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_GOTOARSCENE);
             }
             else
             {
