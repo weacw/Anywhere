@@ -95,15 +95,15 @@ namespace Anywhere.UI
                         m_EndIntance = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false })
                     });
                 }
-                //else if (tmp_Type.CompareTo("jpg") == 0)
-                //{
-                //    NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_VIDEOPLAY, new VideoPlayerHelper()
-                //    {
-                //        m_Videoname = m_Pageitem.assetName,
-                //        m_BeginInstance = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = true }),
-                //        m_EndIntance = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false })
-                //    });
-                //}
+                else if (tmp_Type.CompareTo("jpg") == 0 || tmp_Type.CompareTo("png") == 0)
+                {
+                    NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_IMAGE360, new Image360Helper()
+                    {
+                        m_ImageName = m_Pageitem.assetName,
+                        m_BeginInstance = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = true }),
+                        m_EndIntance = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false })
+                    });
+                }
                 //进入场景
                 NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_GOTOARSCENE);
             }

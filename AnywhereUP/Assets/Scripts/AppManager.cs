@@ -11,7 +11,8 @@ namespace Anywhere
         private Dictionary<string, BaseModule> m_ScriptModulesDict = new Dictionary<string, BaseModule>();
 
         private UIManager m_UIManager;
-
+        private AssetsManager m_AssetsManager;
+        private LoopListViewHelper m_LoopListViewHelper;
         /// <summary>
         /// Init the configs
         /// </summary>
@@ -26,8 +27,8 @@ namespace Anywhere
 
             //Get maanger
             m_UIManager = FindObjectOfType<UIManager>();
-
-
+            m_AssetsManager = FindObjectOfType<AssetsManager>();
+            m_LoopListViewHelper = FindObjectOfType<LoopListViewHelper>();
 
             //Register operater
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.HTTP_GETREQUEST, (m_ScriptModulesDict["HttpWebRequest"] as HttpRequest).GetHttpResponse);
@@ -42,11 +43,13 @@ namespace Anywhere
 
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_ABINSTANCE, (m_ScriptModulesDict["AssetbundleLoaderModule"] as AssetbundleLoaderModule).InstaniateAB);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_VIDEOPLAY, (m_ScriptModulesDict["Video360LoaderModule"] as Video360LoaderModule).PlayVideo);
-            NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_SETUP, AssetsManager.Instance.SetupContent);
-            NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_REMOVEALL, AssetsManager.Instance.RemoveABSource);
+            NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_IMAGE360, (m_ScriptModulesDict["Image360LoaderModule"] as Image360LoaderModule).PlayImage360);
 
-            NotifCenter.GetNotice.AddEventListener(NotifEventKey.OPERATER_PLACECONTENT, AssetsManager.Instance.PlaceContent);
-            NotifCenter.GetNotice.AddEventListener(NotifEventKey.NET_GETALLPAGEINFO, LoopListViewHelper.Instance.CreatPages);
+            NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_SETUP, m_AssetsManager.SetupContent);
+            NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_REMOVEALL, m_AssetsManager.RemoveABSource);
+
+            NotifCenter.GetNotice.AddEventListener(NotifEventKey.OPERATER_PLACECONTENT, m_AssetsManager.PlaceContent);
+            NotifCenter.GetNotice.AddEventListener(NotifEventKey.NET_GETALLPAGEINFO, m_LoopListViewHelper.CreatPages);
 
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_SHOWHIDELOADING, m_UIManager.ShowHideLoading);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_SHOWCALLBTN, m_UIManager.ShowHideCallBtn);

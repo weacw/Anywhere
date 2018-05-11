@@ -115,6 +115,7 @@
         /// 获取搜索数据
         /// </summary>
         SEARCH_GETRESULT,
-        UI_GOTOARSCENE
+        UI_GOTOARSCENE,
+        ASSETS_IMAGE360
     }
 }

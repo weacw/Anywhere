@@ -17,7 +17,7 @@ using Anywhere.UI;
 namespace Anywhere
 {
 
-    public class LoopListViewHelper : Singleton<LoopListViewHelper>
+    public class LoopListViewHelper : MonoBehaviour
     {
         public LoopListView m_Looplistview;
         #region 生命周期

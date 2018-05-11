@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System;
-public class VideoPlayerHelper : EventArgs
+namespace Anywhere
 {
-    public string m_Videoname = null;
-    public Action m_BeginInstance;
-    public Action m_EndIntance;
+    public class VideoPlayerHelper : BaseAssetsHelper
+    {
+        public string m_Videoname = null;
+    }
 }
