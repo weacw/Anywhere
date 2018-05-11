@@ -76,12 +76,34 @@ namespace Anywhere.UI
             if (m_Assetisdownloaded)
             {
                 NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_PLAY);
-                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_ABINSTANCE, new ABInstaniateHelper()
+                string tmp_Type = m_Pageitem.type.ToLower();
+                if (tmp_Type.CompareTo("assetbundle") == 0)
                 {
-                    m_ABName = m_CurData,
-                    m_BeginInstance = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = true }),
-                    m_EndIntance = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false })
-                });
+                    NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_ABINSTANCE, new ABInstaniateHelper()
+                    {
+                        m_ABName = m_CurData,
+                        m_BeginInstance = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = true }),
+                        m_EndIntance = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false })
+                    });
+                }
+                else if (tmp_Type.CompareTo("mp4") == 0)
+                {
+                    NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_VIDEOPLAY, new VideoPlayerHelper()
+                    {
+                        m_Videoname = m_Pageitem.assetName,
+                        m_BeginInstance = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = true }),
+                        m_EndIntance = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false })
+                    });
+                }
+                //else if (tmp_Type.CompareTo("jpg") == 0)
+                //{
+                //    NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_VIDEOPLAY, new VideoPlayerHelper()
+                //    {
+                //        m_Videoname = m_Pageitem.assetName,
+                //        m_BeginInstance = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = true }),
+                //        m_EndIntance = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false })
+                //    });
+                //}
                 //进入场景
                 NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_GOTOARSCENE);
             }

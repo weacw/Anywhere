@@ -41,7 +41,7 @@ namespace Anywhere
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.EVERYPLAY_RECORDING_STOP, (m_ScriptModulesDict["EveryplayModule"] as EveryplayModule).OnRecordingStop);
 
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_ABINSTANCE, (m_ScriptModulesDict["AssetbundleLoaderModule"] as AssetbundleLoaderModule).InstaniateAB);
-            NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_VIDEOPLAY, (m_ScriptModulesDict["EveryplayModule"] as EveryplayModule).OnRecordingStop);
+            NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_VIDEOPLAY, (m_ScriptModulesDict["Video360LoaderModule"] as Video360LoaderModule).PlayVideo);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_SETUP, AssetsManager.Instance.SetupContent);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.ASSETS_REMOVEALL, AssetsManager.Instance.RemoveABSource);
 
