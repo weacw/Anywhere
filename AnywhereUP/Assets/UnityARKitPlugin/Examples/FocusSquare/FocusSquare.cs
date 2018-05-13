@@ -99,7 +99,7 @@ public class FocusSquare : MonoBehaviour
             foundSquare.transform.rotation = hit.transform.rotation;
             if (!m_ShowedButton)
             {
-                Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_SHOWCALLBTN);
+                Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_SHOWCALLBTN, new Anywhere.UICtrlHelper() { m_State = true });
                 m_ShowedButton = true;
             }
             return;
@@ -131,7 +131,7 @@ public class FocusSquare : MonoBehaviour
                 if (!m_ShowedButton)
                 {
                     m_ShowedButton = true;
-                    Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_SHOWCALLBTN);
+                    Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.UI_SHOWCALLBTN,new Anywhere.UICtrlHelper(){m_State=true});
                 }
                 return;
             }

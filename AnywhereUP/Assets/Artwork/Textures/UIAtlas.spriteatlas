@@ -11,13 +11,13 @@ SpriteAtlas:
       serializedVersion: 2
       anisoLevel: 1
       compressionQuality: 50
-      maxTextureSize: 2048
+      maxTextureSize: 1024
       textureCompression: 1
-      filterMode: 1
+      filterMode: 2
       generateMipMaps: 0
       readable: 0
       crunchedCompression: 1
-      sRGB: 1
+      sRGB: 0
     platformSettings:
     - serializedVersion: 2
       m_BuildTarget: iPhone
@@ -32,11 +32,11 @@ SpriteAtlas:
       m_AndroidETC2FallbackOverride: 0
     packingParameters:
       serializedVersion: 2
-      padding: 4
+      padding: 8
       blockOffset: 1
       allowAlphaSplitting: 0
-      enableRotation: 1
-      enableTightPacking: 1
+      enableRotation: 0
+      enableTightPacking: 0
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: eb22ed72e04d3a248861367378cfa717, type: 3}

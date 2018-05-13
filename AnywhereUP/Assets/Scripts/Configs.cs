@@ -66,7 +66,7 @@ public class Configs
     {
         get
         {
-#if !UNITY_EDITOR
+#if UNITY_IPHONE
             return Application.persistentDataPath + "/cache/";
 #elif UNITY_EDITOR
             return Application.streamingAssetsPath + "/cache/";

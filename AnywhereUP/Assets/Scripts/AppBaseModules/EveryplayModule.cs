@@ -10,15 +10,12 @@ namespace Anywhere
     {
         private bool m_isRecording;
 
-        //private bool m_isRecordingFinished;
-
+        private bool m_isRecordingFinished;
+        
         private void Awake()
         {
-            Everyplay.Initialize();
-
-            Everyplay.SetMaxRecordingSecondsLength(Configs.GetConfigs.m_MaxRecordTime);
             m_isRecording = false;
-            //m_isRecordingFinished = false;
+            m_isRecordingFinished = false;
             Everyplay.RecordingStarted += RecordingStarted;
             Everyplay.RecordingStopped += RecordingStopped;
         }
@@ -45,7 +42,7 @@ namespace Anywhere
             }
             Everyplay.StartRecording();
             m_isRecording = true;
-            //m_isRecordingFinished = false;
+            m_isRecordingFinished = false;
         }
 
         //stop recording
@@ -57,7 +54,7 @@ namespace Anywhere
             }
             Everyplay.StopRecording();
             m_isRecording = false;
-            //m_isRecordingFinished = true;
+            m_isRecordingFinished = true;
         }
 
         private void RecordingStarted()

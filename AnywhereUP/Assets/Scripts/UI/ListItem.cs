@@ -58,8 +58,7 @@ namespace Anywhere.UI
 
             //TODO  判断是否已下载
             m_Assetisdownloaded = false;
-            string path = Configs.GetConfigs.m_CachePath + _itemdata.assetName + "." + _itemdata.type;
-
+            string path = System.IO.Path.Combine(Configs.GetConfigs.m_CachePath, _itemdata.assetName + "." + _itemdata.type.ToLower());
             m_Assetisdownloaded = CacheMachine.IsCache(path);
             m_Downloadbtntext.text = m_Assetisdownloaded ? "打开" : "下载";
             Sprite tmp_Sprite = DataSource.Instance.GetItemBackgroundById(m_Pageitem.thumbnailName.GetHashCode());

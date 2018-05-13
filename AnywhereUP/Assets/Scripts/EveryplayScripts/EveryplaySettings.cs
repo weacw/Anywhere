@@ -45,7 +45,11 @@ public class EveryplaySettings : ScriptableObject
     {
         get
         {
-            if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneOSX)
+            if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneOSXIntel ||
+#if !UNITY_3_5
+                EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneOSXIntel64 ||
+#endif
+                EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneOSX)
             {
                 return standaloneSupportEnabled;
             }
