@@ -7,10 +7,9 @@
 *		
 */
 
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using SuperScrollView;
-
 
 namespace Anywhere.UI
 {
@@ -18,8 +17,9 @@ namespace Anywhere.UI
     public class UIManager : MonoBehaviour
     {
 
-        public Transform m_Mainuiroot;
-        public Transform m_Aruiroot;
+        public Transform m_MainUIRoot;
+        public Transform m_ARUIRoot;
+        public Transform m_SettingRoot;
 
         public Button m_SettingBtn;
         public Button m_RefreshBtn;
@@ -28,14 +28,23 @@ namespace Anywhere.UI
         public Button m_ReturnToMainButton;
         public Button m_CallBtn;
 
+        public Button m_CleanCache;
+        public Button m_About;
+        public Button m_SettingReturnHome;
 
         public InputField m_Inputfield;
-
         public Text m_Tiptoptext;
+        public Text m_CacheSizetext;
+
+        public Image m_RecordProgress;
 
         //Loading
         public GameObject m_LoadingScreen;
         public GameObject m_RecordGroup;
+
+        private float m_CurTime;
+        private IEnumerator m_RecordCoroutine;
+
         /// <summary>
         /// 初始化
         /// </summary>
@@ -45,22 +54,29 @@ namespace Anywhere.UI
             m_Inputfield.onEndEdit.AddListener(OnInputFiledEndEdit);
             m_RecordButton.onClick.AddListener(Record);
             m_ReturnToMainButton.onClick.AddListener(OnBackToMainButtonClick);
+            m_CleanCache.onClick.AddListener(CleanCache);
+            m_SettingBtn.onClick.AddListener(ShowSettingPanel);
+            m_SettingReturnHome.onClick.AddListener(SettingReturnHome);
+            m_About.onClick.AddListener(() => { Application.OpenURL("https://aw.weacw.com/anywhere/about/"); });
+            m_RefreshBtn.onClick.AddListener(Refresh);
 
-
-            //ClickEventListener tmp_Listener = ClickEventListener.Get(m_ReturnToMainButton.gameObject);
-            //tmp_Listener.SetClickEventHandler(OnBackToMainButtonClick);
-
-            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETPAGEDATAS, new HttpGetDataHelper() { m_PageIndex = 0 });
+            m_RecordCoroutine = RecordTimeCoroutine();
         }
 
-        /// <summary>
-        /// 显示召唤按钮
-        /// </summary>
-        /// <param name="_notif"></param>
-        internal void ShowHideCallBtn(Notification _notif)
+        private void ShowSettingPanel()
         {
-            UICtrlHelper tmp_UICtrlHelper = _notif.param as UICtrlHelper;
-            m_CallBtn.gameObject.SetActive(tmp_UICtrlHelper.m_State);
+            m_SettingRoot.gameObject.SetActive(true);
+            ShowCacheSize();
+        }
+        private void CleanCache()
+        {
+            CacheMachine.CleanCache();
+            ShowCacheSize();
+        }
+        private void SettingReturnHome()
+        {
+            m_SettingRoot.gameObject.SetActive(false);
+            m_MainUIRoot.gameObject.SetActive(true);
         }
 
 
@@ -82,6 +98,18 @@ namespace Anywhere.UI
         /// </summary>
         private void Refresh()
         {
+            DataSource.Instance.RefreshDatas();
+            Loom.RunAsync(() =>
+            {
+                new System.Threading.Thread(() =>
+                {
+                    HttpGetDataHelper tmp_HttpGetDataHelper = new HttpGetDataHelper();
+                    tmp_HttpGetDataHelper.m_Finished = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_REFRESHDATAS);
+                    tmp_HttpGetDataHelper.m_PageIndex = Configs.GetConfigs.ContentPageNum;
+                    NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETPAGEDATAS, tmp_HttpGetDataHelper);
+                }).Start();
+            });
+
         }
 
         /// <summary>
@@ -91,10 +119,10 @@ namespace Anywhere.UI
         {
             SetHintsText(null);
             //从ARScene进入Home
-            m_Mainuiroot.gameObject.SetActive(true);
-            m_Aruiroot.gameObject.SetActive(false);
+            m_MainUIRoot.gameObject.SetActive(true);
+            m_ARUIRoot.gameObject.SetActive(false);
             //TODO 重置场景
-            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_PAUSE);            
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_PAUSE);
         }
 
         /// <summary>
@@ -113,6 +141,7 @@ namespace Anywhere.UI
         private void Record()
         {
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.EVERYPLAY_RECORDING_START);
+            StartCoroutine(m_RecordCoroutine);
         }
 
         /// <summary>
@@ -125,7 +154,36 @@ namespace Anywhere.UI
         }
 
 
+        private void ShowCacheSize()
+        {
+            m_CacheSizetext.text = CacheMachine.GetCacheSize().ToString("0.0") + " M";
+        }
 
+        private IEnumerator RecordTimeCoroutine()
+        {
+            while (m_CurTime < Configs.GetConfigs.m_MaxRecordTime)
+            {
+                yield return null;
+                m_CurTime += Time.deltaTime;
+                m_RecordProgress.fillAmount = (m_CurTime / Configs.GetConfigs.m_MaxRecordTime);
+            }
+            yield return null;
+
+            m_CurTime = 0;
+            m_RecordProgress.fillAmount = m_CurTime;
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.EVERYPLAY_RECORDING_STOP);
+        }
+
+
+        /// <summary>
+        /// 显示召唤按钮
+        /// </summary>
+        /// <param name="_notif"></param>
+        internal void ShowHideCallBtn(Notification _notif)
+        {
+            UICtrlHelper tmp_UICtrlHelper = _notif.param as UICtrlHelper;
+            m_CallBtn.gameObject.SetActive(tmp_UICtrlHelper.m_State);
+        }
 
         /// <summary>
         /// 从Home进入ARScene
@@ -133,8 +191,8 @@ namespace Anywhere.UI
         internal void GoToARScene(Notification _notif)
         {
             SetHintsText("寻找放置传送门的位置");
-            m_Mainuiroot.gameObject.SetActive(false);
-            m_Aruiroot.gameObject.SetActive(true);
+            m_MainUIRoot.gameObject.SetActive(false);
+            m_ARUIRoot.gameObject.SetActive(true);
         }
 
 
@@ -145,8 +203,12 @@ namespace Anywhere.UI
         internal void ShowHideLoading(Notification _notif)
         {
             UICtrlHelper tmp_UICtrlHelper = _notif.param as UICtrlHelper;
-            m_LoadingScreen.SetActive(tmp_UICtrlHelper.m_State);
+            Loom.QueueOnMainThread((parm) =>
+            {
+                m_LoadingScreen.SetActive(tmp_UICtrlHelper.m_State);
+            }, null);
         }
+
     }
 
 }

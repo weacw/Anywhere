@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using Anywhere.Net;
 using Anywhere.UI;
 using SuperScrollView;
@@ -16,7 +14,7 @@ namespace Anywhere
         {
             if (m_Looplistview == null) m_Looplistview = FindObjectOfType<LoopListView>();
             // UIManager.Instance.ShowHideLoading(true);
-             //开始加载，开启Loading界面
+            //开始加载，开启Loading界面
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = true });
             PageItem tmp_Item = null;
             int index = 0;
@@ -44,7 +42,8 @@ namespace Anywhere
                             if (json.ToLower().Contains("null"))
                             {
                                 //加载完毕，关闭Loading界面
-                                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false });
+                                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false, m_ResultType = "SearchNotFound" });
+
                                 // UIManager.Instance.ShowHideLoading(false);
                                 Debug.Log("Not found");
                                 return;

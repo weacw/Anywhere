@@ -14,8 +14,8 @@ public class Configs
         }
     }
 
-
-
+    public int ContentPageNum = 1;
+    public int m_MaxRecordTime = 30;
     /// <summary>
     /// ARKit开启点云HUD设置
     /// </summary>

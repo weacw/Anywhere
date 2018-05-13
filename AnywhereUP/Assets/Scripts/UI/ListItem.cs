@@ -62,7 +62,7 @@ namespace Anywhere.UI
 
             m_Assetisdownloaded = CacheMachine.IsCache(path);
             m_Downloadbtntext.text = m_Assetisdownloaded ? "打开" : "下载";
-            Sprite tmp_Sprite = DataSource.Instance.GetItemBackgroundById(m_Pageitem.id);
+            Sprite tmp_Sprite = DataSource.Instance.GetItemBackgroundById(m_Pageitem.thumbnailName.GetHashCode());
             m_Icon.sprite = tmp_Sprite ? tmp_Sprite : null;
         }
 
@@ -109,7 +109,9 @@ namespace Anywhere.UI
             }
             else
             {
+#if UNITY_EDITOR
                 Debug.Log("开始下载");
+#endif
                 HttpRequestHelper tmp_HttpRequestHelper = new HttpRequestHelper();
                 tmp_HttpRequestHelper.m_LocalPath = Configs.GetConfigs.m_CachePath;
                 Loom.RunAsync(() =>

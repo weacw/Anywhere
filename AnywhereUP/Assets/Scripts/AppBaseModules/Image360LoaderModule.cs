@@ -30,7 +30,7 @@ namespace Anywhere
             {
                 new System.Threading.Thread(() =>
                 {
-                    tmp_Bytes = File.ReadAllBytes(tmp_Path + "/"+ tmp_Image360Helper.m_ImageName + ".png");                    
+                    tmp_Bytes = File.ReadAllBytes(tmp_Path + "/" + tmp_Image360Helper.m_ImageName + ".jpg");
                 }).Start();
                 Loom.QueueOnMainThread((parm) =>
                 {
@@ -39,7 +39,8 @@ namespace Anywhere
                     tmp_Texture.Compress(true);
                     tmp_Texture.Apply(false);
                     tmp_Material.SetTexture("_MainTex", tmp_Texture);
-                    if (tmp_Image360Helper.m_EndIntance != null) tmp_Image360Helper.m_EndIntance.Invoke();                    
+                    NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_SETUP, new ContentSetupHelper() { m_Content = tmp_Sphere });
+                    if (tmp_Image360Helper.m_EndIntance != null) tmp_Image360Helper.m_EndIntance.Invoke();
                 }, null);
             });
         }

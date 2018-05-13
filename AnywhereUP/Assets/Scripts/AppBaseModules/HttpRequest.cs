@@ -14,10 +14,10 @@ namespace Anywhere
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
             HttpRequestHelper tmp_RequestHelper = _notif.param as HttpRequestHelper;
-            if (string.IsNullOrEmpty(tmp_RequestHelper.m_URI))
-                throw new ArgumentNullException("url");
+
             try
             {
+                if (tmp_RequestHelper.m_Starting != null) tmp_RequestHelper.m_Starting.Invoke();
                 HttpWebRequest request = WebRequest.Create(tmp_RequestHelper.m_URI) as HttpWebRequest;
                 request.Method = "GET";
                 if (tmp_RequestHelper.m_TimeOut != 0)

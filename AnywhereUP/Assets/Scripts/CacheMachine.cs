@@ -38,7 +38,6 @@ public class CacheMachine
         FileInfo[] tmp_FileInfo = tmp_FilesName.GetFiles();
         foreach (var tmp_File in tmp_FileInfo)
             tmp_Length += tmp_File.Length;
-        Debug.Log(tmp_Length);
         return tmp_Length / 1024f / 1024f;
     }
 }

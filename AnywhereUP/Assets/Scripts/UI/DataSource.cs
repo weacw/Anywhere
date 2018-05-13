@@ -42,7 +42,6 @@ namespace Anywhere.UI
 
             path = Configs.GetConfigs.m_CachePath;
 
-            NotifCenter.GetNotice.AddEventListener(NotifEventKey.HTTP_GETPAGEITEM, GetPageItem);
         }
 
 
@@ -93,6 +92,12 @@ namespace Anywhere.UI
             }
         }
 
+        public void RefreshDatas()
+        {
+            index=0;
+            m_Itemdatalist.Clear();
+            ItemBackgroundDic.Clear();
+        }
 
 
         /// <summary>
@@ -126,16 +131,15 @@ namespace Anywhere.UI
                      Texture2D tmp_tex2d = GetIcon(m_Itemdatalist[index], 10, 10);
                      Sprite tmp_Sprite = Sprite.Create(tmp_tex2d, new Rect(0, 0, tmp_tex2d.width, tmp_tex2d.height), new Vector2(0, 0));
                      tmp_Sprite.name = m_Itemdatalist[index].thumbnailName;
-                     if (!ItemBackgroundDic.ContainsKey(m_Itemdatalist[index].id))
-                         ItemBackgroundDic.Add(m_Itemdatalist[index].id, tmp_Sprite);
+                     if (!ItemBackgroundDic.ContainsKey(m_Itemdatalist[index].thumbnailName.GetHashCode()))
+                         ItemBackgroundDic.Add(m_Itemdatalist[index].thumbnailName.GetHashCode(), tmp_Sprite);
 
                      if (_callback != null) _callback.Invoke();
-
 
                      //下载到列表最后一个时才进行生成
                      if (index == m_Itemdatalist.Count - 1 && !wasCreated)
                      {
-                         NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.NET_GETALLPAGEINFO, new LoadViewHelper()
+                         NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETALLPAGEINFO, new LoadViewHelper()
                          {
                              //加载完毕，关闭Loading界面
                              m_Action = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false })

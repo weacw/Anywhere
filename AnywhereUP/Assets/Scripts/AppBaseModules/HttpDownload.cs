@@ -19,13 +19,15 @@ namespace Anywhere
                 Directory.CreateDirectory(tmpPath);
 
             try
-            {                
+            {
                 string tmpFile = Path.Combine(tmpPath, Path.GetFileName(tmp_httpRequestHelper.m_URI));
 
                 //本地文件不存在则从网上下载
                 if (!CacheMachine.IsCache(tmpFile))
                 {
+#if UNITY_EDITOR
                     Debug.LogFormat("<color=green>[{0}]Load from internel.</color>", Path.GetFileName(tmpFile));
+#endif
                     HttpWebRequest tmpRequest = WebRequest.Create(tmp_httpRequestHelper.m_URI) as HttpWebRequest;
                     tmpRequest.Timeout = tmp_httpRequestHelper.m_TimeOut;
                     HttpWebResponse tmpResponse = tmpRequest.GetResponse() as HttpWebResponse;
@@ -55,7 +57,9 @@ namespace Anywhere
                 }
                 else
                 {
-                    Debug.LogFormat("<color=green>[{0}]Load from cache.</color>", Path.GetFileName(tmpFile));
+//#if UNITY_EDITOR
+                    //Debug.LogFormat("<color=green>[{0}]Load from cache.</color>", Path.GetFileName(tmpFile));
+//#endif
                 }
 
                 Loom.QueueOnMainThread((parm) =>

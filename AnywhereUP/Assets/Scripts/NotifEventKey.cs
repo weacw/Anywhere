@@ -57,7 +57,7 @@
         /// <summary>
         /// 从服务器获取分页信息
         /// </summary>
-        NET_GETALLPAGEINFO,
+        HTTP_GETALLPAGEINFO,
         /// <summary>
         /// 从服务检索完毕
         /// </summary>
@@ -116,6 +116,8 @@
         /// </summary>
         SEARCH_GETRESULT,
         UI_GOTOARSCENE,
-        ASSETS_IMAGE360
+        ASSETS_IMAGE360,
+        UI_SHOWCACHESIZE,
+        UI_REFRESHDATAS
     }
 }

@@ -9,11 +9,14 @@ namespace Anywhere
     public class EveryplayModule : BaseModule
     {
         private bool m_isRecording;
+
         //private bool m_isRecordingFinished;
 
         private void Awake()
         {
-            Everyplay.SetMaxRecordingSecondsLength(30);
+            Everyplay.Initialize();
+
+            Everyplay.SetMaxRecordingSecondsLength(Configs.GetConfigs.m_MaxRecordTime);
             m_isRecording = false;
             //m_isRecordingFinished = false;
             Everyplay.RecordingStarted += RecordingStarted;
@@ -35,7 +38,6 @@ namespace Anywhere
         // start recording
         internal void OnRecordingStart(Notification _notif)
         {
-            Debug.Log("Start");
             if (m_isRecording)
             {
                 OnRecordingStop(null);

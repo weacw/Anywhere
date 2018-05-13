@@ -6,21 +6,20 @@
 *		Jeno
 *		
 */
-
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using SuperScrollView;
-using Anywhere.Net;
 using Anywhere.UI;
 namespace Anywhere
 {
 
     public class LoopListViewHelper : MonoBehaviour
     {
-        public LoopListView m_Looplistview;
-        #region 生命周期
+        private LoopListView m_Looplistview;
+
+        private void Start()
+        {
+            m_Looplistview = FindObjectOfType<LoopListView>();
+        }
 
         private void LateUpdate()
         {
@@ -38,8 +37,6 @@ namespace Anywhere
             }
         }
 
-        #endregion
-
         /// <summary>
         /// 创建列表
         /// </summary>
@@ -50,6 +47,16 @@ namespace Anywhere
             if (tmp_LoadingViewHelper.m_Action != null)
                 tmp_LoadingViewHelper.m_Action.Invoke();
         }
+
+        internal void RefreshDatas(Notification _notif)
+        {
+            for (int i = 0; i < m_Looplistview.ShownItemCount; i++)
+            {
+                ListItem item = m_Looplistview.GetShownItemByIndex(i).GetComponent<ListItem>();
+                item.SetItemData(DataSource.Instance.GetItemDataByIndex(i), i);
+            }
+        }
+
 
         /// <summary>
         /// 通过索引获取列表单元

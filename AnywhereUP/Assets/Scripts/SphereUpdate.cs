@@ -16,7 +16,7 @@ namespace Anywhere
         public void Update()
         {
             if (m_Self == null || m_Target == null) return;
-            m_Self.position = Vector3.Lerp(m_Self.position, m_Target.position, Time.deltaTime * 20);
+            m_Self.position = Vector3.Lerp(m_Self.position, m_Target.position, Time.deltaTime * 50);
         }
 
     }

@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.Video;
-using System.IO;
-using System.Text;
 using UnityEngine.SceneManagement;
-
+using System.Collections;
 namespace Anywhere
 {
     /// <summary>
@@ -48,6 +45,20 @@ namespace Anywhere
             m_IsSceneStream = tmp_ContentSetupHelper.m_IsSceneStream;
             m_Content = tmp_ContentSetupHelper.m_Content;
             m_Scenes = tmp_ContentSetupHelper.m_Scene;
+        }
+
+
+        private void Start()
+        {
+            StartCoroutine(GetDatas());
+        }
+        private IEnumerator GetDatas()
+        {
+            yield return new WaitForSeconds(1);
+            HttpGetDataHelper tmp_HttpGetDataHelper = new HttpGetDataHelper();
+            tmp_HttpGetDataHelper.m_Finished = null;
+            tmp_HttpGetDataHelper.m_PageIndex = Configs.GetConfigs.ContentPageNum;
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETPAGEDATAS, tmp_HttpGetDataHelper);
         }
     }
 }
