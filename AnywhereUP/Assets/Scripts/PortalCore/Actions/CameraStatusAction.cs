@@ -11,9 +11,7 @@ namespace Anywhere
         private Transform m_Device;
         private void Awake()
         {
-#if !UNITY_EDITOR
             m_Device = GameObject.FindGameObjectWithTag("MainCamera").transform;
-#endif
         }
         public override void Execute(PortalActionManager _hook)
         {
