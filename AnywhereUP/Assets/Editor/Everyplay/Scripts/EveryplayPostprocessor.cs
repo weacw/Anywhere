@@ -94,7 +94,7 @@ public static class EveryplayPostprocessor
         }
     }
 
-    #if !UNITY_5_OR_LATER
+#if !UNITY_5_OR_LATER
     [PostProcessScene]
     public static void OnPostprocessScene()
     {
@@ -110,7 +110,7 @@ public static class EveryplayPostprocessor
         }
     }
 
-    #endif
+#endif
 
     private static void PostProcessBuild_iOS(string path, string clientId)
     {
@@ -128,12 +128,12 @@ public static class EveryplayPostprocessor
 
     private static void PostProcessBuild_Android(string path, string clientId)
     {
-        #if UNITY_5_5_OR_NEWER
+#if UNITY_5_5_OR_NEWER
         FixAndroidSubprojectBuildGradle(path);
-        #endif
+#endif
     }
 
-    #if UNITY_5_5_OR_NEWER
+#if UNITY_5_5_OR_NEWER
 
     private static void FixAndroidDynamicLibraryCopyWithGradle(bool enabled)
     {
@@ -243,19 +243,19 @@ public static class EveryplayPostprocessor
         }
     }
 
-    #endif
+#endif
 
     public static void SetPluginImportEnabled(BuildTarget buildTarget, bool enabled)
     {
-        #if UNITY_5_OR_LATER
+#if UNITY_5_OR_LATER
         try
         {
             PluginImporter[] pluginImporters = PluginImporter.GetAllImporters();
-            #if UNITY_TVOS
+#if UNITY_TVOS
             bool hasPlatform_tvOS = true;
-            #else
+#else
             bool hasPlatform_tvOS = false;
-            #endif
+#endif
 
             foreach (PluginImporter pluginImporter in pluginImporters)
             {
@@ -273,14 +273,14 @@ public static class EveryplayPostprocessor
                     if (((buildTarget == kBuildTarget_iOS) && pluginImporter_iOS) ||
                         ((buildTarget == kBuildTarget_tvOS && hasPlatform_tvOS) && pluginImporter_tvOS))
                     {
-                        #if UNITY_5_5_OR_NEWER
+#if UNITY_5_5_OR_NEWER
                         pluginImporter.ClearSettings();
-                        #elif UNITY_TVOS
+#elif UNITY_TVOS
                         if (pluginImporter_iOS)
                         {
                             pluginImporter.SetCompatibleWithPlatform(kBuildTarget_tvOS, false);
                         }
-                        #endif
+#endif
 
                         pluginImporter.SetCompatibleWithPlatform(buildTarget, enabled);
 
@@ -312,7 +312,7 @@ public static class EveryplayPostprocessor
         {
             Debug.Log("Changing plugin import settings failed: " + e);
         }
-        #endif
+#endif
     }
 
     private static void CreateEveryplayConfig(string path)
@@ -382,7 +382,7 @@ public static class EveryplayPostprocessor
                     key.InnerText = "NSCameraUsageDescription";
 
                     XmlElement str = xmlDocument.CreateElement("string");
-                    str.InnerText = "Everyplay requires access to the camera";
+                    str.InnerText = "Anywhere requires access to the camera";
 
                     dict.AppendChild(key);
                     dict.AppendChild(str);
@@ -397,7 +397,7 @@ public static class EveryplayPostprocessor
                     key.InnerText = "NSMicrophoneUsageDescription";
 
                     XmlElement str = xmlDocument.CreateElement("string");
-                    str.InnerText = "Everyplay requires access to the microphone";
+                    str.InnerText = "Anywhere requires access to the microphone";
 
                     dict.AppendChild(key);
                     dict.AppendChild(str);
@@ -412,7 +412,21 @@ public static class EveryplayPostprocessor
                     key.InnerText = "NSPhotoLibraryUsageDescription";
 
                     XmlElement str = xmlDocument.CreateElement("string");
-                    str.InnerText = "Everyplay requires access to the photo library";
+                    str.InnerText = "Anywhere requires access to the photo library";
+
+                    dict.AppendChild(key);
+                    dict.AppendChild(str);
+                }
+
+                PListItem photoLibraryAddUsageDescription = GetPlistItem(dict, "NSPhotoLibraryAddUsageDescription");
+
+                if (photoLibraryAddUsageDescription == null)
+                {
+                    XmlElement key = xmlDocument.CreateElement("key");
+                    key.InnerText = "NSPhotoLibraryAddUsageDescription";
+
+                    XmlElement str = xmlDocument.CreateElement("string");
+                    str.InnerText = "Anywhere requires access to the photo library";
 
                     dict.AppendChild(key);
                     dict.AppendChild(str);
@@ -619,17 +633,17 @@ public static class EveryplayPostprocessor
 
     public static string GetUnityVersion()
     {
-        #if UNITY_3_5
+#if UNITY_3_5
         return "350";
-        #elif (UNITY_4_0 || UNITY_4_0_1)
+#elif (UNITY_4_0 || UNITY_4_0_1)
         return "400";
-        #elif UNITY_4_1
+#elif UNITY_4_1
         return "410";
-        #elif UNITY_4_2
+#elif UNITY_4_2
         return "420";
-        #else
+#else
         return "0";
-        #endif
+#endif
     }
 
     private static void CreateModFile(string path, bool copyDependencies)
@@ -662,7 +676,7 @@ public static class EveryplayPostprocessor
         string platformPluginsPath = PathCombine(Application.dataPath, PathWithPlatformDirSeparators("Plugins/Everyplay/tvOS"));
 #else
         string platformPluginsPath = pluginsPath;
-        #endif
+#endif
 
         frameworksearchpaths.Add(copyDependencies ? "$(SRCROOT)/Everyplay" : MacPath(platformPluginsPath));
         headerpaths.Add(copyDependencies ? "$(SRCROOT)/Everyplay" : MacPath(platformPluginsPath));
@@ -683,12 +697,12 @@ public static class EveryplayPostprocessor
         dependencyList.Add("EveryplayUnity.mm");
 
         List<string> platformDependencyList = new List<string>();
-        #if UNITY_IPHONE || UNITY_IOS
+#if UNITY_IPHONE || UNITY_IOS
         platformDependencyList.Add("Everyplay.framework");
         platformDependencyList.Add("Everyplay.bundle");
-        #else
+#else
         platformDependencyList.Add("EveryplayCore.framework");
-        #endif
+#endif
 
         string dependencyTargetPath = copyDependencies ? modPath : pluginsPath;
         foreach (string dependencyFile in dependencyList)
@@ -906,9 +920,9 @@ public static class EveryplayPostprocessor
             {
                 bool androidEnabled = isValid ? settings.androidSupportEnabled : false;
                 EveryplayPostprocessor.SetEveryplayEnabledForTarget(BuildTargetGroup.Android, androidEnabled);
-                #if UNITY_5_5_OR_NEWER
+#if UNITY_5_5_OR_NEWER
                 FixAndroidDynamicLibraryCopyWithGradle(androidEnabled);
-                #endif
+#endif
             }
             else if (target == BuildTargetGroup.Standalone)
             {
@@ -919,7 +933,7 @@ public static class EveryplayPostprocessor
 
     private static void SetScriptingDefineSymbolForTarget(BuildTargetGroup target, string targetDefine, bool enabled)
     {
-        #if !UNITY_3_5
+#if !UNITY_3_5
         string defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(target);
 
         defines = defines.Replace(targetDefine, "");
@@ -938,7 +952,7 @@ public static class EveryplayPostprocessor
         }
 
         PlayerSettings.SetScriptingDefineSymbolsForGroup(target, defines);
-        #endif
+#endif
     }
 
     public static void ValidateAndUpdateFacebook()
@@ -1007,8 +1021,8 @@ public static class EveryplayPostprocessor
                         }
                         else
                         {
-                            currentAppIds = new List<string>((string[]) getAppIds.Invoke(facebookSettings, null));
-                            currentAppLabels = new List<string>((string[]) getAppLabels.Invoke(facebookSettings, null));
+                            currentAppIds = new List<string>((string[])getAppIds.Invoke(facebookSettings, null));
+                            currentAppLabels = new List<string>((string[])getAppLabels.Invoke(facebookSettings, null));
                         }
 
                         if (currentAppIds != null && currentAppLabels != null)
@@ -1066,8 +1080,8 @@ public static class EveryplayPostprocessor
                             {
                                 if (usingFB7Plus)
                                 {
-                                    setAppLabels.Invoke(facebookSettings, new object[] {appLabelList});
-                                    setAppIds.Invoke(facebookSettings, new object[] {appIdList});
+                                    setAppLabels.Invoke(facebookSettings, new object[] { appLabelList });
+                                    setAppIds.Invoke(facebookSettings, new object[] { appIdList });
                                 }
                                 else
                                 {
@@ -1156,7 +1170,7 @@ public static class EveryplayPostprocessor
 
     private static string UnityPathBugFix(string path)
     {
-        #if UNITY_5_4_OR_NEWER
+#if UNITY_5_4_OR_NEWER
         if (path.StartsWith("./") || !path.StartsWith("/")) // Fix three erroneous path cases on Unity 5.4f03
         {
             path = PathCombine(Application.dataPath.Replace("Assets", ""), path.Replace("./", ""));
@@ -1165,7 +1179,7 @@ public static class EveryplayPostprocessor
         {
             path = path.Replace("./", "");
         }
-        #endif
+#endif
         return path;
     }
 
@@ -1173,9 +1187,9 @@ public static class EveryplayPostprocessor
     private const string UrlSchemePrefixFB = "fb182473845211109ep";
     private const string UrlSchemePrefixEP = "ep";
 
-    private const BuildTarget kBuildTarget_iOS = (BuildTarget) 9; // Avoid automatic API updater dialog (iPhone -> iOS)
-    private const BuildTargetGroup kBuildTargetGroup_iOS = (BuildTargetGroup) 4; // Avoid automatic API updater dialog (iPhone -> iOS)
+    private const BuildTarget kBuildTarget_iOS = (BuildTarget)9; // Avoid automatic API updater dialog (iPhone -> iOS)
+    private const BuildTargetGroup kBuildTargetGroup_iOS = (BuildTargetGroup)4; // Avoid automatic API updater dialog (iPhone -> iOS)
 
-    private const BuildTarget kBuildTarget_tvOS = (BuildTarget) 37;
-    private const BuildTargetGroup kBuildTargetGroup_tvOS = (BuildTargetGroup) 25;
+    private const BuildTarget kBuildTarget_tvOS = (BuildTarget)37;
+    private const BuildTargetGroup kBuildTargetGroup_tvOS = (BuildTargetGroup)25;
 }
