@@ -54,7 +54,7 @@ namespace Anywhere
         }
         private IEnumerator GetDatas()
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(5);
             HttpGetDataHelper tmp_HttpGetDataHelper = new HttpGetDataHelper();
             tmp_HttpGetDataHelper.m_Finished = null;
             tmp_HttpGetDataHelper.m_PageIndex = Configs.GetConfigs.ContentPageNum;
