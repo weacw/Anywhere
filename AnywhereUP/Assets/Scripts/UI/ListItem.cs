@@ -19,7 +19,7 @@ namespace Anywhere.UI
         public Transform m_DownloadArea;
         public Text m_Destext;//描述
         public Text m_Loactiontext;//位置
-        public Image m_Icon;//图片
+        public RawImage m_Icon;//图片
         public Button m_Downloadbtn;//下载按钮
 
         private Text m_Downloadbtntext;//按钮文字
@@ -61,13 +61,13 @@ namespace Anywhere.UI
             string path = System.IO.Path.Combine(Configs.GetConfigs.m_CachePath, _itemdata.assetName + "." + _itemdata.type.ToLower());
             m_Assetisdownloaded = CacheMachine.IsCache(path);
             m_Downloadbtntext.text = m_Assetisdownloaded ? "打开" : "下载";
-            Sprite tmp_Sprite = DataSource.Instance.GetItemBackgroundById(m_Pageitem.thumbnailName.GetHashCode());
-            m_Icon.sprite = tmp_Sprite ? tmp_Sprite : null;
+            Texture tmp_Sprite = DataSource.Instance.GetItemBackgroundById(m_Pageitem.thumbnailName.GetHashCode());
+            m_Icon.texture = tmp_Sprite;
         }
 
-        public void UpdateThumbnail(Sprite _sprite)
+        public void UpdateThumbnail(Texture _sprite)
         {
-            m_Icon.sprite = _sprite;
+            m_Icon.texture = _sprite;
         }
 
         void OnDownloadBtnClick(GameObject _btn)
@@ -114,7 +114,7 @@ namespace Anywhere.UI
                 HttpRequestHelper tmp_HttpRequestHelper = new HttpRequestHelper();
                 tmp_HttpRequestHelper.m_LocalPath = Configs.GetConfigs.m_CachePath;
                 Loom.RunAsync(() =>
-                {
+                {                    
                     tmp_HttpRequestHelper.m_URI = Configs.GetConfigs.m_OSSURI + m_CurData + "." + m_Pageitem.type.ToLower();
                     tmp_HttpRequestHelper.m_Downloading = (progress) =>
                     {

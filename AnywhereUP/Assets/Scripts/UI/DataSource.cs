@@ -19,7 +19,7 @@ namespace Anywhere.UI
     {
         private int index = 0;
         [SerializeField] private List<PageItem> m_Itemdatalist;
-        public Dictionary<int, Sprite> ItemBackgroundDic;//<id , 背景图>
+        public Dictionary<int, Texture> ItemBackgroundDic;//<id , 背景图>
         private bool wasCreated = false;
         private string path = null;
         private Thread thread;
@@ -38,7 +38,7 @@ namespace Anywhere.UI
         void Start()
         {
             m_Itemdatalist = new List<PageItem>();
-            ItemBackgroundDic = new Dictionary<int, Sprite>();
+            ItemBackgroundDic = new Dictionary<int, Texture>();
 
             path = Configs.GetConfigs.m_CachePath;
 
@@ -94,7 +94,7 @@ namespace Anywhere.UI
 
         public void RefreshDatas()
         {
-            index=0;
+            index = 0;
             m_Itemdatalist.Clear();
             ItemBackgroundDic.Clear();
         }
@@ -106,14 +106,19 @@ namespace Anywhere.UI
         /// <param name="_notif"></param>
         public void GetPageItem(Notification _notif)
         {
-            HttpSaveDataHelper helper = _notif.param as HttpSaveDataHelper;
-            //存储服务器返回的数据
-            m_Itemdatalist.AddRange(helper.m_PageItemArray);
-            for (var i = index; i < m_Itemdatalist.Count; i++)
+
+            Loom.RunAsync(() =>
+            new Thread(() =>
             {
-                MultThreadSetupThumbnials(i, helper.m_Action);
-                index++;
-            }
+                HttpSaveDataHelper helper = _notif.param as HttpSaveDataHelper;
+                //存储服务器返回的数据
+                m_Itemdatalist.AddRange(helper.m_PageItemArray);
+                for (var i = index; i < m_Itemdatalist.Count; i++)
+                {
+                    MultThreadSetupThumbnials(i, helper.m_Action);
+                    index++;
+                }
+            }).Start());
         }
 
         /// <summary>
@@ -122,17 +127,19 @@ namespace Anywhere.UI
         /// <param name="index"></param>
         private void MultThreadSetupThumbnials(int index, System.Action _callback)
         {
+
             HttpRequestHelper helpr = new HttpRequestHelper()
             {
                 m_URI = Configs.GetConfigs.m_OSSURI + m_Itemdatalist[index].thumbnailName + ".png",
                 m_LocalPath = path,
                 m_Succeed = (json) =>
                  {
-                     Texture2D tmp_tex2d = GetIcon(m_Itemdatalist[index], 10, 10);
-                     Sprite tmp_Sprite = Sprite.Create(tmp_tex2d, new Rect(0, 0, tmp_tex2d.width, tmp_tex2d.height), new Vector2(0, 0));
-                     tmp_Sprite.name = m_Itemdatalist[index].thumbnailName;
+                     Debug.Log(index);
                      if (!ItemBackgroundDic.ContainsKey(m_Itemdatalist[index].thumbnailName.GetHashCode()))
-                         ItemBackgroundDic.Add(m_Itemdatalist[index].thumbnailName.GetHashCode(), tmp_Sprite);
+                     {
+                         Texture2D tmp_tex2d = GetIcon(m_Itemdatalist[index].thumbnailName, 10, 10);
+                         ItemBackgroundDic.Add(m_Itemdatalist[index].thumbnailName.GetHashCode(), tmp_tex2d);
+                     }
 
                      if (_callback != null) _callback.Invoke();
 
@@ -142,7 +149,7 @@ namespace Anywhere.UI
                          NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETALLPAGEINFO, new LoadViewHelper()
                          {
                              //加载完毕，关闭Loading界面
-                             m_Action = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false })
+                            // m_Action = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false })
                          });
                          wasCreated = true;
                      }
@@ -152,9 +159,9 @@ namespace Anywhere.UI
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_DOWNLOADFILE, helpr);
         }
 
-        private Texture2D GetIcon(PageItem _item, int _t2dwith, int _t2dheight)
+        private Texture2D GetIcon(string _thumbnailName, int _t2dwith, int _t2dheight)
         {
-            byte[] m_T2dbyts = File.ReadAllBytes(Path.Combine(Configs.GetConfigs.m_CachePath, _item.thumbnailName + ".png"));
+            byte[] m_T2dbyts = File.ReadAllBytes(Path.Combine(Configs.GetConfigs.m_CachePath, _thumbnailName + ".png"));
             Texture2D m_T2d = new Texture2D(_t2dwith, _t2dheight);
             m_T2d.Compress(false);
             m_T2d.Apply(false);
@@ -162,7 +169,7 @@ namespace Anywhere.UI
             return m_T2d;
         }
 
-        public Sprite GetItemBackgroundById(int _id)
+        public Texture GetItemBackgroundById(int _id)
         {
             if (ItemBackgroundDic.ContainsKey(_id))
                 return ItemBackgroundDic[_id];
