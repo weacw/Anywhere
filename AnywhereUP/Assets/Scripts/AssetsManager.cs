@@ -54,11 +54,12 @@ namespace Anywhere
         }
         private IEnumerator GetDatas()
         {
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(2);
             HttpGetDataHelper tmp_HttpGetDataHelper = new HttpGetDataHelper();
             tmp_HttpGetDataHelper.m_Finished = null;
             tmp_HttpGetDataHelper.m_PageIndex = Configs.GetConfigs.ContentPageNum;
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETPAGEDATAS, tmp_HttpGetDataHelper);
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = true });
         }
     }
 }

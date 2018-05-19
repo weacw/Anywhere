@@ -8,9 +8,8 @@ namespace Anywhere
     {
         private HttpGetDataHelper m_HttpGetDataHelper;
         public void GetDatasFromServer(Notification _notif)
-        {
+        {            
             m_HttpGetDataHelper = _notif.param as HttpGetDataHelper;
-
             HttpRequestHelper helper = new HttpRequestHelper()
             {
                 m_URI = Configs.GetConfigs.m_GetInfoHost + m_HttpGetDataHelper.m_PageIndex,

@@ -40,7 +40,7 @@ namespace Anywhere
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.HTTP_GETALLPAGEINFO, m_LoopListViewHelper.CreatPages);
 
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.SEARCH_GETRESULT, (m_ScriptModulesDict["SearchModule"] as SearchModule).Search);
-            
+
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.SOCIAL_SHARE, (m_ScriptModulesDict["NativeBridge"] as NativeBridge).Share);
 
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.EVERYPLAY_RECORDING_START, (m_ScriptModulesDict["EveryplayModule"] as EveryplayModule).OnRecordingStart);

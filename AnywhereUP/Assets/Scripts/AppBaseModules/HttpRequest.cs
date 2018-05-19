@@ -15,6 +15,7 @@ namespace Anywhere
 
             ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
             HttpRequestHelper tmp_RequestHelper = _notif.param as HttpRequestHelper;
+
             Loom.RunAsync(() =>
             new Thread(() =>
             {
@@ -45,8 +46,7 @@ namespace Anywhere
                             break;
                     }
                 }
-            }).Start());
-
+            }).Start());         
         }
     }
 }

@@ -40,6 +40,8 @@ namespace Anywhere.UI
 
         //Loading
         public GameObject m_LoadingScreen;
+        public GameObject m_SearchNotFoundScreen;
+        public GameObject m_LoadingWaittingScreen;
         public GameObject m_RecordGroup;
 
         private float m_CurTime;
@@ -205,7 +207,19 @@ namespace Anywhere.UI
             UICtrlHelper tmp_UICtrlHelper = _notif.param as UICtrlHelper;
             Loom.QueueOnMainThread((parm) =>
             {
+                Debug.Log(JsonUtility.ToJson(tmp_UICtrlHelper));
                 m_LoadingScreen.SetActive(tmp_UICtrlHelper.m_State);
+
+                if (tmp_UICtrlHelper.m_ResultType == "SearchNotFound")
+                {
+                    m_SearchNotFoundScreen.SetActive(tmp_UICtrlHelper.m_State);
+                    m_LoadingWaittingScreen.SetActive(!tmp_UICtrlHelper.m_State);
+                }
+                else
+                {
+                    m_SearchNotFoundScreen.SetActive(!tmp_UICtrlHelper.m_State);
+                    m_LoadingWaittingScreen.SetActive(tmp_UICtrlHelper.m_State);
+                }
             }, null);
         }
 

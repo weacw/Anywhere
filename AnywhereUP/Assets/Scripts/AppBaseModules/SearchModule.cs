@@ -41,8 +41,8 @@ namespace Anywhere
                         {
                             if (json.ToLower().Contains("null"))
                             {
-                                //加载完毕，关闭Loading界面
-                                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false, m_ResultType = "SearchNotFound" });
+                                //加
+                                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = true, m_ResultType = "SearchNotFound" });
 
                                 // UIManager.Instance.ShowHideLoading(false);
                                 Debug.Log("Not found");

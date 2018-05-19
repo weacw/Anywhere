@@ -134,7 +134,6 @@ namespace Anywhere.UI
                 m_LocalPath = path,
                 m_Succeed = (json) =>
                  {
-                     Debug.Log(index);
                      if (!ItemBackgroundDic.ContainsKey(m_Itemdatalist[index].thumbnailName.GetHashCode()))
                      {
                          Texture2D tmp_tex2d = GetIcon(m_Itemdatalist[index].thumbnailName, 10, 10);
