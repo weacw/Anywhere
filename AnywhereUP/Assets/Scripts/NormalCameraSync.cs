@@ -13,9 +13,10 @@ namespace Anywhere
         public bool m_SyncRotation = true;
         private float m_CameraScale = 1.0f;
 
-#if !UNITY_EDITOR
+
         void LateUpdate()
         {
+
             Matrix4x4 matrix = UnityARSessionNativeInterface.GetARSessionNativeInterface().GetCameraPose();
             float invScale = 1.0f / m_CameraScale;
             Vector3 cameraPos = UnityARMatrixOps.GetPosition(matrix);
@@ -26,8 +27,7 @@ namespace Anywhere
 
             //this needs to be adjusted for near/far
             m_NormalCamera.projectionMatrix = UnityARSessionNativeInterface.GetARSessionNativeInterface().GetCameraProjection();
-
         }
-#endif
+
     }
 }
