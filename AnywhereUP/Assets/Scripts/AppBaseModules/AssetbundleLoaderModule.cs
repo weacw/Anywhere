@@ -73,14 +73,14 @@ namespace Anywhere
             {
                 AssetBundleRequest r = m_AssetBundle.LoadAllAssetsAsync<GameObject>();
                 if (r == null) yield return null;
-                GameObject tmp_Content = Instantiate(r.asset as GameObject);
+                tmp_Content = Instantiate(r.asset as GameObject);
                 m_ContentSetupHelper.m_Content = tmp_Content;
                 NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ASSETS_SETUP, m_ContentSetupHelper);
             }
             tmp_Content.SetActive(false);
             m_AssetBundle.Unload(false);
             if (m_EndAction != null) m_EndAction.Invoke();
-
+            NormalCameraSync.Instance.m_SyncPosition = true;
         }
     }
 }

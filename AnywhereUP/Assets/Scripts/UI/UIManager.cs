@@ -74,6 +74,7 @@ namespace Anywhere.UI
         {
             CacheMachine.CleanCache();
             ShowCacheSize();
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_REFRESHDATAS);
         }
         private void SettingReturnHome()
         {
@@ -207,7 +208,6 @@ namespace Anywhere.UI
             UICtrlHelper tmp_UICtrlHelper = _notif.param as UICtrlHelper;
             Loom.QueueOnMainThread((parm) =>
             {
-                Debug.Log(JsonUtility.ToJson(tmp_UICtrlHelper));
                 m_LoadingScreen.SetActive(tmp_UICtrlHelper.m_State);
 
                 if (tmp_UICtrlHelper.m_ResultType == "SearchNotFound")

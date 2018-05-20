@@ -19,7 +19,9 @@ namespace Anywhere
             tmp_Transform.localScale = Vector3.one;
             tmp_Transform.rotation = Quaternion.identity;
             tmp_Sphere.SetActive(false);
-            tmp_Sphere.AddComponent<SphereUpdate>().m_Target = GameObject.FindGameObjectWithTag("MainCamera").transform;
+
+            NormalCameraSync.Instance.m_SyncPosition = false;
+
             Material tmp_Material = tmp_Sphere.GetComponent<Renderer>().material;
             tmp_Material.shader = Shader.Find("Custom/Video360");
 

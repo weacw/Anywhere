@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 14}
   - component: {fileID: 15}
   - component: {fileID: 19}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -181,19 +181,19 @@ Camera:
   field of view: 60
   orthographic: 0
   orthographic size: 100
-  m_Depth: -1
+  m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 2147483615
+    m_Bits: 512
   m_RenderingPath: 1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
-  m_AllowDynamicResolution: 1
+  m_HDR: 0
+  m_AllowMSAA: 0
+  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
+  m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
 --- !u!81 &11
@@ -888,7 +888,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 229804521}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CameraParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1659,7 +1659,7 @@ GameObject:
   m_Component:
   - component: {fileID: 481742512}
   - component: {fileID: 481742513}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PointCloudParticleExample
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1808,7 +1808,7 @@ GameObject:
   m_Component:
   - component: {fileID: 555720248}
   - component: {fileID: 555720249}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AR3DOFCameraManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1878,6 +1878,31 @@ Prefab:
     - target: {fileID: 4939582918709630, guid: 8a09185e5a263a64c962c62a14747d96, type: 2}
       propertyPath: m_RootOrder
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1140073794476188, guid: 8a09185e5a263a64c962c62a14747d96, type: 2}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1915568272793834, guid: 8a09185e5a263a64c962c62a14747d96, type: 2}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1344956662891832, guid: 8a09185e5a263a64c962c62a14747d96, type: 2}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1787863559595538, guid: 8a09185e5a263a64c962c62a14747d96, type: 2}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1460675467454880, guid: 8a09185e5a263a64c962c62a14747d96, type: 2}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 114383196411424458, guid: 8a09185e5a263a64c962c62a14747d96,
+        type: 2}
+      propertyPath: collisionLayerMask.m_Bits
+      value: 1536
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8a09185e5a263a64c962c62a14747d96, type: 2}
@@ -2193,6 +2218,89 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 655073577}
+--- !u!1 &673859242
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 673859245}
+  - component: {fileID: 673859244}
+  - component: {fileID: 673859243}
+  m_Layer: 0
+  m_Name: NormalCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &673859243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 673859242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a86ef1750bc7ab4ca77bcc94b11c120, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_DontDestroyOnLoad: 0
+  m_NormalCamera: {fileID: 673859244}
+  m_ARCamera: {fileID: 10}
+  m_ScaledObjectOrigin: {x: 1, y: 1, z: 1}
+  m_SyncPosition: 1
+  m_SyncRotation: 1
+--- !u!20 &673859244
+Camera:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 673859242}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 3
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.01
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294966751
+  m_RenderingPath: 1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 1
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!4 &673859245
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 673859242}
+  m_LocalRotation: {x: -0, y: -0.9378431, z: -0, w: -0.34705964}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: -220.61499, z: 0}
 --- !u!1 &692943681
 GameObject:
   m_ObjectHideFlags: 0
@@ -2423,7 +2531,7 @@ GameObject:
   - component: {fileID: 799156157}
   - component: {fileID: 799156159}
   - component: {fileID: 799156158}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Skypanle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2571,7 +2679,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 827433811}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ARKit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2598,7 +2706,7 @@ Transform:
   - {fileID: 481742512}
   - {fileID: 294339632}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &827850943
 GameObject:
@@ -3181,7 +3289,7 @@ GameObject:
   - component: {fileID: 732268496}
   - component: {fileID: 732268495}
   - component: {fileID: 732268494}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RandomCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3353,7 +3461,7 @@ GameObject:
   - component: {fileID: 985089627}
   - component: {fileID: 985089626}
   - component: {fileID: 985089625}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: XAxis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3776,7 +3884,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1121666033}
   - component: {fileID: 1121666030}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ARCameraManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3823,7 +3931,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1153389250}
   - component: {fileID: 1153389249}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ARKitControl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4516,7 +4624,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1308259104}
   - component: {fileID: 1308259103}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GeneratePlanes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5017,7 +5125,7 @@ GameObject:
   - component: {fileID: 1563586583}
   - component: {fileID: 1563586582}
   - component: {fileID: 1563586581}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: YAxis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5952,7 +6060,7 @@ Transform:
   - {fileID: 855546448}
   - {fileID: 856101440}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1987402669
 GameObject:
@@ -6064,7 +6172,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2016163815
 MonoBehaviour:
@@ -6243,7 +6351,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2101518926}
   - component: {fileID: 2101518925}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PointCloudExample
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6288,7 +6396,7 @@ GameObject:
   - component: {fileID: 2134794030}
   - component: {fileID: 2134794029}
   - component: {fileID: 2134794028}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ZAxis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
