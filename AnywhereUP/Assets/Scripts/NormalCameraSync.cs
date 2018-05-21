@@ -24,9 +24,10 @@ namespace Anywhere
             m_NormalCamera.transform.localPosition = m_ScaledObjectOrigin + (vecAnchorToCamera * invScale);
             m_NormalCamera.transform.localRotation = UnityARMatrixOps.GetRotation(matrix);
 
-
+#if !UNITY_EDITOR
             //this needs to be adjusted for near/far
             m_NormalCamera.projectionMatrix = UnityARSessionNativeInterface.GetARSessionNativeInterface().GetCameraProjection();
+#endif
         }
 
     }

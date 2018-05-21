@@ -55,6 +55,8 @@ namespace Anywhere
                             {
                                 tmp_Item = DataSource.Instance.GetItemDataByPlace(tmp_SearchHelper.m_Keywords, out index);
                                 GoToSearchResultById(index);
+                                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false });
+
                             };
                             if (tmp_SaveDataHelper.m_PageItemArray == null || tmp_SaveDataHelper.m_PageItemArray.Length == 0) return;
                             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETPAGEITEM, tmp_SaveDataHelper);
