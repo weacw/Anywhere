@@ -10,8 +10,6 @@ namespace Anywhere
     public class AppManager : Singleton<AppManager>
     {
         public List<BaseModule> m_ScriptModules = new List<BaseModule>();
-        public TalkBook m_TalkBook;
-
         private Dictionary<string, BaseModule> m_ScriptModulesDict = new Dictionary<string, BaseModule>();
 
         private UIManager m_UIManager;

@@ -26,7 +26,7 @@ public class TutorialLogics : MonoBehaviour
             m_TalkList[id].SetActive(true);
             return;
         }
-        else if (m_Index == 4)
+        else if (m_Index == 5)
         {
             m_TalkList[id].GetComponentInChildren<UnityEngine.UI.Text>().text = str;
             m_TalkList[id].SetActive(true);

@@ -1196,8 +1196,8 @@ MonoBehaviour:
   - {fileID: 1814002951792108}
   - {fileID: 1121623231602076}
   - {fileID: 1994933466446872}
-  - {fileID: 1669058860513224}
   - {fileID: 1577976843743232}
+  - {fileID: 1669058860513224}
   - {fileID: 1809369873029480}
   - {fileID: 1295736190324732}
   - {fileID: 1868483639661850}
@@ -1647,7 +1647,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u8C22\u8C22\u60A8\u8010\u5FC3\u7684\u542C\u6211\u8BB2\u5B8C\u8FD9\u4E9B\uFF01"
+  m_Text: "\u8BF7\u7262\u8BB0\u8FD9\u4E9B\u7A8D\u95E8\u54E6\uFF01"
 --- !u!222 &222019435918973920
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -1983,7 +1983,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 6, y: -14.489929}
+  m_AnchoredPosition: {x: 6, y: 98.461}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!224 &224332614804572078
@@ -2021,7 +2021,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 745.49994, y: 120.20007}
+  m_AnchoredPosition: {x: 745.49994, y: -37.228}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!224 &224403251443659040
