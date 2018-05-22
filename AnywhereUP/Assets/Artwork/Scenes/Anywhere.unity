@@ -652,7 +652,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 70, y: -25}
+  m_AnchoredPosition: {x: 70, y: -93}
   m_SizeDelta: {x: 25, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &192190557
@@ -744,7 +744,7 @@ GameObject:
   - component: {fileID: 193623343}
   - component: {fileID: 193623342}
   m_Layer: 5
-  m_Name: Loading
+  m_Name: LoadingRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1610,10 +1610,10 @@ RectTransform:
   m_Father: {fileID: 1208135109}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0000060797, y: 0.6}
-  m_SizeDelta: {x: 362.5, y: 67.2}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0.6}
+  m_SizeDelta: {x: -380, y: 67.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &449757959
 MonoBehaviour:
@@ -2909,7 +2909,6 @@ GameObject:
   m_Component:
   - component: {fileID: 855546448}
   - component: {fileID: 855546447}
-  - component: {fileID: 855546449}
   m_Layer: 5
   m_Name: UICamera
   m_TagString: Untagged
@@ -2966,17 +2965,6 @@ Transform:
   m_Father: {fileID: 1983163261}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &855546449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 855546446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f56b5eb7d28424b97b0ee087a563fc10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &856101439
 GameObject:
   m_ObjectHideFlags: 0
@@ -3906,8 +3894,8 @@ MonoBehaviour:
   startAlignment: 1
   planeDetection: 1
   detectionImages: {fileID: 0}
-  getPointCloud: 1
-  enableLightEstimation: 1
+  getPointCloud: 0
+  enableLightEstimation: 0
   enableAutoFocus: 1
 --- !u!4 &1121666033
 Transform:
@@ -4049,7 +4037,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1208135109
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4158,6 +4146,7 @@ MonoBehaviour:
   m_SearchNotFoundScreen: {fileID: 1899920145}
   m_LoadingWaittingScreen: {fileID: 510696714}
   m_RecordGroup: {fileID: 1425058920}
+  m_HintGroup: {fileID: 1208135108}
 --- !u!114 &1229174323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5040,7 +5029,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1379839953}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -6196,6 +6185,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fac5afc3f5df77a448b70844f1698b4c, type: 2}
   - {fileID: 11400000, guid: 5f2793dc3f5cb1841bf32b2a08e41b61, type: 2}
   - {fileID: 11400000, guid: 13f87375b79e05648bab18d19dca0edf, type: 2}
+  - {fileID: 11400000, guid: 9a5cd8b2639774e80990992b0595f0a4, type: 2}
 --- !u!114 &2016163816
 MonoBehaviour:
   m_ObjectHideFlags: 0

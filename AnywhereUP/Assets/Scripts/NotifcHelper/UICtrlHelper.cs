@@ -5,7 +5,7 @@ namespace Anywhere
 {
     public class UICtrlHelper : System.EventArgs
     {
-		public bool m_State;
-		public string m_ResultType;        
+        public bool m_State;
+        public string m_ResultType;
     }
 }

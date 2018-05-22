@@ -46,10 +46,11 @@ namespace Anywhere
                 // fs.Read(array, 0, array.Length);
                 // fs.Close();
                 // Debug.Log(array.Length);
-                yield return  new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
+
                 Anywhere.NotifCenter.GetNotice.PostDispatchEvent(Anywhere.NotifEventKey.SOCIAL_SHARE, new SocialHelper()
                 {
-                    m_Body = "This is test",
+                    m_Body = "Share to your friends",
                     m_FilePath = SavedPath,
                     m_Subject = "Share to your friends",
                     m_MimeType = "media/mp4",

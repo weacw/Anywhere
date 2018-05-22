@@ -181,7 +181,7 @@ void showAlertMessage(struct ConfigStruct *confStruct) {
 }
 
 void showSocialSharing(struct SocialSharingStruct *confStruct) {
-    instance = [iOSNativeShare withText:confStruct->text withFilePaths:confStruct->filePaths withSubject:confStruct->subject];
+   // instance = [iOSNativeShare withText:confStruct->text withFilePaths:confStruct->filePaths withSubject:confStruct->subject];
     saveVideo(confStruct->filePaths);
 }
 

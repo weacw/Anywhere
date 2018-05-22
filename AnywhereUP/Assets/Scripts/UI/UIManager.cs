@@ -43,8 +43,9 @@ namespace Anywhere.UI
         public GameObject m_SearchNotFoundScreen;
         public GameObject m_LoadingWaittingScreen;
         public GameObject m_RecordGroup;
-
+        public GameObject m_HintGroup;
         private float m_CurTime;
+        private bool m_WasRecording;
         private IEnumerator m_RecordCoroutine;
 
         /// <summary>
@@ -54,7 +55,7 @@ namespace Anywhere.UI
         {
             m_CallBtn.onClick.AddListener(CallToPortal);
             m_Inputfield.onEndEdit.AddListener(OnInputFiledEndEdit);
-            m_RecordButton.onClick.AddListener(Record);
+            m_RecordButton.onClick.AddListener(StartRecord);
             m_ReturnToMainButton.onClick.AddListener(OnBackToMainButtonClick);
             m_CleanCache.onClick.AddListener(CleanCache);
             m_SettingBtn.onClick.AddListener(ShowSettingPanel);
@@ -126,6 +127,8 @@ namespace Anywhere.UI
             m_ARUIRoot.gameObject.SetActive(false);
             //TODO 重置场景
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_PAUSE);
+            if (m_WasRecording) StopRecord();
+            m_RecordGroup.SetActive(false);
         }
 
         /// <summary>
@@ -139,20 +142,40 @@ namespace Anywhere.UI
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.OPERATER_SETFOCUSPOSTOCONTENT);
         }
         /// <summary>
-        /// 录像
+        /// 开始录像
         /// </summary>
-        private void Record()
+        private void StartRecord()
         {
+            if (m_WasRecording)
+            {
+                StopRecord();
+                return;
+            }
+
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.EVERYPLAY_RECORDING_START);
             StartCoroutine(m_RecordCoroutine);
+            m_WasRecording = true;
         }
-
+        /// <summary>
+        /// 停止录像
+        /// </summary>
+        private void StopRecord()
+        {
+            if (m_RecordCoroutine == null) return;
+            StopCoroutine(m_RecordCoroutine);
+            m_RecordProgress.fillAmount = m_CurTime = 0;
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.EVERYPLAY_RECORDING_STOP);
+            m_WasRecording = false;
+        }
         /// <summary>
         /// 设置提示文案
         /// </summary>
         /// <param name="_text"></param>
         private void SetHintsText(string _text)
         {
+            if (string.IsNullOrEmpty(_text))
+                m_Tiptoptext.gameObject.SetActive(false);
+
             m_Tiptoptext.text = _text;
         }
 
@@ -194,6 +217,7 @@ namespace Anywhere.UI
         internal void GoToARScene(Notification _notif)
         {
             SetHintsText("寻找放置传送门的位置");
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SETHINTSTATES, new UICtrlHelper() { m_State = true });
             m_MainUIRoot.gameObject.SetActive(false);
             m_ARUIRoot.gameObject.SetActive(true);
         }
@@ -223,6 +247,12 @@ namespace Anywhere.UI
             }, null);
         }
 
+
+        internal void SetHintStates(Notification _notif)
+        {
+            UICtrlHelper m_uiCtrlHelper = _notif.param as UICtrlHelper;
+            m_HintGroup.SetActive(m_uiCtrlHelper.m_State);
+        }
     }
 
 }

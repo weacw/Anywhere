@@ -50,7 +50,10 @@ namespace Anywhere
 
         private void Start()
         {
-            StartCoroutine(GetDatas());
+            // StartCoroutine(GetDatas());
+            UITextHelper tmp_UITextHelp = new UITextHelper();
+            tmp_UITextHelp.m_TextHorAnchor = TextAnchor.MiddleLeft;
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_CREATETALK,tmp_UITextHelp);
         }
         private IEnumerator GetDatas()
         {

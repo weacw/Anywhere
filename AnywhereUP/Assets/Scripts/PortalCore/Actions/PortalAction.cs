@@ -19,6 +19,7 @@ namespace Anywhere
                 _hook.m_InOtherWorld = !_hook.m_InOtherWorld;
                 _hook.m_Fullrenderer = _hook.m_InOtherWorld;
                 _hook.Trigger("ShaderAction");
+                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SETHINTSTATES, new UICtrlHelper() { m_State = false });
             }
             _hook.m_WasInFront = _hook.m_IsInFront;
         }

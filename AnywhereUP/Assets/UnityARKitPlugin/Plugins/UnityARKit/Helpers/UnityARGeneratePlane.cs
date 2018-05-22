@@ -29,7 +29,7 @@ namespace UnityEngine.XR.iOS
         private void CreateARAnchor(Anywhere.Notification _notif)
         {
             unityARAnchorManager = new UnityARAnchorManager();
-            UnityARUtility.InitializePlanePrefab(planePrefab);
+            //UnityARUtility.InitializePlanePrefab(planePrefab);
         }
     }
 }

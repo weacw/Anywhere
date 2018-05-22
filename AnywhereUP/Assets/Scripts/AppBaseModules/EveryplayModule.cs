@@ -11,13 +11,15 @@ namespace Anywhere
         private bool m_isRecording;
 
         private bool m_isRecordingFinished;
-        
+
         private void Awake()
         {
             m_isRecording = false;
             m_isRecordingFinished = false;
             Everyplay.RecordingStarted += RecordingStarted;
             Everyplay.RecordingStopped += RecordingStopped;
+            Everyplay.SetTargetFPS(30);
+            Everyplay.SetMaxRecordingSecondsLength(30);
         }
 
         private void OnDestroy()
@@ -49,9 +51,7 @@ namespace Anywhere
         internal void OnRecordingStop(Notification _notif)
         {
             if (!m_isRecording)
-            {
                 return;
-            }
             Everyplay.StopRecording();
             m_isRecording = false;
             m_isRecordingFinished = true;

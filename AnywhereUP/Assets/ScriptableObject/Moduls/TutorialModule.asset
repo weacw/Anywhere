@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d55796a42c543de8df358359252f88, type: 3}
+  m_Name: TutorialModule
+  m_EditorClassIdentifier: 
+  m_TalkPrefab: {fileID: 1290419233580612, guid: 8e6fc2763c51a4b5caefcac0817a3690,
+    type: 2}
+  m_ToturialPrefab: {fileID: 1865507860869718, guid: 68465df84120f4ad0b2fcabd79096a85,
+    type: 2}
+  m_AutoDel: 0

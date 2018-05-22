@@ -42,6 +42,7 @@
         /// 设置提示
         /// </summary>
         UI_SETHINT,
+        UI_SETHINTSTATES,
         /// <summary>
         /// 显示loading
         /// </summary>
@@ -118,6 +119,7 @@
         UI_GOTOARSCENE,
         ASSETS_IMAGE360,
         UI_SHOWCACHESIZE,
-        UI_REFRESHDATAS
+        UI_REFRESHDATAS,
+        UI_CREATETALK
     }
 }

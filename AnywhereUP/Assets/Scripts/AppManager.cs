@@ -59,6 +59,8 @@ namespace Anywhere
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_HIDECALLBTN, m_UIManager.ShowHideCallBtn);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_GOTOARSCENE, m_UIManager.GoToARScene);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_REFRESHDATAS, m_LoopListViewHelper.RefreshDatas);
+            NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_SETHINTSTATES, m_UIManager.SetHintStates);
+            NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_CREATETALK, (m_ScriptModulesDict["TutorialModule"] as TutorialModule).CreateTalk);
 
 
 
