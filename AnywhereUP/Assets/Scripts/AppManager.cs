@@ -1,6 +1,8 @@
 ﻿
+using System.Collections;
 using System.Collections.Generic;
 using Anywhere.UI;
+using UnityEngine;
 
 namespace Anywhere
 {
@@ -8,6 +10,8 @@ namespace Anywhere
     public class AppManager : Singleton<AppManager>
     {
         public List<BaseModule> m_ScriptModules = new List<BaseModule>();
+        public TalkBook m_TalkBook;
+
         private Dictionary<string, BaseModule> m_ScriptModulesDict = new Dictionary<string, BaseModule>();
 
         private UIManager m_UIManager;
@@ -62,11 +66,22 @@ namespace Anywhere
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_SETHINTSTATES, m_UIManager.SetHintStates);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_CREATETALK, (m_ScriptModulesDict["TutorialModule"] as TutorialModule).CreateTalk);
 
-
-
+            (m_ScriptModulesDict["TutorialModule"] as TutorialModule).m_WasNoFirstTimeCallBack = () => { StartCoroutine(GetDatas()); };
             // NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_SHOWCACHESIZE, m_UIManager.ShowCacheSize);
         }
-
+        private void Start()
+        {
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_CREATETALK);
+        }
+        private IEnumerator GetDatas()
+        {
+            yield return new WaitForSeconds(0.25f);
+            HttpGetDataHelper tmp_HttpGetDataHelper = new HttpGetDataHelper();
+            tmp_HttpGetDataHelper.m_Finished = null;
+            tmp_HttpGetDataHelper.m_PageIndex = Configs.GetConfigs.ContentPageNum;
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETPAGEDATAS, tmp_HttpGetDataHelper);
+            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = true });
+        }
 
         private void OnDisable()
         {

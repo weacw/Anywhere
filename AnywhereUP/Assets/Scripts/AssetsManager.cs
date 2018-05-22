@@ -48,21 +48,6 @@ namespace Anywhere
         }
 
 
-        private void Start()
-        {
-            // StartCoroutine(GetDatas());
-            UITextHelper tmp_UITextHelp = new UITextHelper();
-            tmp_UITextHelp.m_TextHorAnchor = TextAnchor.MiddleLeft;
-            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_CREATETALK,tmp_UITextHelp);
-        }
-        private IEnumerator GetDatas()
-        {
-            yield return new WaitForSeconds(2);
-            HttpGetDataHelper tmp_HttpGetDataHelper = new HttpGetDataHelper();
-            tmp_HttpGetDataHelper.m_Finished = null;
-            tmp_HttpGetDataHelper.m_PageIndex = Configs.GetConfigs.ContentPageNum;
-            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETPAGEDATAS, tmp_HttpGetDataHelper);
-            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = true });
-        }
+
     }
 }

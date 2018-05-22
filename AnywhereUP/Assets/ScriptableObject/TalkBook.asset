@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fabfd8d0089098648a9ce5b921b4b1cf, type: 3}
+  m_Name: TalkBook
+  m_EditorClassIdentifier: 
+  m_TalkList:
+  - m_Role: Any
+    m_TalkValue: "\u60A8\u597D\uFF01\u6211\u53EBAny\u3002"
+    m_Interaction: 0
+  - m_Role: Any
+    m_TalkValue: "\u5728\u5F00\u59CB\u4E4B\u524DAny\u9700\u8981\u544A\u8BC9\u60A8\u4E00\u4E9B\u7A8D\u95E8\u3002"
+    m_Interaction: 0
+  - m_Role: User
+    m_TalkValue: "\u597D\u7684\uFF0C\u6709\u54EA\u4E9B\u7A8D\u95E8\uFF1F"
+    m_Interaction: 0
+  - m_Role: Any
+    m_TalkValue: "\u60A8\u9700\u8981\u83B7\u53D6\u524D\u5F80\u76EE\u7684\u5730\u7684\u9053\u5177"
+    m_Interaction: 0
+  - m_Role: User
+    m_TalkValue: "\u7136\u540E\u5462\uFF1F"
+    m_Interaction: 0
+  - m_Role: Any
+    m_TalkValue: "\u6253\u5F00\u9053\u5177\u8FDB\u5165AR\u573A\u666F"
+    m_Interaction: 0
+  - m_Role: Any
+    m_TalkValue: "\u5C06\u60A8\u7684\u624B\u673A\u5DE6\u53F3\u524D\u540E\u79FB\u52A8\u7B49\u5F85\u53EC\u5524\u6309\u94AE\u663E\u793A"
+    m_Interaction: 0
+  - m_Role: Any
+    m_TalkValue: "\u7A7F\u8D8A\u53EC\u5524\u51FA\u6765\u7684\u4F20\u9001\u9635"
+    m_Interaction: 0
+  - m_Role: User
+    m_TalkValue: "\u597D\u7684\uFF0C\u660E\u767D\u4E86\uFF01"
+    m_Interaction: 0
+  - m_Role: Any
+    m_TalkValue: "\u8FEB\u4E0D\u53CA\u5F85\u4E86\u5427\uFF1F\\n\u5341\u5206\u62B1\u6B49\u803D\u8BEF\u60A8\u8FD9\u4E48\u957F\u65F6\u95F4"
+    m_Interaction: 0
+  - m_Role: Any
+    m_TalkValue: "\u5C3D\u60C5\u4EAB\u53D7\u5427\uFF01ByeBye"
+    m_Interaction: 0
+  - m_Role: User
+    m_TalkValue: ByeBye
+    m_Interaction: 0

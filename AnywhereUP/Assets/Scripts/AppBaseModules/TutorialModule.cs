@@ -7,6 +7,8 @@
     [CreateAssetMenu(menuName = "Anywhere/TutorialModule")]
     public class TutorialModule : BaseModule
     {
+        internal System.Action m_WasNoFirstTimeCallBack;
+
         public GameObject m_TalkPrefab;
         public GameObject m_ToturialPrefab;
 
@@ -16,28 +18,28 @@
         private bool m_FirstTimeEntry = true;
         private bool m_WasInit = false;
         private Transform m_TalkContentRoot;
-#if UNITY_EDITOR
-        public bool m_AutoDel;
-#endif
+
         private void Init()
         {
-            // Transform m_UIRoot = GameObject.Find("AnywhereUICanvas").transform;
+            Transform m_UIRoot = GameObject.FindGameObjectWithTag("UICanvas").transform;
 
-            // m_TalkList = new List<GameObject>();
-            // string state = PlayerPrefs.GetString("FirstTimeEntry");
-            // Debug.Log(state);
-            // if (!string.IsNullOrEmpty(state))
-            //     bool.TryParse(state, out m_FirstTimeEntry);
-            // if (!m_FirstTimeEntry) return;
+            m_TalkList = new List<GameObject>();
+            string state = PlayerPrefs.GetString("FirstTimeEntry");
+            if (!string.IsNullOrEmpty(state))
+                bool.TryParse(state, out m_FirstTimeEntry);
+            if (!m_FirstTimeEntry)
+            {
+                if (m_WasNoFirstTimeCallBack != null) m_WasNoFirstTimeCallBack.Invoke();
+                return;
+            }
 
-            // Debug.Log(m_UIRoot.name);
-            // m_InstancedTutorial = Instantiate(m_ToturialPrefab, m_UIRoot);
-            // m_InstancedTutorial.transform.localScale = Vector3.one;
-            // m_InstancedTutorial.transform.localPosition = Vector3.zero;
-            // m_InstancedTutorial.transform.localRotation = Quaternion.identity;
-            // PlayerPrefs.SetString("FirstTimeEntry", "false");
-            // m_TalkContentRoot = m_InstancedTutorial.transform.Find("Content");
-            // m_WasInit = true;
+            m_InstancedTutorial = Instantiate(m_ToturialPrefab, m_UIRoot);
+            m_InstancedTutorial.transform.localScale = Vector3.one;
+            m_InstancedTutorial.transform.localPosition = Vector3.zero;
+            m_InstancedTutorial.transform.localRotation = Quaternion.identity;
+            PlayerPrefs.SetString("FirstTimeEntry", "false");
+            m_TalkContentRoot = m_InstancedTutorial.transform.Find("Scroll View/Viewport/Content");
+            m_WasInit = true;
         }
 
         private int CreateTalk(Transform _root)
@@ -45,13 +47,21 @@
             m_TalkList.Add(Instantiate(m_TalkPrefab, _root));
             return m_TalkList.Count - 1;
         }
-#if UNITY_EDITOR
         private void OnDisable()
         {
-            if (m_AutoDel)
-                PlayerPrefs.DeleteKey("FirstTimeEntry");
+            m_TalkContentRoot = null;
+            m_WasInit = false;
+            m_FirstTimeEntry = true;
+            if (m_InstancedTutorial != null) DestroyImmediate(m_InstancedTutorial);
+            m_InstancedTutorial = null;
+            if (m_TalkList != null)
+            {
+                foreach (var talk in m_TalkList) DestroyImmediate(talk);
+                m_TalkList.Clear();
+            }
+            PlayerPrefs.DeleteKey("FirstTimeEntry");
         }
-#endif
+
 
         private IEnumerator WaitToInstance(float _time, Transform _root)
         {
@@ -62,15 +72,7 @@
         internal void CreateTalk(Notification _notif)
         {
             if (!m_WasInit)
-            {
                 Init();
-                return;
-            }
-
-            UITextHelper tmp_UICtrlHelper = _notif.param as UITextHelper;
-            UnityEngine.UI.Text tmp_TextComp = m_TalkList[CreateTalk(m_TalkContentRoot)].GetComponentInChildren<UnityEngine.UI.Text>();
-            tmp_TextComp.text = tmp_UICtrlHelper.m_TextValue;
-            tmp_TextComp.alignment = tmp_UICtrlHelper.m_TextHorAnchor;
         }
     }
 }
