@@ -44,7 +44,7 @@
 
         private int CreateTalk(Transform _root)
         {
-            m_TalkList.Add(Instantiate(m_TalkPrefab, _root));
+            //m_TalkList.Add(Instantiate(m_TalkPrefab, _root));
             return m_TalkList.Count - 1;
         }
         private void OnDisable()
