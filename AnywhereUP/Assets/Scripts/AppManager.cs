@@ -64,12 +64,13 @@ namespace Anywhere
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_SETHINTSTATES, m_UIManager.SetHintStates);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_CREATETALK, (m_ScriptModulesDict["TutorialModule"] as TutorialModule).CreateTalk);
 
-            (m_ScriptModulesDict["TutorialModule"] as TutorialModule).m_WasNoFirstTimeCallBack = () => { StartCoroutine(GetDatas()); };
+            //(m_ScriptModulesDict["TutorialModule"] as TutorialModule).m_WasNoFirstTimeCallBack = () => { StartCoroutine(GetDatas()); };
             // NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_SHOWCACHESIZE, m_UIManager.ShowCacheSize);
         }
         private void Start()
         {
-            NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_CREATETALK);
+            //NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_CREATETALK);
+            StartCoroutine(GetDatas());
         }
         private IEnumerator GetDatas()
         {
