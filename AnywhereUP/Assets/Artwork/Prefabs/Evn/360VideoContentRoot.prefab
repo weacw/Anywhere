@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4435389361769144}
   - component: {fileID: 198056465789062012}
   - component: {fileID: 199176012428093960}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,9 +36,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4473754388574988}
-  - component: {fileID: 114058775065308758}
-  m_Layer: 11
-  m_Name: 360ImageContentRoot
+  m_Layer: 0
+  m_Name: 360VideoContentRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -54,7 +53,7 @@ GameObject:
   - component: {fileID: 4433802516401164}
   - component: {fileID: 198168410739056906}
   - component: {fileID: 199504713446646318}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Smoke 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +68,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4552273171632896}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Portal particle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +85,7 @@ GameObject:
   - component: {fileID: 4947032488999558}
   - component: {fileID: 198947361691534002}
   - component: {fileID: 199164657590706308}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Portal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +102,7 @@ GameObject:
   - component: {fileID: 4823529996204314}
   - component: {fileID: 33028104741828334}
   - component: {fileID: 23314150939359930}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +121,7 @@ GameObject:
   - component: {fileID: 23548285926608134}
   - component: {fileID: 114679200338872998}
   - component: {fileID: 65045660663223990}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: PortalWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,7 +138,7 @@ GameObject:
   - component: {fileID: 4761802299295046}
   - component: {fileID: 198446772099262586}
   - component: {fileID: 199919435009193400}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -353,22 +352,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114058775065308758
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1187938049860026}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 0}
-  isGlobal: 1
-  blendDistance: 0
-  weight: 1
-  priority: 0
 --- !u!114 &114679200338872998
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -130,7 +130,7 @@ namespace Anywhere.UI
 
             HttpRequestHelper helpr = new HttpRequestHelper()
             {
-                m_URI = Configs.GetConfigs.m_OSSURI + m_Itemdatalist[index].thumbnailName + ".png",
+                m_URI = Configs.GetConfigs.m_OSSURIThumbnial + m_Itemdatalist[index].thumbnailName + ".png",
                 m_LocalPath = path,
                 m_Succeed = (json) =>
                  {
@@ -145,11 +145,7 @@ namespace Anywhere.UI
                      //下载到列表最后一个时才进行生成
                      if (index == m_Itemdatalist.Count - 1 && !wasCreated)
                      {
-                         NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETALLPAGEINFO, new LoadViewHelper()
-                         {
-                             //加载完毕，关闭Loading界面
-                            // m_Action = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false })
-                         });
+                         NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETALLPAGEINFO);
                          wasCreated = true;
                      }
                  },
@@ -161,7 +157,7 @@ namespace Anywhere.UI
         private Texture2D GetIcon(string _thumbnailName, int _t2dwith, int _t2dheight)
         {
             byte[] m_T2dbyts = File.ReadAllBytes(Path.Combine(Configs.GetConfigs.m_CachePath, _thumbnailName + ".png"));
-            Texture2D m_T2d = new Texture2D(_t2dwith, _t2dheight);
+            Texture2D m_T2d = new Texture2D(_t2dwith, _t2dheight, TextureFormat.PVRTC_RGBA2, false);
             m_T2d.Compress(false);
             m_T2d.Apply(false);
             m_T2d.LoadImage(m_T2dbyts);

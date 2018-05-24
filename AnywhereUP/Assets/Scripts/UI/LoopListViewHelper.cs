@@ -44,8 +44,9 @@ namespace Anywhere
         {
             m_Looplistview.InitListView(-1, OnGetItemByIndex);
             LoadViewHelper tmp_LoadingViewHelper = _notif.param as LoadViewHelper;
-            if (tmp_LoadingViewHelper.m_Action != null)
-                tmp_LoadingViewHelper.m_Action.Invoke();
+            if (tmp_LoadingViewHelper != null)
+                if (tmp_LoadingViewHelper.m_Action != null)
+                    tmp_LoadingViewHelper.m_Action.Invoke();
         }
 
         internal void RefreshDatas(Notification _notif)

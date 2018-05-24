@@ -11,3 +11,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46d0d62aa179daa4e94e6769a9c8f21b, type: 3}
   m_Name: Video360LoaderModule
   m_EditorClassIdentifier: 
+  m_Video360Prefab: {fileID: 1187938049860026, guid: 3a6edc6b73f26dc4f8d9cafbe3c4e02e,
+    type: 2}

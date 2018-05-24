@@ -2284,7 +2284,7 @@ Camera:
   m_HDR: 1
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 1
-  m_ForceIntoRT: 0
+  m_ForceIntoRT: 1
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
@@ -2294,13 +2294,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 673859242}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.12715109, z: 0, w: 0.9918834}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -14.61, z: 0}
 --- !u!1 &692943681
 GameObject:
   m_ObjectHideFlags: 0
@@ -3318,7 +3318,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 18.300018, y: 52.742004}
+  m_AnchoredPosition: {x: 18.300018, y: 67.92496}
   m_SizeDelta: {x: 512.3, y: 81}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &924757407
@@ -3361,7 +3361,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u6708\u7403\uFF0C\u4FD7\u7A31\u6708\u4EAE\uFF0C\u662F\u5730\u7403\u552F\u4E00\u7684\u5929\u7136\u885B\u661F\uFF0C\u4E26\u4E14\u662F\u592A\u967D\u7CFB\u4E2D\u7B2C\u4E94\u5927\u7684\u885B\u661F\u3002\u6708\u7403\u4E0E\u5730\u7403\u7684\u5E73\u5747\u8DDD\u79BB\u7EA638\u4E07\u5343\u7C73\uFF0C\u5927\u7EA6\u662F\u5730\u7403\u76F4\u5F84\u768430\u500D\u3002\n"
+  m_Text: 
 --- !u!1 &943716952
 GameObject:
   m_ObjectHideFlags: 0
@@ -3558,7 +3558,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -30, y: 20}
+  m_AnchoredPosition: {x: -28.399994, y: 11.839996}
   m_SizeDelta: {x: 110.8, y: 70.22}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &992531791

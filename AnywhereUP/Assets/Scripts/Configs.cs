@@ -75,14 +75,23 @@ public class Configs
     }
 
     /// <summary>
-    /// oss资源地址
+    /// 预览图oss资源地址
     /// </summary>
-    public string m_OSSURI
+    public string m_OSSURIThumbnial
     {
         get
         {
-            return "https://oss.weacw.com/";
+            return "https://oss.weacw.com/thumbnials/";
         }
     }
-
+    /// <summary>
+    /// 预览图oss资源地址
+    /// </summary>
+    public string m_OSSURIBundles
+    {
+        get
+        {
+            return "https://oss.weacw.com/bundles/";
+        }
+    }
 }

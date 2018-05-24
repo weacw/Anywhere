@@ -129,6 +129,7 @@ namespace Anywhere.UI
             NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.ARKIT_PAUSE);
             if (m_WasRecording) StopRecord();
             m_RecordGroup.SetActive(false);
+            Resources.UnloadUnusedAssets();
         }
 
         /// <summary>
@@ -175,6 +176,8 @@ namespace Anywhere.UI
         {
             if (string.IsNullOrEmpty(_text))
                 m_Tiptoptext.gameObject.SetActive(false);
+            else
+                m_Tiptoptext.gameObject.SetActive(true);
 
             m_Tiptoptext.text = _text;
         }

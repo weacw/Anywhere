@@ -9,6 +9,7 @@ namespace Anywhere
     [CreateAssetMenu(menuName = "Anywhere/AppModules/Video360LoaderModule")]
     public class Video360LoaderModule : BaseModule
     {
+        public GameObject m_Video360Prefab;
         /// <summary>
         ///播放路径下的视频； 
         /// </summary>
@@ -19,24 +20,25 @@ namespace Anywhere
         {
             VideoPlayerHelper tmp_videoPlayerHelper = _notif.param as VideoPlayerHelper;
             if (tmp_videoPlayerHelper.m_BeginInstance != null) tmp_videoPlayerHelper.m_BeginInstance.Invoke();
-            GameObject tmp_Sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            GameObject tmp_Sphere = Instantiate<GameObject>(m_Video360Prefab);
             tmp_Sphere.name = "TMP_VIDEOPLAYER";
             Transform tmp_Transform = tmp_Sphere.transform;
             tmp_Transform.position = Vector3.zero;
-            tmp_Transform.localScale = Vector3.one;
+            tmp_Transform.localScale = Vector3.one * 2;
             tmp_Transform.rotation = Quaternion.identity;
             tmp_Sphere.SetActive(false);
 
-            tmp_Sphere.AddComponent<SphereUpdate>().m_Target = GameObject.FindGameObjectWithTag("MainCamera").transform;
+            NormalCameraSync.Instance.m_SyncPosition = false;
+
+            GameObject tmp_Renderer = tmp_Sphere.transform.Find("Renderer").gameObject;
 
 
-            VideoPlayer tmp_VideoPlayer = tmp_Sphere.AddComponent<VideoPlayer>();
+            VideoPlayer tmp_VideoPlayer = tmp_Renderer.AddComponent<VideoPlayer>();
             tmp_VideoPlayer.playOnAwake = false;
             tmp_VideoPlayer.source = VideoSource.Url;
             tmp_VideoPlayer.url = Path.Combine(Configs.GetConfigs.m_CachePath, tmp_videoPlayerHelper.m_Videoname + ".mp4");
             tmp_VideoPlayer.renderMode = VideoRenderMode.MaterialOverride;
-            tmp_VideoPlayer.targetMaterialRenderer = tmp_Sphere.GetComponent<Renderer>();
-            tmp_VideoPlayer.targetMaterialRenderer.material.shader = Shader.Find("Custom/Video360");
+            tmp_VideoPlayer.targetMaterialRenderer = tmp_Renderer.GetComponent<Renderer>();
             tmp_VideoPlayer.isLooping = true;
             tmp_VideoPlayer.Play();
             tmp_VideoPlayer.Pause();

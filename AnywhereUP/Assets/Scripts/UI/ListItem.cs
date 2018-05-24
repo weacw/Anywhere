@@ -115,7 +115,7 @@ namespace Anywhere.UI
                 tmp_HttpRequestHelper.m_LocalPath = Configs.GetConfigs.m_CachePath;
                 Loom.RunAsync(() =>
                 {                    
-                    tmp_HttpRequestHelper.m_URI = Configs.GetConfigs.m_OSSURI + m_CurData + "." + m_Pageitem.type.ToLower();
+                    tmp_HttpRequestHelper.m_URI = Configs.GetConfigs.m_OSSURIBundles + m_CurData + "." + m_Pageitem.type.ToLower();
                     tmp_HttpRequestHelper.m_Downloading = (progress) =>
                     {
                         m_Progressimg.fillAmount = progress;

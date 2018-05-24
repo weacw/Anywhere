@@ -17,6 +17,7 @@ namespace Anywhere
         public void HttpDownloadFile(Notification _notif)
         {
             if (m_LockObject == null) m_LockObject = new object();
+            string tmpFile = null;
             lock (m_LockObject)
             {
                 //获取NoticeCenter发来的消息参数
@@ -32,7 +33,7 @@ namespace Anywhere
 
                 try
                 {
-                    string tmpFile = Path.Combine(tmpPath, Path.GetFileName(tmp_httpRequestHelper.m_URI));
+                    tmpFile = Path.Combine(tmpPath, Path.GetFileName(tmp_httpRequestHelper.m_URI));
 
                     //检查缓存,缓存不存在则从网上下载
                     if (!CacheMachine.IsCache(tmpFile))
@@ -80,7 +81,7 @@ namespace Anywhere
                     //下载出错
                     if (tmp_httpRequestHelper.m_Failed != null)
                         tmp_httpRequestHelper.m_Failed.Invoke();
-                    Debug.LogError(ex.Message);
+                    Debug.LogError(ex.Message + "\n" + tmp_httpRequestHelper.m_URI);
                 }
             }
         }
