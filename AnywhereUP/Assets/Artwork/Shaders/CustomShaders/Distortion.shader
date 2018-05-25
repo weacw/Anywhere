@@ -21,7 +21,7 @@ Shader "Custom/Distortion" {
             #pragma fragment frag            
             #include "UnityCG.cginc"
             #pragma multi_compile_fwdbase
-            #pragma only_renderers d3d9 d3d11 glcore gles 
+           // #pragma only_renderers d3d9 d3d11 glcore gles metal
             #pragma target 3.0
             uniform sampler2D _GrabTexture;
             uniform float _DistortionStrength;

@@ -35,7 +35,7 @@ namespace Anywhere
                 }).Start();
                 Loom.QueueOnMainThread((parm) =>
                 {
-                    tmp_Texture = new Texture2D(4096, 2048, TextureFormat.PVRTC_RGB4, false,true);
+                    tmp_Texture = new Texture2D(4096, 2048, TextureFormat.RGB24, false,true);
                     tmp_Texture.LoadImage(tmp_Bytes);
                     tmp_Texture.Compress(false);
                     tmp_Texture.Apply(false);

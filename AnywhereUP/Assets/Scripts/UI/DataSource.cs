@@ -157,7 +157,7 @@ namespace Anywhere.UI
         private Texture2D GetIcon(string _thumbnailName, int _t2dwith, int _t2dheight)
         {
             byte[] m_T2dbyts = File.ReadAllBytes(Path.Combine(Configs.GetConfigs.m_CachePath, _thumbnailName + ".png"));
-            Texture2D m_T2d = new Texture2D(_t2dwith, _t2dheight, TextureFormat.PVRTC_RGBA2, false);
+            Texture2D m_T2d = new Texture2D(_t2dwith, _t2dheight, TextureFormat.RGB24, false);
             m_T2d.Compress(false);
             m_T2d.Apply(false);
             m_T2d.LoadImage(m_T2dbyts);

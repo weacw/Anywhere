@@ -9,15 +9,24 @@ namespace Anywhere
     public class CameraStatusAction : BaseAction
     {
         private Transform m_Device;
-        private void Awake()
+        private void Start()
         {
             m_Device = GameObject.FindGameObjectWithTag("MainCamera").transform;
         }
         public override void Execute(PortalActionManager _hook)
         {
-            Vector3 worldPos = m_Device.position + m_Device.forward * Camera.main.nearClipPlane;
-            Vector3 pos = _hook.transform.InverseTransformPoint(worldPos);
-            _hook.m_CameraPos = pos;
+            if (m_Device == null) Start();
+            if (m_Device != null)
+            {
+                Vector3 worldPos = m_Device.position + m_Device.forward * Camera.main.nearClipPlane;
+                Vector3 pos = _hook.transform.InverseTransformPoint(worldPos);
+                _hook.m_CameraPos = pos;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            m_Device = null;
         }
     }
 }
