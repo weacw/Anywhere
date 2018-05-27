@@ -20,7 +20,7 @@ namespace Anywhere
                     tmp_SaveDataHelper.m_PageItemArray = (JsonHelper.FromJson<PageItem>(json));
                     NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETPAGEITEM, tmp_SaveDataHelper);
                     if (m_HttpGetDataHelper.m_Finished != null) m_HttpGetDataHelper.m_Finished.Invoke();
-                    NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false });
+                    //NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false });
                     Configs.GetConfigs.ContentPageNum++;
                 },
                 m_TimeOut = 30000

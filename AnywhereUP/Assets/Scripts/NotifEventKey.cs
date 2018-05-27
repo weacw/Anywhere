@@ -120,6 +120,7 @@
         ASSETS_IMAGE360,
         UI_SHOWCACHESIZE,
         UI_REFRESHDATAS,
-        UI_CREATETALK
+        UI_CREATETALK,
+        UI_NETNOTREACHABLE
     }
 }

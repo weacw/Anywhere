@@ -81,7 +81,7 @@ namespace Anywhere
                     //下载出错
                     if (tmp_httpRequestHelper.m_Failed != null)
                         tmp_httpRequestHelper.m_Failed.Invoke();
-                    Debug.LogError(ex.Message + "\n" + tmp_httpRequestHelper.m_URI);
+                    Debug.LogError(ex.Message + "\n" + tmp_httpRequestHelper.m_URI+"\n"+ tmpPath);
                 }
             }
         }

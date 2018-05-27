@@ -31,6 +31,7 @@ namespace Anywhere.UI
         public Button m_CleanCache;
         public Button m_About;
         public Button m_SettingReturnHome;
+        public Button m_NetGetDatasAgain;
 
         public InputField m_Inputfield;
         public Text m_Tiptoptext;
@@ -44,6 +45,8 @@ namespace Anywhere.UI
         public GameObject m_LoadingWaittingScreen;
         public GameObject m_RecordGroup;
         public GameObject m_HintGroup;
+        public GameObject m_UINetNotReachable;
+
         private float m_CurTime;
         private bool m_WasRecording;
         private IEnumerator m_RecordCoroutine;
@@ -62,8 +65,17 @@ namespace Anywhere.UI
             m_SettingReturnHome.onClick.AddListener(SettingReturnHome);
             m_About.onClick.AddListener(() => { Application.OpenURL("https://aw.weacw.com/anywhere/about/"); });
             m_RefreshBtn.onClick.AddListener(Refresh);
-
             m_RecordCoroutine = RecordTimeCoroutine();
+
+            m_NetGetDatasAgain.onClick.AddListener(() =>
+            {
+                m_UINetNotReachable.SetActive(false);
+                HttpGetDataHelper tmp_HttpGetDataHelper = new HttpGetDataHelper();
+                tmp_HttpGetDataHelper.m_Finished = null;
+                tmp_HttpGetDataHelper.m_PageIndex = Configs.GetConfigs.ContentPageNum;
+                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETPAGEDATAS, tmp_HttpGetDataHelper);
+                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = true });
+            });
         }
 
         private void ShowSettingPanel()
@@ -255,6 +267,12 @@ namespace Anywhere.UI
         {
             UICtrlHelper m_uiCtrlHelper = _notif.param as UICtrlHelper;
             m_HintGroup.SetActive(m_uiCtrlHelper.m_State);
+        }
+
+        internal void SetNetNotReachable(Notification _notif)
+        {
+            UICtrlHelper m_uiCtrlHelper = _notif.param as UICtrlHelper;
+            m_UINetNotReachable.SetActive(m_uiCtrlHelper.m_State);
         }
     }
 

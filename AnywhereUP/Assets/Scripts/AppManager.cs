@@ -63,15 +63,21 @@ namespace Anywhere
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_REFRESHDATAS, m_LoopListViewHelper.RefreshDatas);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_SETHINTSTATES, m_UIManager.SetHintStates);
             NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_CREATETALK, (m_ScriptModulesDict["TutorialModule"] as TutorialModule).CreateTalk);
+            NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_NETNOTREACHABLE, m_UIManager.SetNetNotReachable);
 
             //(m_ScriptModulesDict["TutorialModule"] as TutorialModule).m_WasNoFirstTimeCallBack = () => { StartCoroutine(GetDatas()); };
             // NotifCenter.GetNotice.AddEventListener(NotifEventKey.UI_SHOWCACHESIZE, m_UIManager.ShowCacheSize);
         }
         private void Start()
         {
-            //NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_CREATETALK);
-            StartCoroutine(GetDatas());
+            if (Application.internetReachability == NetworkReachability.NotReachable)
+            {
+                NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_NETNOTREACHABLE, new UICtrlHelper() { m_State = true });
+            }
+            else
+                StartCoroutine(GetDatas());
         }
+
         private IEnumerator GetDatas()
         {
             yield return new WaitForSeconds(0.25f);

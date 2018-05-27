@@ -145,7 +145,11 @@ namespace Anywhere.UI
                      //下载到列表最后一个时才进行生成
                      if (index == m_Itemdatalist.Count - 1 && !wasCreated)
                      {
-                         NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETALLPAGEINFO);
+                         NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.HTTP_GETALLPAGEINFO, new LoadViewHelper()
+                         {
+                             m_Action = () => NotifCenter.GetNotice.PostDispatchEvent(NotifEventKey.UI_SHOWHIDELOADING, new UICtrlHelper() { m_State = false })
+                         });
+
                          wasCreated = true;
                      }
                  },
