@@ -21,8 +21,10 @@ namespace Anywhere
             float invScale = 1.0f / m_CameraScale;
             Vector3 cameraPos = UnityARMatrixOps.GetPosition(matrix);
             Vector3 vecAnchorToCamera = cameraPos - m_ScaledObjectOrigin;
-            m_NormalCamera.transform.localPosition = m_ScaledObjectOrigin + (vecAnchorToCamera * invScale);
-            m_NormalCamera.transform.localRotation = UnityARMatrixOps.GetRotation(matrix);
+            if (m_SyncPosition)
+                m_NormalCamera.transform.localPosition = m_ScaledObjectOrigin + (vecAnchorToCamera * invScale);
+            if (m_SyncRotation)
+                m_NormalCamera.transform.localRotation = UnityARMatrixOps.GetRotation(matrix);
 
 #if !UNITY_EDITOR
             //this needs to be adjusted for near/far
