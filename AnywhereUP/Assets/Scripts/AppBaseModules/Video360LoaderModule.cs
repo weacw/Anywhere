@@ -18,6 +18,7 @@ namespace Anywhere
         /// <param name="_isloop">视频是否循环.</param>
         internal void PlayVideo(Notification _notif)
         {
+            AppManager.Instance.m_BundleType = "360Video";
             VideoPlayerHelper tmp_videoPlayerHelper = _notif.param as VideoPlayerHelper;
             if (tmp_videoPlayerHelper.m_BeginInstance != null) tmp_videoPlayerHelper.m_BeginInstance.Invoke();
             GameObject tmp_Sphere = Instantiate<GameObject>(m_Video360Prefab);
@@ -27,8 +28,6 @@ namespace Anywhere
             tmp_Transform.localScale = Vector3.one * 2;
             tmp_Transform.rotation = Quaternion.identity;
             tmp_Sphere.SetActive(false);
-
-            NormalCameraSync.Instance.m_SyncPosition = false;
 
             GameObject tmp_Renderer = tmp_Sphere.transform.Find("Renderer").gameObject;
 

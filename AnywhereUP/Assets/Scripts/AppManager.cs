@@ -9,6 +9,7 @@ namespace Anywhere
 
     public class AppManager : Singleton<AppManager>
     {
+        public string m_BundleType;
         public List<BaseModule> m_ScriptModules = new List<BaseModule>();
         private Dictionary<string, BaseModule> m_ScriptModulesDict = new Dictionary<string, BaseModule>();
 

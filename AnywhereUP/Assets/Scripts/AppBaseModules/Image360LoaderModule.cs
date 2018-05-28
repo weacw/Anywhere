@@ -11,6 +11,7 @@ namespace Anywhere
         public GameObject m_Image360Prefab;
         internal void PlayImage360(Notification _notif)
         {
+            AppManager.Instance.m_BundleType = "360Image";
             Image360Helper tmp_Image360Helper = _notif.param as Image360Helper;
             if (tmp_Image360Helper.m_BeginInstance != null) tmp_Image360Helper.m_BeginInstance.Invoke();
             GameObject tmp_Sphere = Instantiate(m_Image360Prefab);
@@ -20,9 +21,6 @@ namespace Anywhere
             tmp_Transform.localScale = Vector3.one;
             tmp_Transform.rotation = Quaternion.identity;
             tmp_Sphere.SetActive(false);
-
-            NormalCameraSync.Instance.m_SyncPosition = false;
-
 
             byte[] tmp_Bytes = null;
             Texture2D tmp_Texture = null;
@@ -35,7 +33,7 @@ namespace Anywhere
                 }).Start();
                 Loom.QueueOnMainThread((parm) =>
                 {
-                    tmp_Texture = new Texture2D(4096, 2048, TextureFormat.RGB24, false,true);
+                    tmp_Texture = new Texture2D(4096, 2048, TextureFormat.RGB24, false, true);
                     tmp_Texture.LoadImage(tmp_Bytes);
                     tmp_Texture.Compress(false);
                     tmp_Texture.Apply(false);

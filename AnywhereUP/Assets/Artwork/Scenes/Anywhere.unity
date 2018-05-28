@@ -6759,6 +6759,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_DontDestroyOnLoad: 0
+  m_BundleType: 
   m_ScriptModules:
   - {fileID: 11400000, guid: ae5fea52f2e0841498a59db47762ff3e, type: 2}
   - {fileID: 11400000, guid: fa89ea76f93c5004fa4a3c15bfb8fab6, type: 2}

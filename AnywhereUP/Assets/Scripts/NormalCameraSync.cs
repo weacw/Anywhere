@@ -23,6 +23,7 @@ namespace Anywhere
             Vector3 vecAnchorToCamera = cameraPos - m_ScaledObjectOrigin;
             if (m_SyncPosition)
                 m_NormalCamera.transform.localPosition = m_ScaledObjectOrigin + (vecAnchorToCamera * invScale);
+
             if (m_SyncRotation)
                 m_NormalCamera.transform.localRotation = UnityARMatrixOps.GetRotation(matrix);
 
